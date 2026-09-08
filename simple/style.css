@@ -52,7 +52,8 @@ input[type="checkbox"] { accent-color: var(--accent); width: 17px; height: 17px;
 .lesson { height: 100dvh; min-height: 640px; max-width: 1880px; margin: auto;
   padding: 14px 24px 10px; display: flex; flex-direction: column; gap: 10px; }
 .top { display: flex; align-items: center; gap: 24px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
-.brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; color: inherit; text-decoration: none; border-radius: 5px; }
+.brand:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
 .brand-mark { width: 31px; height: 31px; color: var(--accent); }
 .brand h1 { font-size: 17px; font-weight: 600; letter-spacing: .08em; margin: 0; }
 .brand p { font-size: 11px; letter-spacing: .16em; color: var(--muted); margin: 3px 0 0; }

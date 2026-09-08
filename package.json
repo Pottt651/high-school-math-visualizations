@@ -1,15 +1,17 @@
 {
-  "name": "jiading-math-interactive-lessons",
+  "name": "high-school-math-visualizations",
   "version": "1.0.0",
   "private": true,
-  "description": "Offline interactive mathematics lessons for the Jiading senior-year mock exam.",
+  "description": "Offline interactive visualizations for high-school mathematics, organized by exam paper.",
   "scripts": {
     "vendor:three": "node tools/vendor-three.cjs",
     "build": "python build.py",
-    "test": "npm run test:model && npm run test:browser",
+    "test": "npm run test:build && npm run test:model && npm run test:browser",
     "test:model": "node tests/model.test.cjs",
-    "test:browser": "node tests/simple-browser.cjs && node tests/simple-interactions.cjs && node tests/math-presentation.cjs && node tests/theme-ui.cjs && node tests/graphics-learning.cjs && node tests/space-graphics.cjs",
-    "test:legacy": "node tests/browser.test.cjs"
+    "test:browser": "node tests/simple-browser.cjs && node tests/simple-interactions.cjs && node tests/math-presentation.cjs && node tests/theme-ui.cjs && node tests/graphics-learning.cjs && node tests/space-graphics.cjs && node tests/project-catalog.cjs",
+    "test:legacy": "node tests/browser.test.cjs",
+    "skill:install": "python tools/install_skill.py",
+    "test:build": "python tests/build-catalog.py"
   },
   "engines": {
     "node": ">=20"

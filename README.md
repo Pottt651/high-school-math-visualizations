@@ -1,6 +1,24 @@
-# 嘉定一模 · 八题互动讲解
+# 高中数学题可视化
 
-双击 **[嘉定一模_互动讲题.html](嘉定一模_互动讲题.html)** 即可使用，无需联网或安装依赖。新版按教师反馈简化为直接操作图形、观察关系、展开解释。
+面向高中数学教学的交互课件项目，按试卷组织，持续积累能帮助学生理解概念与证明的可视化案例。**[打开试卷目录](index.html)**，选择试卷或直接进入一道题；本地双击即可使用，无需联网或安装依赖。
+
+嘉定一模是首个案例，现有 8 道互动题。后续试卷分别保留题目来源、编号、答案和数学模型，共享有效的设计经验；不必沿用同一画法。嘉定的两个旧文件链接仍可打开。
+
+## 可复用 Skill
+
+[math-problem-visualizer](skills/math-problem-visualizer/SKILL.md) 将这次实践整理成可维护的 Skill：选出有理解障碍的题，连接图形与目标，设计合法操作，将观察转成证明，并用实际图形和交互复核。主文保持简短，嘉定案例与仓库接入分别放在引用资料中。
+
+在新设备完成克隆后，运行 `npm run skill:install`（或 `python tools/install_skill.py`）安装到实际 `CODEX_HOME/skills`；未设置时使用用户目录的 `.codex/skills`。安装器不会覆盖内容不同的个人副本，更新前先比较和合并。仓库内 `skills/` 是可审查、可同步的维护副本。
+
+之后可直接提出：
+
+> 使用 $math-problem-visualizer，基于这份新试卷，选出适合可视化的题目，沿用已有的教学与视觉经验，做成互动课件并接入项目。
+
+用户当前要求优先。Skill 不固定题数、界面模板、库版本或检查轮数，也不会因为制作课件而自动发布或修改技能库。
+
+## 首个案例：上海嘉定 · 2025届高三一模
+
+[进入嘉定课件](papers/jiading-2025/index.html)。直接操作图形、观察关系，再展开解释。
 
 每题题目下有“看图思路”，说明图形与解题目标的关系。答案始终可见；所求量、图中对应标注与答案统一红色，辅助对象保留其他颜色。公式采用规范的分数、根式与上下标排版，输入框仍支持键入 `2/3` 这样的便捷语法。
 
@@ -23,7 +41,10 @@
 
 ## 文件与维护
 
-- `simple/`：新版八题模块、公共绘图工具、样式与页面入口。运行 `python build.py` 重建独立 HTML；第 20 题沿用已核验的 `src/model.js` 数学模型。
+- `catalog/shell.html` 与 `papers/catalog.json`：通用首页模板及试卷登记表。运行 `python build.py` 重建首页与登记的模块式课件。
+- `papers/`：按试卷存放独立 HTML；新增方式见 [试卷接入说明](papers/README.md)。
+- `simple/`：当前公共绘图、样式与题页外壳，以及首个嘉定案例的题目模块；嘉定第 20 题沿用 `src/model.js`。新试卷的题目源码放入自己的目录，不覆盖现有案例。
+- `skills/math-problem-visualizer/`：教学与制作方法；保持仓库副本和实际个人安装副本一致。
 - `vendor/katex/`：固定版本 KaTeX 0.18.7。构建时核验包完整性，并将脚本、字体和许可证内嵌进 HTML；只复制一个 HTML 到其他文件夹也可离线使用。[KaTeX API 文档](https://katex.org/docs/api)说明所用的公式排版接口。
 - `vendor/three/`：固定版本 Three.js 0.185.1。`simple/space.js` 使用正交相机、网格与射线判断空间遮挡，输出 SVG；无需 WebGL。脚本与许可证内嵌，构建核对 SHA-256。升级库后运行 `npm run vendor:three` 重新打包，再构建与检查。
 - `src/`：保留旧样章的界面源码及椭圆数学模型。旧版完整页面在 `archive/第20题_首轮样章.html`；原来的“第20题_交互样章”文件名现在也打开新版，并默认进入第 20 题。
@@ -35,22 +56,24 @@
 
 ## 多设备维护
 
-仓库：<https://github.com/Pottt651/jiading-math-interactive>
+仓库：<https://github.com/Pottt651/high-school-math-visualizations>
 
 新电脑先安装 Git、Python 3.11 或更新版本、Node.js 20 或更新版本，然后：
 
 ```bash
-git clone https://github.com/Pottt651/jiading-math-interactive.git
-cd jiading-math-interactive
+git clone https://github.com/Pottt651/high-school-math-visualizations.git
+cd high-school-math-visualizations
 npm ci
 npx playwright install chromium
 npm run build
 npm test
 ```
 
-只查看课件不需要安装这些工具：在仓库的 **Code → Download ZIP** 下载项目，解压后打开 `嘉定一模_互动讲题.html`。
+只查看课件不需要安装这些工具：在仓库的 **Code → Download ZIP** 下载项目，解压后打开 `index.html`。每份试卷 HTML 也可单独复制后离线使用。
 
-每次换设备，先运行 `git pull --ff-only` 更新。修改对应的 `simple/q题号.js`，或公共的 `simple/guides.js`、`simple/style.css`，然后构建、检查并同步：
+单独复制一份 HTML 时，其内部交互独立可用；在目录和多份试卷之间切换时，请保留项目的相对目录结构。
+
+每次换设备，先运行 `git pull --ff-only` 更新。修改相应试卷的模块；公共图形与样式按需要复用。然后构建、检查并同步：
 
 ```bash
 npm run build
@@ -62,10 +85,11 @@ git push
 
 维护源码后重新生成 HTML，保证仓库里的课件与源码一致。尽量在一台设备提交并推送完成后，再切换另一台；若拉取提示冲突，先保留本机修改再处理合并。
 
-GitHub Actions 会在推送后构建并检查课件。通过后，可从对应运行的 **Artifacts → jiading-math-courseware** 下载可独立使用的 HTML。
+GitHub Actions 会在推送后构建并检查课件。通过后，可从对应运行的 **Artifacts → high-school-math-visualizations** 下载目录和课件。
 
 ## 开发检查
 
+- `npm run test:build`：隔离目录中检查重复输出不会覆盖课件，以及不同试卷的相同题号互相独立。
 - `npm run test:model`：独立数学模型与边界检查。
 - `npm run test:browser`：交互、布局、答案、公式、深浅主题、图形对应与离线资源检查。图形检查使用实际鼠标操作和 DOM 字形尺寸，不只依赖页面是否溢出。
 - `npm run test:legacy`：归档旧版的可选回归检查。

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "jiading-2025",
+    "title": "上海嘉定 · 2025届高三一模",
+    "shortTitle": "嘉定一模 · 2025届",
+    "subtitle": "2024—2025学年",
+    "year": 2025,
+    "source": "2024—2025 上海嘉定高三一模",
+    "href": "papers/jiading-2025/index.html",
+    "questions": [
+      {"id": 10, "title": "空间距离：哪些量一起变？", "topic": "空间距离", "page": 1},
+      {"id": 11, "title": "拱桥费用：怎样找到最小值？", "topic": "拱桥费用", "page": 1},
+      {"id": 12, "title": "绝对值与两段距离", "topic": "绝对值", "page": 2},
+      {"id": 16, "title": "递推数列：下一项怎样得到？", "topic": "递推数列", "page": 2},
+      {"id": 17, "title": "斜三棱柱：高与辅助线", "topic": "斜三棱柱", "page": 3},
+      {"id": 18, "title": "开区间内的极值点", "topic": "区间极值", "page": 4},
+      {"id": 20, "title": "椭圆中的定面积", "topic": "椭圆面积", "page": 6},
+      {"id": 21, "title": "新定义 A 值与整个值域", "topic": "A 值", "page": 7}
+    ],
+    "build": {
+      "moduleDir": "simple",
+      "model": "src/model.js",
+      "legacyOutputs": ["嘉定一模_互动讲题.html", "嘉定一模_第20题_交互样章.html"]
+    }
+  }
+]

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="用可交互的图形理解高中数学：改变参数、发现关系，再把观察转化为证明。按试卷与主题选择课堂中的互动题。">
+  <title>高中数学题可视化</title>
+  <script>try{const theme=localStorage.getItem('math-visualizations-theme')||localStorage.getItem('jiading-lesson-theme');if(theme==='light'||theme==='dark')document.documentElement.dataset.theme=theme;}catch{}</script>
+  <style>
+    :root{color-scheme:dark;--page:#242321;--panel:#302f2b;--canvas:#292826;--control:#35342f;--hover:#414039;--line:#555248;--ink:#f1efe7;--body:#dfddd4;--muted:#bdb9ae;--accent:#e2d6bf;--accent-ink:#302b23;--accent-soft:#413c33;font-family:"Segoe UI","Microsoft YaHei UI","Microsoft YaHei",sans-serif;font-size:16px;color:var(--ink);background:var(--page);font-synthesis:none;-webkit-font-smoothing:antialiased}
+    :root[data-theme="light"]{color-scheme:light;--page:#f5f3ec;--panel:#eeece4;--canvas:#fdfcf8;--control:#faf9f4;--hover:#e7e3d8;--line:#c9c4b6;--ink:#302e28;--body:#48453c;--muted:#676255;--accent:#62513e;--accent-ink:#fff;--accent-soft:#e8e0d2}
+    *{box-sizing:border-box}body{margin:0}button,input{font:inherit}a{color:inherit}button,a,input{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:4px}[hidden]{display:none!important}
+    .page{width:min(1120px,100%);min-height:100dvh;margin:0 auto;padding:0 32px;display:flex;flex-direction:column}.top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:25px 0;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:32px;height:32px;color:var(--accent);flex-shrink:0}.brand h1{margin:0;font-size:20px;font-weight:600;letter-spacing:.04em}.brand p{margin:5px 0 0;font-size:12px;color:var(--muted);letter-spacing:.08em}.theme-button{display:flex;align-items:center;gap:7px;flex-shrink:0;min-height:38px;padding:7px 11px;border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--body);font-size:13px}.theme-button:hover{background:var(--hover)}.theme-button svg{width:16px;height:16px}.sun{display:none}[data-theme="light"] .sun{display:block}[data-theme="light"] .moon{display:none}
+    main{flex:1;padding:38px 0 40px}.intro{max-width:750px;margin-bottom:31px}.intro h2{margin:0 0 12px;font-size:27px;line-height:1.45;font-weight:500;font-family:"STSong","SimSun",serif;letter-spacing:.04em}.intro p{margin:0;color:var(--body);line-height:1.9;font-size:15px}.catalog-tools{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 18px}.catalog-heading h2{font-size:18px;font-weight:600;margin:0 0 7px}.catalog-heading p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}.search{width:310px;max-width:100%;flex-shrink:0}.search label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}.search-box{position:relative;display:flex;align-items:center}.search-icon{position:absolute;left:12px;width:17px;height:17px;color:var(--muted);pointer-events:none}.search input{width:100%;height:41px;padding:8px 37px 8px 38px;border:1px solid var(--line);border-radius:7px;background:var(--canvas);color:var(--ink);font-size:14px}.search input::placeholder{color:var(--muted);opacity:1}.search input::-webkit-search-cancel-button{appearance:none}.clear{position:absolute;right:5px;width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:4px;background:transparent;color:var(--muted)}.clear:hover{background:var(--hover);color:var(--ink)}.clear svg{width:15px;height:15px}
+    .papers{display:grid;gap:22px}.paper{border:1px solid var(--line);border-radius:10px;background:var(--canvas);overflow:hidden}.paper-head{padding:24px 26px 22px;display:flex;align-items:center;justify-content:space-between;gap:24px;background:var(--panel)}.paper-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 9px;font-size:12px;color:var(--muted)}.paper-meta .divider{opacity:.65}.paper h3{font-size:22px;font-weight:600;line-height:1.5;margin:0;letter-spacing:.015em;overflow-wrap:anywhere}.paper-entry{flex-shrink:0;display:inline-flex;align-items:center;gap:18px;min-height:41px;border:1px solid var(--line);border-radius:6px;padding:9px 13px;text-decoration:none;color:var(--ink);font-size:14px;background:var(--canvas)}.paper-entry:hover{border-color:var(--accent);background:var(--accent-soft)}.paper-entry svg{width:16px;height:16px}.question-list{list-style:none;padding:0 26px;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}.question-list li{min-width:0;border-top:1px solid var(--line)}.question-list li:nth-child(-n+2){border-top:0}.question-link{display:flex;align-items:center;gap:16px;padding:17px 0;text-decoration:none;min-height:88px}.question-number{width:30px;flex-shrink:0;align-self:flex-start;padding-top:3px;font-family:Georgia,"Times New Roman",serif;font-size:20px;font-variant-numeric:tabular-nums;color:var(--accent)}.question-copy{flex:1;min-width:0}.question-title{display:block;font-size:16px;line-height:1.6;font-weight:500;overflow-wrap:anywhere}.question-topic{display:block;font-size:12px;line-height:1.7;margin-top:3px;color:var(--muted);overflow-wrap:anywhere}.question-arrow{width:15px;height:15px;flex-shrink:0;color:var(--muted);opacity:.7}.question-link:hover .question-title{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}.question-link:hover .question-arrow{color:var(--ink);opacity:1}.question-link:focus-visible{outline-offset:0;border-radius:3px}.paper-bottom{margin:0;padding:12px 26px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.6}.empty{padding:48px 24px;border:1px solid var(--line);border-radius:9px;background:var(--canvas);text-align:center}.empty h3{font-size:18px;font-weight:500;margin:0 0 12px}.empty p{color:var(--muted);line-height:1.8;font-size:14px;margin:0}.empty button{margin-top:19px;border:1px solid var(--line);border-radius:6px;padding:9px 15px;background:var(--control);color:var(--ink)}.empty button:hover{background:var(--hover)}footer{display:flex;justify-content:space-between;gap:15px;border-top:1px solid var(--line);padding:19px 0 23px;color:var(--muted);font-size:12px;line-height:1.8}footer p{margin:0}.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.skip{position:absolute;top:8px;left:12px;z-index:5;padding:10px;background:var(--canvas);transform:translateY(-150%);border:1px solid var(--accent);border-radius:4px}.skip:focus{transform:none}noscript p{padding:18px;border:1px solid var(--line);line-height:1.8}
+    @media(min-width:1600px){.page{padding:0 24px}.top{padding-top:31px;padding-bottom:28px}main{padding-top:44px}.intro{margin-bottom:35px}}
+    @media(max-width:700px){.page{padding:0 22px}.top{padding:21px 0}.brand h1{font-size:18px}.brand p{font-size:11px}.brand-mark{width:28px;height:28px}main{padding:28px 0 32px}.intro{margin-bottom:25px}.intro h2{font-size:24px}.intro p{font-size:14px}.catalog-tools{align-items:stretch;flex-direction:column;gap:17px}.search{width:100%}.search label{font-size:12px}.paper-head{padding:21px 20px;align-items:flex-start}.paper h3{font-size:19px}.paper-entry{font-size:13px;gap:9px;padding:8px 10px}.question-list{padding:0 20px;column-gap:22px}.question-link{gap:10px}.question-number{width:25px;font-size:18px}.question-title{font-size:15px}.question-topic{font-size:12px}.paper-bottom{padding:11px 20px}footer{flex-direction:column;gap:3px}}
+    @media(max-width:480px){.page{padding:0 17px}.brand{gap:9px}.brand h1{font-size:17px;letter-spacing:0}.brand p{font-size:10px;letter-spacing:.03em}.theme-button{padding:7px 9px;font-size:12px;min-height:36px}.intro h2{font-size:23px}.paper-head{display:block}.paper-entry{margin-top:16px}.question-list{grid-template-columns:1fr}.question-list li:nth-child(2){border-top:1px solid var(--line)}.question-link{min-height:80px;padding:14px 0;gap:14px}.question-number{width:28px}.question-title{font-size:16px}.question-topic{font-size:12px}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#catalog">跳到试卷目录</a>
+  <div class="page">
+    <header class="top">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 4v23h23M7 23 17 7l10 16Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="17" cy="7" r="2.5" fill="currentColor"/></svg>
+        <div><h1>高中数学题可视化</h1><p>互动课堂 · 试卷目录</p></div>
+      </div>
+      <button class="theme-button" id="themeButton" type="button" aria-label="切换深浅主题"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.4A8.5 8.5 0 019.6 4 8.5 8.5 0 1020 14.4Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span id="themeName">深色</span></button>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="introTitle">
+        <h2 id="introTitle">用互动图形，讲清数学关系。</h2>
+        <p>改变参数、追踪图形，再把观察转化为证明。这里收录适合用可视化深入理解的高中数学题，可按试卷浏览，也可直接进入一道题。</p>
+      </section>
+      <section id="catalog" aria-labelledby="catalogTitle">
+        <div class="catalog-tools">
+          <div class="catalog-heading"><h2 id="catalogTitle">试卷目录</h2><p id="catalogCount" aria-live="polite" aria-atomic="true"></p></div>
+          <div class="search"><label for="catalogSearch">查找试卷或题目</label><div class="search-box"><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><input id="catalogSearch" type="search" placeholder="地区、年份、题号或主题" autocomplete="off" aria-controls="paperList"><button id="clearSearch" class="clear" type="button" aria-label="清除搜索" hidden><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M5 15 15 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button></div></div>
+        </div>
+        <div class="papers" id="paperList"></div>
+        <div class="empty" id="emptyState" hidden><h3>没有找到对应的试卷或题目</h3><p>试试地区、年份或数学主题，也可以清除搜索查看全部内容。</p><button id="showAll" type="button">查看全部试卷</button></div>
+        <noscript><p>请在浏览器中启用 JavaScript，以显示试卷目录和题目入口。课件不需要连接网络。</p></noscript>
+      </section>
+    </main>
+    <footer><p>每道题都有操作引导、关键关系与答案。</p><p>支持电脑与平板 · 课件可离线打开</p></footer>
+  </div>
+  <script>
+    (() => {
+      'use strict';
+      const papers = /*CATALOG_DATA*/;
+      const themeButton=document.getElementById('themeButton'),themeName=document.getElementById('themeName');
+      function syncTheme(){const dark=document.documentElement.dataset.theme==='dark';themeName.textContent=dark?'深色':'浅色';themeButton.setAttribute('aria-label',`当前${dark?'深色':'浅色'}模式，切换为${dark?'浅色':'深色'}`);}
+      themeButton.addEventListener('click',()=>{const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('math-visualizations-theme',theme);}catch{}syncTheme();});
+      window.addEventListener('storage',e=>{if(e.key==='math-visualizations-theme'&&(e.newValue==='dark'||e.newValue==='light')){document.documentElement.dataset.theme=e.newValue;syncTheme();}});
+      syncTheme();
+      const search=document.getElementById('catalogSearch'),list=document.getElementById('paperList'),count=document.getElementById('catalogCount'),clear=document.getElementById('clearSearch'),empty=document.getElementById('emptyState');
+      const normalize=value=>String(value??'').normalize('NFKC').toLocaleLowerCase().trim();
+      const text=(tag,className,value)=>{const node=document.createElement(tag);if(className)node.className=className;node.textContent=value;return node;};
+      const arrow=()=>{const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 20 20');svg.setAttribute('aria-hidden','true');const path=document.createElementNS(svg.namespaceURI,'path');path.setAttribute('d','M3 10h13m-5-5 5 5-5 5');path.setAttribute('fill','none');path.setAttribute('stroke','currentColor');path.setAttribute('stroke-width','1.4');path.setAttribute('stroke-linecap','round');path.setAttribute('stroke-linejoin','round');svg.append(path);return svg;};
+      function render(){
+        const terms=normalize(search.value).split(/\s+/).filter(Boolean),hasQuery=terms.length>0,fragment=document.createDocumentFragment();
+        let paperCount=0,questionCount=0;
+        for(const paper of papers){
+          const paperTerms=normalize([paper.title,paper.subtitle,paper.year].join(' ')),matches=value=>terms.every(term=>/^\d+$/.test(term)?new RegExp(`(^|\\D)${term}(\\D|$)`).test(value):value.includes(term));
+          const allQuestions=Array.isArray(paper.questions)?paper.questions:[];
+          const matching=allQuestions.filter(question=>matches(`${paperTerms} ${normalize([question.id,`第${question.id}题`,`q${question.id}`,question.title,question.topic].join(' '))}`));
+          if(hasQuery&&!matches(paperTerms)&&!matching.length)continue;
+          const questions=!hasQuery||matches(paperTerms)?allQuestions:matching;
+          paperCount++;questionCount+=questions.length;
+          const article=document.createElement('article');article.className='paper';article.dataset.paperId=String(paper.id);
+          const head=document.createElement('div');head.className='paper-head';const heading=document.createElement('div');
+          const meta=document.createElement('p');meta.className='paper-meta';meta.append(text('span','',paper.subtitle||`${paper.year}届`),text('span','divider','·'),text('span','',`${allQuestions.length} 道互动题`));heading.append(meta,text('h3','',paper.title));
+          const entry=text('a','paper-entry','进入试卷');entry.href=paper.href;entry.setAttribute('aria-label',`进入${paper.title}`);entry.append(arrow());head.append(heading,entry);article.append(head);
+          const items=document.createElement('ul');items.className='question-list';items.setAttribute('aria-label',`${paper.title}的题目`);
+          for(const question of questions){const item=document.createElement('li'),link=document.createElement('a');link.className='question-link';link.href=`${String(paper.href).split('#')[0]}#q${encodeURIComponent(question.id)}`;link.setAttribute('aria-label',`第 ${question.id} 题：${question.title}，${question.topic||''}`);const number=text('span','question-number',question.id);number.setAttribute('aria-hidden','true');const copy=document.createElement('span');copy.className='question-copy';copy.append(text('span','question-title',question.title));if(question.topic)copy.append(text('span','question-topic',question.topic));const icon=arrow();icon.classList.add('question-arrow');link.append(number,copy,icon);item.append(link);items.append(item);}
+          article.append(items);if(hasQuery&&questions.length<allQuestions.length)article.append(text('p','paper-bottom',`显示 ${questions.length} 道匹配题目 · 进入试卷可查看全部 ${allQuestions.length} 道题`));fragment.append(article);
+        }
+        list.replaceChildren(fragment);clear.hidden=!search.value;empty.hidden=paperCount>0;
+        const totalQuestions=papers.reduce((sum,paper)=>sum+(Array.isArray(paper.questions)?paper.questions.length:0),0);
+        count.textContent=hasQuery?`找到 ${paperCount} 份试卷 · ${questionCount} 道匹配题（共收录 ${papers.length} 份试卷）`:`共收录 ${papers.length} 份试卷 · ${totalQuestions} 道互动题`;
+      }
+      function clearSearch(){search.value='';render();search.focus();}
+      search.addEventListener('input',render);search.addEventListener('keydown',e=>{if(e.key==='Escape'&&search.value){e.preventDefault();clearSearch();}});clear.addEventListener('click',clearSearch);document.getElementById('showAll').addEventListener('click',clearSearch);render();
+    })();
+  </script>
+</body>
+</html>

@@ -2,17 +2,17 @@
 <html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>嘉定一模 · 互动讲题</title>
-  <script>try{const theme=localStorage.getItem('jiading-lesson-theme');if(theme==='light'||theme==='dark')document.documentElement.dataset.theme=theme;}catch{}</script>
+  <title>/*PAGE_TITLE*/</title>
+  <script>try{const theme=localStorage.getItem('math-visualizations-theme')||localStorage.getItem('jiading-lesson-theme');if(theme==='light'||theme==='dark')document.documentElement.dataset.theme=theme;}catch{}</script>
   <style>/*KATEX_CSS*/</style><style>/*STYLE*/</style>
 </head>
 <body>
 <div class="lesson">
   <header class="top">
-    <div class="brand">
+    <a class="brand" href="/*HOME_HREF*/" title="返回试卷目录">
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 4v23h23M7 23 17 7l10 16Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="17" cy="7" r="2.5" fill="currentColor"/></svg>
-      <div><h1>嘉定一模</h1><p>数学 · 互动课堂</p></div>
-    </div>
+      <div><h1>高中数学题可视化</h1><p>/*PAPER_LABEL*/</p></div>
+    </a>
     <nav id="questionNav" aria-label="选择题目"></nav>
     <button id="themeButton" title="切换深色或浅色画布" aria-label="当前深色模式，切换为浅色">深色</button>
   </header>
@@ -24,5 +24,5 @@
   <main id="module"></main>
   <footer><span id="sourceLine"></span><span class="footer-tools"><span class="target-legend">红色为所求量</span><span>← → 切题 · F 全屏 · R 重置</span></span></footer>
 </div>
-<script>/*KATEX_JS*/</script><script>/*MATH*/</script><script>/*LAB*/</script><script>/*THREE*/</script><script>/*SPACE*/</script><script>/*MODEL*/</script><script>/*MODULES*/</script><script>/*GUIDES*/</script><script>/*APP*/</script>
+<script>window.PaperMeta=/*PAPER_DATA*/;</script><script>/*KATEX_JS*/</script><script>/*MATH*/</script><script>/*LAB*/</script><script>/*THREE*/</script><script>/*SPACE*/</script><script>/*MODEL*/</script><script>/*MODULES*/</script><script>/*GUIDES*/</script><script>/*APP*/</script>
 </body></html>

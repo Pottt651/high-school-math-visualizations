@@ -5,7 +5,7 @@ const { pathToFileURL } = require('node:url');
 const { launchBrowser, reportFailure } = require('./browser-runtime.cjs');
 
 const ids = [10, 11, 12, 16, 17, 18, 20, 21];
-const storageKey = 'jiading-lesson-theme';
+const storageKey = 'math-visualizations-theme';
 
 // Runs in the page so computed colors include custom properties and inheritance.
 function inspectPresentation() {

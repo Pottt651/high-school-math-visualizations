@@ -38,7 +38,10 @@ jobs:
       - name: Upload offline courseware
         uses: actions/upload-artifact@v7
         with:
-          name: jiading-math-courseware
-          path: 嘉定一模_互动讲题.html
+          name: high-school-math-visualizations
+          path: |
+            index.html
+            papers/*/index.html
+            嘉定一模_互动讲题.html
           if-no-files-found: error
           retention-days: 30

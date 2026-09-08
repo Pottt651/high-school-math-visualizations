@@ -1,0 +1,4 @@
+interface:
+  display_name: "高中数学题可视化"
+  short_description: "把高中数学题做成帮助理解、可互动且数学严谨的课堂可视化"
+  default_prompt: "使用 $math-problem-visualizer，把这份试卷中值得可视化的题目做成能帮助学生理解概念与证明的互动课件。"

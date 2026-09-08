@@ -2,6 +2,8 @@
 
 每题在 `q题号.js` 注册 `Problems[题号]`，包含 `title`、`statement` 与 `mount(host)`。挂载后返回 `render`、`reset`、`getState`，有清理需求时提供 `destroy`。
 
+此接口用于愿意复用现有外壳的试卷。题目模块与 `guides.js` 放入各试卷自己的源码目录，构建从 `papers/catalog.json` 读取题号、来源和显示名称，内嵌为 `PaperMeta`。题号只在当前试卷内有效；首页按试卷路径区分同题号。嘉定案例目前保留在 `simple/q*.js`，新试卷不应覆盖这些文件。其他交互结构也可以用独立 HTML 接入，见 [试卷接入说明](../papers/README.md)。
+
 ## 页面结构
 
 - `.controls`：必要的控件；元素 ID 加题号前缀，查询限定在当前 `host` 内。
