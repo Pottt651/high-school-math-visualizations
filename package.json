@@ -4,16 +4,19 @@
   "private": true,
   "description": "Offline interactive mathematics lessons for the Jiading senior-year mock exam.",
   "scripts": {
+    "vendor:three": "node tools/vendor-three.cjs",
     "build": "python build.py",
     "test": "npm run test:model && npm run test:browser",
     "test:model": "node tests/model.test.cjs",
-    "test:browser": "node tests/simple-browser.cjs && node tests/simple-interactions.cjs && node tests/math-presentation.cjs && node tests/theme-ui.cjs",
+    "test:browser": "node tests/simple-browser.cjs && node tests/simple-interactions.cjs && node tests/math-presentation.cjs && node tests/theme-ui.cjs && node tests/graphics-learning.cjs && node tests/space-graphics.cjs",
     "test:legacy": "node tests/browser.test.cjs"
   },
   "engines": {
     "node": ">=20"
   },
   "devDependencies": {
-    "playwright": "1.62.1"
+    "esbuild": "0.28.2",
+    "playwright": "1.62.1",
+    "three": "0.185.1"
   }
 }

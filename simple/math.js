@@ -29,5 +29,5 @@ window.M = (() => {
     return (Math.abs(value)<.5*10**(-d)?0:value).toFixed(d).replace(/(\.\d*?[1-9])0+$|\.0+$/,'$1');
   };
   return {inline:tex=>`<span class="math-inline">${render(tex)}</span>`,block:tex=>`<div class="math-block">${render(tex,true)}</div>`,
-    answer:html=>`<div class="answer"><b class="answer-label">答案</b><div>${html}</div></div>`,rational,number,svg,clearMeasurements:()=>sizeCache.clear()};
+    answer:html=>`<div class="answer"><b class="answer-label">答案</b><div>${html}</div></div>`,rational,number,svg,measure,clearMeasurements:()=>sizeCache.clear()};
 })();

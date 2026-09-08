@@ -5,6 +5,7 @@ tests/simple-shots/
 node_modules/
 playwright-report/
 test-results/
+.tmp/
 .env
 .env.*
 !.env.example

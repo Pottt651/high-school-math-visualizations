@@ -1,28 +1,28 @@
 /* Quiet teaching canvas; mathematical colors have the same role in both themes. */
 :root {
   color-scheme: dark;
-  --page: #101720; --panel: #192330; --canvas: #141e2a;
-  --control: #202d3d; --hover: #2b3b4e; --line: #344458;
-  --ink: #edf1f7; --body: #d6dfe9; --muted: #a8b7c9;
-  --accent: #a5c9f3; --accent-ink: #17293e; --accent-soft: #253951;
-  --plot-ink: #e5ecf4; --plot-blue: #91bff2; --plot-target: #ff9187;
-  --plot-green: #93d8b1; --plot-gold: #ebc783; --plot-gray: #a8b7c9;
-  --plot-axis: #667d97; --plot-fill: #314358; --plot-target-fill: #3b2b32;
-  --target-soft: #2c232c; --warning: #f0bc81;
+  --page: #242321; --panel: #302f2b; --canvas: #292826;
+  --control: #35342f; --hover: #414039; --line: #555248;
+  --ink: #f1efe7; --body: #dfddd4; --muted: #bdb9ae;
+  --accent: #e2d6bf; --accent-ink: #302b23; --accent-soft: #413c33;
+  --plot-ink: #e9e6dd; --plot-blue: #9fc2da; --plot-target: #f89888;
+  --plot-green: #a5d2b0; --plot-gold: #e4c281; --plot-gray: #bebbb2;
+  --plot-axis: #878378; --plot-fill: #7a7e7b; --plot-target-fill: #493430;
+  --target-soft: #382c29; --warning: #ecc58e;
   font-family: "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
   color: var(--ink); background: var(--page); font-size: 16px;
   font-synthesis: none; -webkit-font-smoothing: antialiased;
 }
 :root[data-theme="light"] {
   color-scheme: light;
-  --page: #f2f4f7; --panel: #e9eef4; --canvas: #ffffff;
-  --control: #ffffff; --hover: #e2e9f2; --line: #c7d1df;
-  --ink: #202e40; --body: #34455b; --muted: #53647b;
-  --accent: #315f93; --accent-ink: #ffffff; --accent-soft: #dee9f6;
-  --plot-ink: #26364a; --plot-blue: #28649f; --plot-target: #b42318;
-  --plot-green: #176c4d; --plot-gold: #865b0c; --plot-gray: #596b80;
-  --plot-axis: #8798ac; --plot-fill: #a7bdce; --plot-target-fill: #f9e6e3;
-  --target-soft: #f8eae8; --warning: #8d4b12;
+  --page: #f5f3ec; --panel: #eeece4; --canvas: #fdfcf8;
+  --control: #faf9f4; --hover: #e7e3d8; --line: #c9c4b6;
+  --ink: #302e28; --body: #48453c; --muted: #676255;
+  --accent: #62513e; --accent-ink: #ffffff; --accent-soft: #e8e0d2;
+  --plot-ink: #353c3e; --plot-blue: #326785; --plot-target: #b23528;
+  --plot-green: #356e4e; --plot-gold: #805c17; --plot-gray: #66695f;
+  --plot-axis: #939084; --plot-fill: #a6b8b7; --plot-target-fill: #f2dcd4;
+  --target-soft: #f1e3dc; --warning: #855016;
 }
 * { box-sizing: border-box; }
 body { margin: 0; }
@@ -54,18 +54,18 @@ input[type="checkbox"] { accent-color: var(--accent); width: 17px; height: 17px;
 .top { display: flex; align-items: center; gap: 24px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
 .brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .brand-mark { width: 31px; height: 31px; color: var(--accent); }
-.brand h1 { font-size: 17px; font-weight: 650; letter-spacing: .08em; margin: 0; }
+.brand h1 { font-size: 17px; font-weight: 600; letter-spacing: .08em; margin: 0; }
 .brand p { font-size: 11px; letter-spacing: .16em; color: var(--muted); margin: 3px 0 0; }
 nav { display: flex; flex: 1; gap: 4px; min-width: 0; }
 nav button { flex: 1; gap: 6px; padding: 9px 7px; border-color: transparent; background: transparent; font-size: 13px; white-space: nowrap; }
 .nav-number { font-size: 13px; font-variant-numeric: tabular-nums; color: var(--muted); }
-nav button[aria-current="true"] { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+nav button[aria-current="true"] { background: var(--accent-soft); color: var(--ink); border-color: transparent; }
 nav button[aria-current="true"] .nav-number { color: inherit; font-weight: 700; }
 #themeButton { background: transparent; flex-shrink: 0; font-size: 13px; min-width: 78px; }
 .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-.toolbar h2 { display: flex; align-items: center; gap: 12px; font-size: 25px; line-height: 1.4; font-weight: 600; letter-spacing: .02em; margin: 0; }
-.question-number { font-size: 14px; letter-spacing: 0; color: var(--accent); font-weight: 600;
-  display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 9px; flex-shrink: 0; }
+.toolbar h2 { display: flex; align-items: center; gap: 12px; font-size: 25px; line-height: 1.4; font-weight: 500; letter-spacing: .02em; margin: 0; }
+.question-number { font-size: 26px; letter-spacing: -.04em; color: var(--muted); font-weight: 400; font-family: Georgia, serif;
+  display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; flex-shrink: 0; }
 .buttons { display: flex; gap: 7px; white-space: nowrap; }
 .buttons button { font-size: 14px; }
 #keyButton { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
@@ -87,7 +87,10 @@ nav button[aria-current="true"] .nav-number { color: inherit; font-weight: 700; 
 .guide > span { min-width: 0; }
 #module { min-height: 0; flex: 1; display: flex; flex-direction: column; gap: 8px; }
 .controls { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap;
-  gap: 8px 20px; padding: 8px 12px; border-radius: 9px; background: var(--panel); color: var(--body); }
+  gap: 8px 20px; padding: 8px 12px; border-radius: 7px; background: var(--panel); color: var(--body); }
+.controls button { border-color: transparent; background: transparent; }
+.controls button:hover { background: var(--hover); }
+.controls button[aria-pressed="true"], .controls button.active { background: var(--accent-soft); border-color: var(--line); }
 .controls label { display: flex; align-items: center; gap: 8px; white-space: nowrap; font-size: 14px; }
 .controls output { min-width: 36px; font-size: 14px; color: var(--ink); }
 .controls button, .controls select { font-size: 14px; }
@@ -96,7 +99,7 @@ nav button[aria-current="true"] .nav-number { color: inherit; font-weight: 700; 
 .preset-group button, .preset-buttons button { padding: 5px 8px; min-width: 34px; }
 .preset-group .katex, .preset-buttons .katex { font-size: 1em; }
 .figures { display: flex; flex: 1; min-height: 240px; gap: 14px; position: relative; align-items: stretch;
-  border: 1px solid var(--line); border-radius: 12px; background: var(--canvas); padding: 6px; }
+  border: 1px solid color-mix(in srgb,var(--line) 55%,transparent); border-radius: 9px; background: var(--canvas); padding: 6px; }
 .figures svg:not(.katex svg) { display: block; min-width: 0; min-height: 220px; flex: 1; width: 100%; height: 100%;
   touch-action: none; user-select: none; overflow: visible; }
 .figures > svg + svg, .figures > .q20-figure + .q20-figure { border-left: 1px solid var(--line); }
@@ -117,14 +120,22 @@ nav button[aria-current="true"] .nav-number { color: inherit; font-weight: 700; 
 .note, .hint, .caption, .status { font-size: 13px; line-height: 1.6; color: var(--muted); }
 .caption { text-align: center; margin: 0; } #module > .hint { margin: 0 4px; }
 .explain { display: none; font-size: 16px; line-height: 1.85; padding: 16px 18px;
-  max-height: 200px; overflow: auto; background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; color: var(--body); scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+  max-height: 200px; overflow: auto; background: var(--panel); border: 1px solid transparent;
+  border-radius: 9px; color: var(--body); scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
 .explain::before { content: '推导与解释'; display: block; font-size: 12px; letter-spacing: .16em; color: var(--muted); margin-bottom: 16px; }
 .explain p { margin: 6px 0 10px; } .explain ol, .explain ul { margin: 6px 0 12px; padding-left: 24px; }
 .proof-step + .proof-step { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 17px; }
 .proof-step h3 { font-size: 16px; line-height: 1.55; font-weight: 650; color: var(--ink); margin: 0 0 9px; }
 .proof-step > :last-child { margin-bottom: 0; }
 .proof-note { border-left: 2px solid var(--plot-gold); padding-left: 10px; }
+.question-claims { color: var(--body); background: var(--panel); padding: 16px 18px; border-radius: 9px; overflow: auto; min-height: 0; font-size: 16px; line-height: 1.8; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.question-claims .eyebrow { font-size: 13px; letter-spacing: .1em; color: var(--muted); }
+.question-claims .claims-intro { color: var(--muted); font-size: 14px; margin: 8px 0 10px; }
+.question-claims ol { list-style: none; padding: 0; margin: 0; }
+.question-claims li + li { border-top: 1px solid var(--line); padding-top: 8px; margin-top: 10px; }
+.question-claims b { font-size: 16px; font-weight: 600; color: var(--ink); }
+.question-claims p { margin: 5px 0 0; }
+.show-key .question-claims { display: none; }
 .aux { display: none; } .show-key .explain { display: block; } .show-key .aux { display: initial; }
 body:not(.show-key) .aux { display: none !important; }
 .warning { color: var(--warning); } .target, .red { color: var(--plot-target); font-weight: 600; }
@@ -149,6 +160,12 @@ footer { display: flex; justify-content: space-between; gap: 12px; font-size: 11
   .show-key #module:has(#q16-web) { grid-template-rows: auto auto minmax(240px,1fr) auto; }
   .show-key #module:has(#q16-web) > .readout { grid-row: 2; }
   .show-key #module:has(#q16-web) > .figures { grid-row: 3; }
+  #module:has(.question-claims) { display: grid; grid-template-columns: minmax(0,1fr) 354px; grid-template-rows: auto auto minmax(240px,1fr) auto; gap: 8px 16px; }
+  #module:has(.question-claims) > .controls { grid-column: 1; grid-row: 1; }
+  #module:has(.question-claims) > .readout { grid-column: 1; grid-row: 2; }
+  #module:has(.question-claims) > .figures { grid-column: 1; grid-row: 3; height: 100%; min-height: 240px; }
+  #module:has(.question-claims) > .hint { grid-column: 1; grid-row: 4; }
+  .question-claims { grid-column: 2; grid-row: 1 / 5; height: 100%; }
 }
 @media (min-width: 1600px) and (min-height: 850px) {
   .lesson { padding: 22px 34px 15px; gap: 14px; } .top { padding-bottom: 15px; gap: 36px; }
@@ -160,6 +177,8 @@ footer { display: flex; justify-content: space-between; gap: 12px; font-size: 11
   .controls label, .controls button, .controls select, .controls output { font-size: 16px; }
   input[type="range"] { width: 175px; } .readout { font-size: 20px; } .answer { font-size: 22px; padding: 8px 12px; }
   .show-key #module { grid-template-columns: minmax(0,1fr) 402px; gap: 12px 22px; }
+  #module:has(.question-claims) { grid-template-columns: minmax(0,1fr) 402px; gap: 12px 22px; }
+  .question-claims { font-size: 18px; padding: 22px 24px; } .question-claims b { font-size: 18px; }
   .explain { padding: 22px 24px; font-size: 18px; } .proof-step h3 { font-size: 19px; }
   .hint, .caption, .readout > small { font-size: 14px; }
 }
@@ -178,6 +197,7 @@ footer { display: flex; justify-content: space-between; gap: 12px; font-size: 11
   .top { flex-wrap: wrap; gap: 12px; } nav { order: 3; flex-basis: 100%; }
   #themeButton { margin-left: auto; } .figures { flex: none; height: 420px; }
   .explain { max-height: none; } .toolbar h2 { font-size: 23px; }
+  .question-claims { order: -1; }
 }
 @media (max-width: 700px) {
   .lesson { padding: 12px; gap: 12px; } .brand h1 { font-size: 17px; }

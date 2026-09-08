@@ -11,6 +11,16 @@ Problems[16] = {
         <button id="q16-next">计算下一项</button><button id="q16-restart">从 ${M.inline('a_1')} 重来</button>
         <label>项数 <input id="q16-count" type="range" min="1" max="30" step="1" value="1"><output id="q16-count-label">1</output></label>
       </div>
+      <aside class="question-claims" aria-label="四个待判断命题">
+        <div class="eyebrow">本题的四个命题</div>
+        <p class="claims-intro">先判断，再用初值找例子或反例。展开关键关系可查看逐项证明。</p>
+        <ol>
+          <li><b>① 递增初值的个数</b><p>${M.inline('r=2')} 时，只有有限个初值使数列严格递增。</p></li>
+          <li><b>② 差值最终变小</b><p>${M.inline('r=2')} 时，存在初值及正整数 ${M.inline('P')}，使所有 ${M.inline('n>P')} 满足 ${M.inline(String.raw`a_{n+1}-a_n<\frac1{2025}`)}。</p></li>
+          <li><b>③ 最终精确相等</b><p>${M.inline('r=3')} 时，存在初值及正整数 ${M.inline('P')}，使所有 ${M.inline('n>P')} 满足 ${M.inline('a_{n+1}=a_n')}。</p></li>
+          <li><b>④ 后续各项的正负</b><p>${M.inline('r=-3')} 时，不存在初值使所有 ${M.inline(String.raw`n\ge3`)} 的项均为正。</p></li>
+        </ol>
+      </aside>
       <div class="readout" id="q16-readout" aria-live="polite"></div>
       <div class="figures">
         <svg id="q16-web" class="figure" role="img" aria-label="递推蛛网图：从横坐标到函数图，再水平到对角线"></svg>
@@ -91,7 +101,7 @@ Problems[16] = {
       if(data.overflow) note='计算已停止：下一项超出浮点数范围。越界不是收敛，也不代表数学数列停止。';
       $('readout').innerHTML=`<span class="target">${terms}</span><span>${delta===null?'':`本次差值 <span class="target">${M.inline(`a_{${n}}-a_{${n-1}} `+difference(data,n,delta))}</span>。 `}${error || note}</span>${M.answer('B（②③正确；①④错误）')}`;
       const bounds=state.r<0 ? {xmin:-1.1,xmax:4.6,ymin:-1.1,ymax:4.6,equal:true,pad:38} : {xmin:-.05,xmax:1.05,ymin:-.05,ymax:1.05,equal:true,pad:38};
-      const p=webPlot=Lab.plot(web,bounds); p.axes();
+      const p=webPlot=Lab.plot(web,bounds); p.axes({y:''});
       p.curve(x=>state.r*x*(1-x),bounds.xmin,bounds.xmax,{stroke:C.blue,width:3});
       p.line([bounds.xmin,bounds.xmin],[bounds.xmax,bounds.xmax],{stroke:C.gray,width:1.8});
       p.screenText(16,23,'递推图',{color:C.blue,size:18});
@@ -119,7 +129,6 @@ Problems[16] = {
       p.finish();
       const ymin=state.r<0?-1.1:-.05, ymax=state.r<0?4.6:1.05, xmax=Math.max(8,n+1);
       const s=Lab.plot(seq,{xmin:0,xmax,ymin,ymax,equal:false,pad:38}); s.axes({x:'n',y:''});
-      s.math([0,ymax],'a_n',{color:C.target,size:16,dx:8});
       s.screenText(16,23,'项图',{color:C.ink,size:18});
       s.screenMath(78,23,'(n,a_n)',{color:C.target,size:18});
       if(state.r>0) {

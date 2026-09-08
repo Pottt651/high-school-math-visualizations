@@ -18,11 +18,11 @@ Problems[20]={
       if(!isCircle)p=q;
       const a=isCircle?1:Math.sqrt(5),b=isCircle?1:2,pts=isCircle?g.unit:g.ellipse;
       const A=[pts.A.x,pts.A.y],B=[pts.B.x,pts.B.y],M=[pts.M.x,pts.M.y],O=[0,0];
-      q.axes();
+      q.axes(isCircle?{stepX:1,stepY:1}:{});
       q.poly(Array.from({length:160},(_,i)=>[a*Math.cos(i*Math.PI/80),b*Math.sin(i*Math.PI/80)]),{stroke:C.ink,width:2});
       q.poly([O,A,B],{fill:'var(--plot-target-fill)',stroke:'none'});
       q.line(O,A,{stroke:C.blue});q.line(O,B,{stroke:C.green});q.line(A,B,{stroke:C.ink,width:2.6});q.line(O,M,{stroke:C.gold,dash:isCircle?'':'5 4'});
-      q.math([(A[0]+B[0])/3,(A[1]+B[1])/3],isCircle?"S'":'S',{color:C.target,size:24,dx:14,dy:16});
+      q.math([(A[0]+B[0])/3,(A[1]+B[1])/3],isCircle?"S'":'S',{color:C.target,size:24,anchor:'middle',dy:8,region:[O,A,B],priority:10,leader:false});
       if(isCircle&&g.half>1e-6&&Math.abs(g.rho)>1e-6){
         const r=10/q.sx,dir=[(A[0]-M[0])/g.half,(A[1]-M[1])/g.half],n=[-M[0]/Math.abs(g.rho),-M[1]/Math.abs(g.rho)];
         const v=[M[0]+n[0]*r,M[1]+n[1]*r],w=[v[0]+dir[0]*r,v[1]+dir[1]*r],u=[M[0]+dir[0]*r,M[1]+dir[1]*r];

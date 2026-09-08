@@ -1,0 +1,8 @@
+{
+  "name": "three",
+  "version": "0.185.1",
+  "source": "https://www.npmjs.com/package/three/v/0.185.1",
+  "license": "MIT",
+  "sha256": "182f9b5a222794bf405647190b9852d716c25af8ff69d9df279865013ed48f1c",
+  "rebuild": "npm run vendor:three"
+}
