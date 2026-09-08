@@ -1,0 +1,40 @@
+const assert = require('node:assert/strict');
+const m = require('../src/model.js');
+const near = (a,b,eps=1e-9) => assert.ok(Math.abs(a-b)<eps, `${a} differs from ${b}`);
+let seed=71983;
+const random=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};
+for(let i=0;i<1000;i++){
+  const angle=.1+random()*179.8, rho=random()*1.998-.999;
+  const g=m.geometry(angle,rho);
+  for(const p of [g.ellipse.A,g.ellipse.B])near(p.x*p.x/5+p.y*p.y/4,1);
+  near((g.ellipse.A.x+g.ellipse.B.x)/2,g.ellipse.M.x);
+  near((g.ellipse.A.y+g.ellipse.B.y)/2,g.ellipse.M.y);
+  near(g.area,2*Math.sqrt(5)*Math.abs(rho)*Math.sqrt(1-rho*rho));
+  // Independent line equation check in the original plane.
+  const nx=-Math.sin(angle*Math.PI/180),ny=Math.cos(angle*Math.PI/180);
+  near(nx*g.ellipse.A.x+ny*g.ellipse.A.y, rho*g.normalLength);
+  near(nx*g.ellipse.B.x+ny*g.ellipse.B.y, rho*g.normalLength);
+  const locked=m.geometry(angle,(i%2?1:-1)*Math.SQRT1_2);
+  assert.ok(locked.valid);assert.ok(locked.satisfies);
+  near(locked.area,Math.sqrt(5));near(locked.unitArea,.5);
+  near(m.dot(locked.unit.A,locked.unit.B),0);
+  near(locked.product1,-.8,1e-7);near(locked.product2,-.8,1e-7);
+  const t=random(),tr=m.transform(g,t);
+  near(Math.abs(m.det(tr.A,tr.B))/2,tr.area);
+  near(tr.area,g.unitArea*tr.sx*tr.sy);
+  near(m.transform(g,1).A.x,g.ellipse.A.x);
+  near(m.transform(g,1).A.y,g.ellipse.A.y);
+}
+const horizontal=m.geometry(0,Math.SQRT1_2),vertical=m.geometry(90,Math.SQRT1_2);
+assert.equal(horizontal.slopes.OM,null);assert.equal(horizontal.valid,false);
+assert.equal(vertical.slopes.AB,null);assert.equal(vertical.valid,false);
+const radius=m.geometry(Math.atan(2/Math.sqrt(5))*180/Math.PI,Math.SQRT1_2);
+assert.equal(radius.valid,false);assert.ok(radius.slopes.OA===null||radius.slopes.OB===null);
+assert.equal(m.geometry(31,0).slopes.OM,null);
+assert.equal(m.geometry(31,1).valid,false);near(m.geometry(31,1).area,0);
+for(const theta of [0,90,41.810314895778596])assert.equal(m.geometry(theta,Math.SQRT1_2).satisfies,false);
+for(const d of [.01,.2,.55,.9,.99])assert.equal(m.geometry(31,d).satisfies,false);
+assert.equal(m.geometry(31,.70710678).satisfies,false,'Rounded root must not count as exact construction');
+assert.ok(m.geometry(31,.35).area!==m.geometry(31,.8).area);
+assert.ok(Math.abs(m.geometry(31,.35).area-m.geometry(70,.35).area)<1e-9);
+console.log('PASS: 1,000 independent model/property checks; boundary and transformation checks.');

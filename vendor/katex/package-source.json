@@ -1,0 +1,17 @@
+{
+  "shasum": "972327a0c0f83be54423c8cc50d0bc3693523fa7",
+  "tarball": "https://registry.npmjs.org/katex/-/katex-0.18.7.tgz",
+  "fileCount": 214,
+  "integrity": "sha512-h+UCwkZ+4Jz8WQ7MLGfj7UVFrRCizGb912fwF4luGdYsC5paYG1vx+jy+KRcC/XkpjGva/P7nAWuxNnPzRvzHw==",
+  "signatures": [
+    {
+      "sig": "MEYCIQDjn96QGs/vMxVaulzfQO/fgbo3Az4imYwRGhMaem8HdQIhAI6Isg/eQJJTDYL+9bmJr+9FKDKMl+REAw67cBtEsPYI",
+      "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+    },
+    {
+      "sig": "MEUCIFP3Yg0+HBWW/wElfHNUAP4iI2W46s3CFX4qdg/TPoVdAiEA/Sp5zxTGIpm0I33FeCqvDxQvZlIsHA1y1I5cjgsqiPw=",
+      "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+    }
+  ],
+  "unpackedSize": 4038616
+}

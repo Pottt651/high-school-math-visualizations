@@ -1,0 +1,35 @@
+# 模块维护约定
+
+每题在 `q题号.js` 注册 `Problems[题号]`，包含 `title`、`statement` 与 `mount(host)`。挂载后返回 `render`、`reset`、`getState`，有清理需求时提供 `destroy`。
+
+## 页面结构
+
+- `.controls`：必要的控件；元素 ID 加题号前缀，查询限定在当前 `host` 内。
+- `.figures`：一个 SVG 或两幅同步图。单图用 `.main-figure`，并排图用 `.figure`。
+- `.readout`：由当前坐标计算的数值，以及始终可见的答案。
+- `.explain`：证明或解析，由公共按钮控制；`.aux` 可用于同步显示辅助线。
+- `guides.js`：每题一两句看图思路，说明题设、操作和所求量之间的关系。
+
+保持直接操作的简洁界面。特殊构型和定义域例外必须明确说明；数值试验不能代替证明。
+
+## 公式与颜色
+
+- `M.inline(tex)`：行内公式。
+- `M.block(tex)`：块公式；长式子用 `aligned` 分行。
+- `M.answer(html)`：放在读数区域内的答案条。
+- `M.rational('2/3')`、`M.number(value, digits)`：生成供排版的分数或数值 TeX。
+- `Lab.C.target` 和 `.target`：所求量及答案统一深红色。辅助对象使用 `blue`、`green`、`gold`、`gray`。
+
+KaTeX 与字体已内嵌到输出文件，运行时不依赖联网。源码用 `String.raw` 模板保留 TeX 反斜杠，动态插值只使用明确的数学数据。
+
+## 绘图与交互
+
+`Lab.plot(svg, bounds)` 接收 `{xmin,xmax,ymin,ymax,equal=true,pad=34}`，返回绘图对象 `p`。坐标点使用 `[x,y]`。
+
+常用方法：`axes`、`line`、`poly`、`circle`、`dot`、`text`、`screenText`、`curve`、`add`、`finish`。`poly` 是闭合多边形；曲线采样必须服从同一数学模型。
+
+`p.math(point, tex, options)` 与 `p.screenMath(x,y,tex,options)` 在图中排版公式。`p.to(point)` 将数学坐标变成屏幕坐标，`p.fromEvent(event)` 反向转换；线型和文字通过 `color`、`stroke`、`width`、`dash`、`dx`、`dy`、`anchor` 等选项调整。
+
+将鼠标事件绑定在 SVG 容器上，避免重绘后子元素事件丢失。各视图读取同一个状态；不要分别手调图形以制造不变量。公共入口观察图形区大小和字体加载并重绘。
+
+修改后运行 `npm run build` 和 `npm test`，同时提交源码与生成的 HTML。

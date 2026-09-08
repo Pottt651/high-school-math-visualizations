@@ -1,0 +1,19 @@
+{
+  "name": "jiading-math-interactive-lessons",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline interactive mathematics lessons for the Jiading senior-year mock exam.",
+  "scripts": {
+    "build": "python build.py",
+    "test": "npm run test:model && npm run test:browser",
+    "test:model": "node tests/model.test.cjs",
+    "test:browser": "node tests/simple-browser.cjs && node tests/simple-interactions.cjs && node tests/math-presentation.cjs",
+    "test:legacy": "node tests/browser.test.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
