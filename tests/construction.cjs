@@ -129,6 +129,35 @@ const { launchBrowser, reportFailure } = require('./browser-runtime.cjs');
   await go(5); assert.equal(await page.locator('#q20-unit').isVisible(), true);
   assert.deepEqual(await state(), withCircle, 'The correspondence step must not change the ellipse or area');
   await snapshot('q20-circle-last');
+  // Area labels must stay inside their regions without sitting on the median.
+  for (const [width,height] of [[1366,768],[1920,1080]]) {
+    await page.setViewportSize({width,height});
+    for (const angle of [31,90,135]) {
+      await page.locator('#q20-angle').evaluate((node,value)=>{node.value=String(value);node.dispatchEvent(new Event('input',{bubbles:true}));},angle);
+      await settle();
+      const inspected = await page.evaluate(() => {
+        const box = node => {const r=node.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height};};
+        const result=['#q20-ellipse','#q20-unit'].map(selector=>{
+          const svg=document.querySelector(selector),tex=selector.endsWith('unit')?"S'":'S';
+          const mark=[...svg.querySelectorAll('foreignObject')].find(node=>node.querySelector('annotation')?.textContent===tex);
+          if(!mark)return {missing:true};
+          const rect=box(mark.querySelector('.katex-html'));
+          const point=role=>{const r=box(svg.querySelector(`circle[fill="var(--plot-${role})"]`));return[r.x+r.w/2,r.y+r.h/2];};
+          const a=point('ink'),b=point('gold');let lo=0,hi=1,hit=true;
+          for(let i=0;i<2;i++){const d=b[i]-a[i],min=i?rect.y:rect.x,max=min+(i?rect.h:rect.w);
+            if(Math.abs(d)<1e-8){if(a[i]<min||a[i]>max)hit=false;}
+            else{let t0=(min-a[i])/d,t1=(max-a[i])/d;if(t0>t1)[t0,t1]=[t1,t0];lo=Math.max(lo,t0);hi=Math.min(hi,t1);if(lo>hi)hit=false;}}
+          return {missing:false,hit};
+        });
+        const labels=[...document.querySelectorAll('#q20-unit text')],h=box(labels.find(n=>n.textContent==='h')),a=box(labels.find(n=>n.textContent==='A′'));
+        const gap=Math.hypot(Math.max(0,h.x-a.x-a.w,a.x-h.x-h.w),Math.max(0,h.y-a.y-a.h,a.y-h.y-h.h));
+        return {areas:result,gap};
+      });
+      assert.ok(inspected.areas.every(area=>!area.missing&&!area.hit), `Q20 ${width}px, ${angle}°: area glyph overlaps median or disappeared`);
+      assert.ok(inspected.gap>=7, `Q20 ${width}px, ${angle}°: h and A′ read as one label`);
+      if(angle!==31)await snapshot(`q20-labels-${width}-${angle}`);
+    }
+  }
   await select(16); await page.locator('#drawButton').click(); await go(2);
   const redSegments = () => page.locator('#q16-web line[stroke="var(--plot-target)"]').evaluateAll(lines => lines.map(line => ({
     dx: +line.getAttribute('x2') - +line.getAttribute('x1'), dy: +line.getAttribute('y2') - +line.getAttribute('y1'),

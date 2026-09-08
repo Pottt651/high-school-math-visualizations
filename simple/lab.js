@@ -42,7 +42,7 @@ window.Lab = (() => {
       const left=x+(o.dx||0)-(anchor==='middle'?measure.w/2:anchor==='end'?measure.w:0);
       const top=y+(o.dy||0)-measure.h*(math?.72:.8);
       const item={x,y,value,o,math,size,left,top,w:measure.w,h:measure.h,movable:!!o.avoid,
-        priority:o.priority??(math?2:3),index:labels.length,region:o.region?.map(to)};
+        priority:o.priority??(math?2:3),index:labels.length,ink:measure.ink,region:o.region?.map(to),segments:o.avoidSegments?.map(segment=>segment.map(to))};
       labels.push(item);chunks.push(item);
     }
     const screenText=(x,y,t,o={})=>label(x,y,t,o,false);
@@ -57,6 +57,16 @@ window.Lab = (() => {
         const b=polygon[(i+1)%polygon.length];return sign*((b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]))>=0;
       }));
     }
+    function crossesBox(box,[a,b]){
+      let lo=0,hi=1;
+      if(Math.hypot(b[0]-a[0],b[1]-a[1])<1e-8)return false;
+      for(let i=0;i<2;i++){
+        const delta=b[i]-a[i],min=(i?box.top:box.left)-4,max=(i?box.top+box.h:box.left+box.w)+4;
+        if(Math.abs(delta)<1e-8){if(a[i]<min||a[i]>max)return false;}
+        else{let t0=(min-a[i])/delta,t1=(max-a[i])/delta;if(t0>t1)[t0,t1]=[t1,t0];lo=Math.max(lo,t0);hi=Math.min(hi,t1);if(lo>hi)return false;}
+      }
+      return true;
+    }
     function arrange(){
       const placed=labels.filter(item=>!item.movable).map(item=>({...item}));
       const reserved=points.map(([x,y])=>({left:x-7,top:y-7,w:14,h:14}));
@@ -65,14 +75,18 @@ window.Lab = (() => {
         for(const d of [14,26,40,58])candidates.push([0,-d],[0,d],[-d,0],[d,0],[-d,-d],[d,-d],[-d,d],[d,d]);
         if(item.region){
           const xs=item.region.map(p=>p[0]),ys=item.region.map(p=>p[1]);
-          for(let y=Math.min(...ys)+3;y<=Math.max(...ys)-item.h-3;y+=6)
-            for(let x=Math.min(...xs)+3;x<=Math.max(...xs)-item.w-3;x+=6)candidates.push([x-item.left,y-item.top]);
+          const step=item.segments&&Math.max(...xs)-Math.min(...xs)<200?2:6;
+          for(let y=Math.min(...ys)+3;y<=Math.max(...ys)-item.h-3;y+=step)
+            for(let x=Math.min(...xs)+3;x<=Math.max(...xs)-item.w-3;x+=step)candidates.push([x-item.left,y-item.top]);
         }
         let best=null,bestScore=Infinity;
         for(const [dx,dy] of candidates){
           const candidate={left:Math.max(4,Math.min(w-item.w-4,item.left+dx)),top:Math.max(4,Math.min(h-item.h-4,item.top+dy)),w:item.w,h:item.h};
           if(item.region&&!insideRegion(candidate,item.region))continue;
-          const padded={left:candidate.left-3,top:candidate.top-2,w:candidate.w+6,h:candidate.h+4};
+          const ink=item.ink?{left:candidate.left+item.ink.left,top:candidate.top+item.ink.top,w:item.ink.w,h:item.ink.h}:candidate;
+          if(item.segments?.some(segment=>crossesBox(ink,segment)))continue;
+          const gapX=item.o.gap??3,gapY=item.o.gap??2;
+          const padded={left:candidate.left-gapX,top:candidate.top-gapY,w:candidate.w+2*gapX,h:candidate.h+2*gapY};
           const collision=placed.reduce((sum,box)=>sum+overlap(padded,box),0)+reserved.reduce((sum,box)=>sum+overlap(candidate,box),0);
           const distance=Math.hypot(candidate.left-item.left,candidate.top-item.top);
           const score=collision*100+distance;

@@ -37,13 +37,17 @@ Problems[20]={
       if(show(3)){q.line(O,A,{stroke:C.blue});q.line(O,B,{stroke:C.green});}
       if(show(1))q.line(A,B,{stroke:C.ink,width:2.6});
       if(show(3))q.line(O,M,{stroke:C.gold,dash:isCircle?'':'5 4'});
-      if(show(4))q.math([(A[0]+B[0])/3,(A[1]+B[1])/3],isCircle?"S'":'S',{color:C.target,size:24,anchor:'middle',dx:28,dy:8,region:[O,A,B],priority:10,leader:false});
+      if(show(4)){
+        const [o,a,b]=[O,A,B].map(q.to),areaPixels=Math.abs((a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]))/2;
+        const size=Math.max(18,Math.min(24,Math.round(Math.sqrt(areaPixels)/3.7)));
+        q.math([(A[0]+B[0])/3,(A[1]+B[1])/3],isCircle?"S'":'S',{color:C.target,size,anchor:'middle',dy:8,region:[O,A,B],avoidSegments:[[O,M]],priority:10,leader:false});
+      }
       if(isCircle&&g.half>1e-6&&Math.abs(g.rho)>1e-6){
         const r=10/q.sx,dir=[(A[0]-M[0])/g.half,(A[1]-M[1])/g.half],n=[-M[0]/Math.abs(g.rho),-M[1]/Math.abs(g.rho)];
         const v=[M[0]+n[0]*r,M[1]+n[1]*r],w=[v[0]+dir[0]*r,v[1]+dir[1]*r],u=[M[0]+dir[0]*r,M[1]+dir[1]*r];
         q.line(v,w,{stroke:C.gold,width:1.4});q.line(w,u,{stroke:C.gold,width:1.4});
         q.text([M[0]/2,M[1]/2],'d',{color:C.gold,dx:-15,dy:14,size:20});
-        q.text([(M[0]+A[0])/2,(M[1]+A[1])/2],'h',{color:C.blue,dx:-16,dy:-9,size:20});
+        q.text([(M[0]+A[0])/2,(M[1]+A[1])/2],'h',{color:C.blue,anchor:'middle',dx:20*M[0]/Math.abs(g.rho),dy:-20*M[1]/Math.abs(g.rho),size:20,gap:12});
         q.screenMath(16,30,`d \\approx ${fmt(Math.abs(g.rho))},\\quad h \\approx ${fmt(g.half)}`,{size:17,color:C.gold});
       }
       if(show(1)){q.dot(A,isCircle?'A′':'A',C.blue,-24,-10);q.dot(B,isCircle?'B′':'B',C.green,10,-12);}

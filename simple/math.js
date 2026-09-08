@@ -15,9 +15,10 @@ window.M = (() => {
   }
   function measure(tex,size,bold=false){
     const key=size+':'+bold+':'+tex;if(sizeCache.has(key))return sizeCache.get(key);
-    if(!probe){probe=document.createElement('div');probe.setAttribute('aria-hidden','true');probe.style.cssText='position:fixed;left:-20000px;top:0;visibility:hidden;white-space:nowrap;display:inline-block;pointer-events:none';document.body.appendChild(probe);}
+    if(!probe){probe=document.createElement('div');probe.className='plot-math';probe.setAttribute('aria-hidden','true');probe.style.cssText='position:fixed;left:-20000px;top:0;visibility:hidden;white-space:nowrap;display:inline-block;pointer-events:none;padding:4px 3px;line-height:1.3';document.body.appendChild(probe);}
     probe.style.fontSize=size+'px';probe.innerHTML=render(tex,false,bold);const box=probe.getBoundingClientRect();
-    const result={w:Math.ceil(box.width)+6,h:Math.ceil(box.height)+10};
+    const ink=probe.querySelector('.katex-html').getBoundingClientRect();
+    const result={w:Math.ceil(box.width),h:Math.ceil(box.height),ink:{left:ink.left-box.left,top:ink.top-box.top,w:ink.width,h:ink.height}};
     if(sizeCache.size>1200)sizeCache.clear();sizeCache.set(key,result);return result;
   }
   function svg(x,y,tex,o={}){
