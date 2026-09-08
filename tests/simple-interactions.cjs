@@ -53,7 +53,10 @@ const near=(a,b,e=1e-9)=>assert.ok(Math.abs(a-b)<e,`${a} vs ${b}`);
       }
     }
   }
-  await page.locator('#fullscreenButton').click();assert.equal(await page.evaluate(()=>!!document.fullscreenElement),true);await page.locator('#fullscreenButton').click();
+  await page.locator('#fullscreenButton').click();
+  await page.waitForFunction(()=>!!document.fullscreenElement&&document.getElementById('fullscreenButton').textContent==='退出全屏');
+  await page.locator('#fullscreenButton').click();
+  await page.waitForFunction(()=>!document.fullscreenElement&&document.getElementById('fullscreenButton').textContent==='全屏');
   assert.deepEqual(errors,[]);console.log('PASS: exact recurrence presets, overflow handling, real point dragging, q20 invalid slopes/unlock/reset, q21 periodic maxima/limits, all 8 layouts at 1366×768 and 1920×1080, fullscreen.');
   await browser.close();
 })().catch(reportFailure);

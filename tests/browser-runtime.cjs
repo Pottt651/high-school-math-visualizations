@@ -21,7 +21,7 @@ async function launchBrowser() {
 
 function reportFailure(error) {
   // Keep useful assertion messages while avoiding machine-specific paths in logs.
-  let message = String(error.message || error);
+  let message = String(error.stack || error.message || error);
   for (const [location, label] of [[path.resolve(__dirname, '..'), '<project>'], [os.homedir(), '<home>']]) {
     for (const spelling of [location, location.replaceAll('\\', '/')]) {
       message = message.split(spelling).join(label);
