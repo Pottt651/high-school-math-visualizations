@@ -7,7 +7,7 @@
     "build": "python build.py",
     "test": "npm run test:model && npm run test:browser",
     "test:model": "node tests/model.test.cjs",
-    "test:browser": "node tests/simple-browser.cjs && node tests/simple-interactions.cjs && node tests/math-presentation.cjs",
+    "test:browser": "node tests/simple-browser.cjs && node tests/simple-interactions.cjs && node tests/math-presentation.cjs && node tests/theme-ui.cjs",
     "test:legacy": "node tests/browser.test.cjs"
   },
   "engines": {

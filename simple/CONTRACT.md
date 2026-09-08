@@ -18,7 +18,9 @@
 - `M.block(tex)`：块公式；长式子用 `aligned` 分行。
 - `M.answer(html)`：放在读数区域内的答案条。
 - `M.rational('2/3')`、`M.number(value, digits)`：生成供排版的分数或数值 TeX。
-- `Lab.C.target` 和 `.target`：所求量及答案统一深红色。辅助对象使用 `blue`、`green`、`gold`、`gray`。
+- `Lab.C.target` 和 `.target`：所求量及答案统一红色，深色模式提高明度。辅助对象使用 `blue`、`green`、`gold`、`gray`。
+- 颜色使用 `style.css` 中的主题变量。图形画布为 `--canvas`，不要硬编码白色背景或描边；`Lab.C` 与数学图注共享 `--plot-*` 变量，切换主题时无需重建数学状态。
+- `.explain` 内按思路使用 `<section class="proof-step"><h3>短标题</h3>…</section>`；重要限制可用 `.proof-note`，保留分段与公式分行。
 
 KaTeX 与字体已内嵌到输出文件，运行时不依赖联网。源码用 `String.raw` 模板保留 TeX 反斜杠，动态插值只使用明确的数学数据。
 

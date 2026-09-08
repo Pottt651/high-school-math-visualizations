@@ -1,16 +1,21 @@
 (() => {
   const ids=Object.keys(Problems).map(Number).sort((a,b)=>a-b);
   const pages={10:1,11:1,12:2,16:2,17:3,18:4,20:6,21:7};
+  const topics={10:'空间距离',11:'拱桥费用',12:'绝对值',16:'递推数列',17:'斜三棱柱',18:'区间极值',20:'椭圆面积',21:'A 值'};
   const nav=document.getElementById('questionNav'),host=document.getElementById('module');
   let mounted=null,current=null,resizeFrame=0;
   const figureObserver=new ResizeObserver(()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>mounted?.render());});
-  nav.innerHTML=ids.map(id=>`<button data-question="${id}">第 ${id} 题</button>`).join('');
+  nav.innerHTML=ids.map(id=>`<button data-question="${id}" aria-label="第 ${id} 题：${topics[id]}"><span class="nav-number">${id}</span><span>${topics[id]}</span></button>`).join('');
+  const themeButton=document.getElementById('themeButton');
+  function updateThemeButton(){const dark=document.documentElement.dataset.theme==='dark';themeButton.textContent=dark?'深色':'浅色';themeButton.setAttribute('aria-label',`当前${dark?'深色':'浅色'}模式，切换为${dark?'浅色':'深色'}`);}
+  updateThemeButton();
+  themeButton.onclick=()=>{const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('jiading-lesson-theme',theme);}catch{}updateThemeButton();};
   function select(id){
     if(!Problems[id])id=ids[0];
     figureObserver.disconnect();mounted?.destroy?.();current=Number(id);const entry=Problems[id];host.innerHTML='';
     document.body.classList.remove('show-key');
     document.getElementById('keyButton').setAttribute('aria-pressed','false');document.getElementById('keyButton').textContent='显示关键关系';
-    document.getElementById('questionTitle').textContent=`第 ${id} 题 · ${entry.title}`;
+    document.getElementById('questionTitle').innerHTML=`<span class="question-number" aria-label="第 ${id} 题">${id}</span><span>${Lab.escape(entry.title)}</span>`;
     document.getElementById('statement').innerHTML=entry.statement||'';
     document.getElementById('lessonGuide').innerHTML='<b>看图思路</b><span>'+LessonGuides[id]+'</span>';
     document.getElementById('sourceLine').textContent=`2024—2025 上海嘉定高三一模 · 原卷第 ${pages[id]??''} 页`;

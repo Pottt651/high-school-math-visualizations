@@ -20,7 +20,7 @@ window.M = (() => {
   function svg(x,y,tex,o={}){
     const size=o.size||18,{w,h}=measure(tex,size),anchor=o.anchor||'start';
     const left=x+(o.dx||0)-(anchor==='middle'?w/2:anchor==='end'?w:0),top=y+(o.dy||0)-h*.72;
-    return `<foreignObject class="plot-math" x="${left}" y="${top}" width="${w}" height="${h}" style="overflow:visible;pointer-events:none"><div xmlns="http://www.w3.org/1999/xhtml" style="font-size:${size}px;color:${esc(o.color||'#293a40')};white-space:nowrap;padding:4px 3px;line-height:1.3;${o.weight?'font-weight:'+o.weight+';':''}">${render(tex)}</div></foreignObject>`;
+    return `<foreignObject class="plot-math" x="${left}" y="${top}" width="${w}" height="${h}" style="overflow:visible;pointer-events:none"><div xmlns="http://www.w3.org/1999/xhtml" style="font-size:${size}px;color:${esc(o.color||'var(--plot-ink)')};white-space:nowrap;padding:4px 3px;line-height:1.3;${o.weight?'font-weight:'+o.weight+';':''}">${render(tex)}</div></foreignObject>`;
   }
   const rational=value=>{const match=String(value).match(/^(-?)(\d+)\/(\d+)$/);return !match?String(value):match[3]==='1'?match[1]+match[2]:`${match[1]}\\dfrac{${match[2]}}{${match[3]}}`;};
   const number=(value,d=4)=>{
