@@ -35,9 +35,10 @@ window.Lab = (() => {
     // Put object labels near their mathematical anchors, while reserving tick
     // labels and figure headings. The solver only changes annotation position.
     function label(x,y,value,o={},math=false){
+      o={...o,weight:Math.max(700,o.weight||700)};
       const size=o.size||18,anchor=o.anchor||'start';
-      textContext.font=`${o.weight||400} ${size}px ${getComputedStyle(svg).fontFamily}`;
-      const measure=math?M.measure(value,size):{w:Math.ceil(textContext.measureText(String(value)).width)+2,h:Math.ceil(size*1.2)};
+      textContext.font=`${o.weight} ${size}px ${getComputedStyle(svg).fontFamily}`;
+      const measure=math?M.measure(value,size,true):{w:Math.ceil(textContext.measureText(String(value)).width)+2,h:Math.ceil(size*1.2)};
       const left=x+(o.dx||0)-(anchor==='middle'?measure.w/2:anchor==='end'?measure.w:0);
       const top=y+(o.dy||0)-measure.h*(math?.72:.8);
       const item={x,y,value,o,math,size,left,top,w:measure.w,h:measure.h,movable:!!o.avoid,

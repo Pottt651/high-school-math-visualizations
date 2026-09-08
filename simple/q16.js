@@ -37,7 +37,18 @@ Problems[16] = {
     const $ = id => host.querySelector('#q16-' + id);
     const web = $('web'), seq = $('sequence'), C = Lab.C;
     let state = { r: 2, initial: .25, initialText: '1/4', rational: [1n,4n], n: 1 };
-    let webPlot, dragging = false, error = '';
+    let webPlot, dragging = false, error = '', constructionStep = null;
+    const show = index => constructionStep === null || constructionStep >= index;
+    function getConstructionSteps() {
+      return [
+        {title:'在横轴上放置初值',body:`由题设 ${M.inline(String.raw`a_1\in(0,1)`)}，在横轴上标出 ${M.inline('(a_1,0)')}；右侧项图同步标出 ${M.inline('(1,a_1)')}。初值仍可拖动或精确输入。`},
+        {title:'把递推式画成函数',body:`由 ${M.inline('a_{n+1}=ra_n(1-a_n)')}，画出 ${M.inline('y=rx(1-x)')}。固定当前 ${M.inline('r')} 后，每个横坐标的函数值就是下一项。`},
+        {title:'竖直到抛物线，得到第二项',body:`由 ${M.inline('a_2=ra_1(1-a_1)')}，从 ${M.inline('(a_1,0)')} 竖直到抛物线上的 ${M.inline('(a_1,a_2)')}；右图增加 ${M.inline('(2,a_2)')}。构造模式会用同一递推式预画所需项，控件中原有项数保持不变。`},
+        {title:'水平到对角线，换成新横坐标',body:`要把高度 ${M.inline('a_2')} 变成下一次的横坐标，画 ${M.inline('y=x')}，再从 ${M.inline('(a_1,a_2)')} 水平到 ${M.inline('(a_2,a_2)')}。若 ${M.inline('a_2=a_1')}，两点重合，水平线段长为零；不另移点制造线段。`},
+        {title:'重复两段路，继续迭代',body:`从 ${M.inline('(a_2,a_2)')} 竖直到 ${M.inline('(a_2,a_3)')}，再水平到 ${M.inline('(a_3,a_3)')}；此后重复。此步至少示意前三项，也可增加控件项数。若到达不动点，后续轨迹重合；图窗外的项仍由原递推式产生。`}
+      ];
+    }
+    function restartConstruction() { if(constructionStep!==null) constructionStep=0; host.dispatchEvent(new Event('constructionchange')); }
     const gcd = (a,b) => { a = a < 0n ? -a : a; while (b) { const t=a%b; a=b; b=t; } return a; };
     function parseInitial(text) {
       const m = text.trim().match(/^([+]?(?:\d+(?:\.\d*)?|\.\d+))(?:\s*\/\s*(\d+(?:\.\d*)?|\.\d+))?$/);
@@ -50,12 +61,12 @@ Problems[16] = {
       return {value, rational:[p,q]};
     }
     const exactInitial = (p,q) => state.rational && state.rational[0]*BigInt(q) === BigInt(p)*state.rational[1];
-    function generate() {
+    function generate(count=state.n) {
       const values=[state.initial], exact=[];
       let rational=state.rational && [...state.rational], overflow=false;
       const fractionLabel = x => x ? (x[1]===1n ? String(x[0]) : String(x[0])+'/'+String(x[1])) : '';
       exact.push(rational && String(rational[1]).length<=10 ? fractionLabel(rational) : '');
-      for(let i=1;i<state.n;i++) {
+      for(let i=1;i<count;i++) {
         const a=values[i-1]; let next=state.r*a*(1-a);
         if (!Number.isFinite(next)) { overflow=true; break; }
         if (rational && Math.max(String(rational[0]).length,String(rational[1]).length)<100) {
@@ -85,9 +96,10 @@ Problems[16] = {
       if(lo<=hi) p.line([a[0]+lo*dx,a[1]+lo*dy],[a[0]+hi*dx,a[1]+hi*dy],style);
     }
     function render() {
-      const data=generate(), values=data.values, last=values[values.length-1], n=values.length;
-      $('r').value=String(state.r); $('count').value=String(state.n); $('count-label').textContent=String(n);
-      $('next').disabled=data.overflow || state.n>=30;
+      const savedData=generate(), previewCount=constructionStep===null?state.n:constructionStep<2?1:constructionStep<4?2:Math.max(3,state.n);
+      const data=constructionStep===null?savedData:generate(previewCount), values=data.values, last=values[values.length-1], n=values.length;
+      $('r').value=String(state.r); $('count').value=String(state.n); $('count-label').textContent=constructionStep===null?String(n):`${state.n}（本步图示 ${n} 项）`;
+      $('next').disabled=savedData.overflow || state.n>=30;
       const delta=n>1 ? last-values[n-2] : null;
       const terms=values.slice(-Math.min(n,5)).map((a,j) => {const i=n-Math.min(n,5)+j; return M.inline(`a_{${i+1}} ${data.exact[i] ? '= '+M.rational(data.exact[i]) : String.raw`\approx `+M.number(a,8)}`);}).join('； ');
       $('initial-math').innerHTML=M.inline('= '+(data.exact[0] ? M.rational(data.exact[0]) : M.number(state.initial,8)));
@@ -102,25 +114,32 @@ Problems[16] = {
       $('readout').innerHTML=`<span class="target">${terms}</span><span>${delta===null?'':`本次差值 <span class="target">${M.inline(`a_{${n}}-a_{${n-1}} `+difference(data,n,delta))}</span>。 `}${error || note}</span>${M.answer('B（②③正确；①④错误）')}`;
       const bounds=state.r<0 ? {xmin:-1.1,xmax:4.6,ymin:-1.1,ymax:4.6,equal:true,pad:38} : {xmin:-.05,xmax:1.05,ymin:-.05,ymax:1.05,equal:true,pad:38};
       const p=webPlot=Lab.plot(web,bounds); p.axes({y:''});
-      p.curve(x=>state.r*x*(1-x),bounds.xmin,bounds.xmax,{stroke:C.blue,width:3});
-      p.line([bounds.xmin,bounds.xmin],[bounds.xmax,bounds.xmax],{stroke:C.gray,width:1.8});
+      if(show(1)) p.curve(x=>state.r*x*(1-x),bounds.xmin,bounds.xmax,{stroke:C.blue,width:3});
+      if(show(3)) p.line([bounds.xmin,bounds.xmin],[bounds.xmax,bounds.xmax],{stroke:C.gray,width:1.8});
       p.screenText(16,23,'递推图',{color:C.blue,size:18});
-      p.screenMath(94,23,String.raw`x\mapsto rx(1-x)`,{color:C.blue,size:18});
-      p.math([bounds.xmax-.12*(bounds.xmax-bounds.xmin),bounds.ymax-.16*(bounds.ymax-bounds.ymin)],'y=x',{color:C.gray,size:16,anchor:'end'});
+      if(show(1)) p.screenMath(94,23,String.raw`x\mapsto rx(1-x)`,{color:C.blue,size:18});
+      if(show(3)) p.math([bounds.xmax-.12*(bounds.xmax-bounds.xmin),bounds.ymax-.16*(bounds.ymax-bounds.ymin)],'y=x',{color:C.gray,size:16,anchor:'end'});
       const seen=new Map();
       for(let i=1;i<n;i++) {
         const a=values[i-1], b=values[i], start=[a,i===1?0:a];
-        clippedLine(p,start,[a,b],bounds,{stroke:C.red,width:i===n-1?3:1.6,opacity:i===n-1?1:.65});
-        clippedLine(p,[a,b],[b,b],bounds,{stroke:C.red,width:i===n-1?3:1.6,opacity:i===n-1?1:.65});
-        if(a>=bounds.xmin&&a<=bounds.xmax&&b>=bounds.ymin&&b<=bounds.ymax) {
+        if(show(i===1?2:4)) clippedLine(p,start,[a,b],bounds,{stroke:C.red,width:i===n-1?3:1.6,opacity:i===n-1?1:.65});
+        if(show(i===1?3:4)) clippedLine(p,[a,b],[b,b],bounds,{stroke:C.red,width:i===n-1?3:1.6,opacity:i===n-1?1:.65});
+        if(show(i===1?2:4)&&a>=bounds.xmin&&a<=bounds.xmax&&b>=bounds.ymin&&b<=bounds.ymax) {
           const key=a.toFixed(3)+','+b.toFixed(3); if(!seen.has(key)) {p.dot([a,b],'',C.red);seen.set(key,true);}
         }
+      }
+      if(constructionStep!==null&&show(2)) {
+        const a2=values[1], inView=a2>=bounds.ymin&&a2<=bounds.ymax;
+        if(inView) p.math([state.initial,a2],'(a_1,a_2)',{color:C.target,size:17,dx:10,dy:-14});
+        if(show(3)&&inView&&a2!==state.initial) {p.dot([a2,a2],'',C.target);p.math([a2,a2],'(a_2,a_2)',{color:C.target,size:17,dx:10,dy:23});}
+        const fixed=state.r===2&&exactInitial(1,2)||state.r===3&&(exactInitial(2,3)||show(4)&&exactInitial(1,3));
+        if(show(3)&&fixed) p.screenText(16,p.h-14,'到达不动点后，后续线段与点重合。',{color:C.gray,size:15});
       }
       p.dot([state.initial,0],'',C.target);
       p.math([state.initial,0],'a_1',{color:C.target,size:18,dy:25,anchor:'middle'});
       const clipped=values.some(x=>x<bounds.xmin||x>bounds.xmax);
       if(clipped) p.screenText(16,p.h-14,'轨迹已超出本图范围；右侧标出越界项。',{color:C.red,size:15});
-      else if(n===1) {
+      else if(n===1&&constructionStep===null) {
         const next=state.r*last*(1-last);
         clippedLine(p,[last,0],[last,next],bounds,{stroke:C.red,width:2,dash:'5 5',opacity:.5});
         clippedLine(p,[last,next],[next,next],bounds,{stroke:C.red,width:2,dash:'5 5',opacity:.5});
@@ -131,7 +150,7 @@ Problems[16] = {
       const s=Lab.plot(seq,{xmin:0,xmax,ymin,ymax,equal:false,pad:38}); s.axes({x:'n',y:''});
       s.screenText(16,23,'项图',{color:C.ink,size:18});
       s.screenMath(78,23,'(n,a_n)',{color:C.target,size:18});
-      if(state.r>0) {
+      if(state.r>0&&show(4)) {
         const fixed=1-1/state.r; s.line([1,fixed],[xmax,fixed],{stroke:C.green,dash:'6 5',width:1.7});
         s.math([xmax-.25,fixed],state.r===2?String.raw`\frac12`:String.raw`\frac23`,{color:C.green,size:18,dy:-12,anchor:'end'});
       }
@@ -147,7 +166,7 @@ Problems[16] = {
           s.text([i+1,a>ymax?ymax-.2:ymin+.2],a>ymax?'↑':'↓',{color:C.red,size:24,anchor:'middle'});
         }
       }
-      if(out) s.screenText(16,s.h-14,`${out} 项超出纵轴范围；精确/近似项值见上方。`,{color:C.red,size:15});
+      if(out) s.screenText(16,s.h-14,constructionStep===null?`${out} 项超出纵轴范围；精确/近似项值见上方。`:data.overflow?`${out} 项越界；超出数值范围后停止显示。`:`${out} 项超出纵轴范围；箭头仅表示方向。`,{color:C.red,size:15});
       s.finish();
     }
     function setInitial(text) {
@@ -158,7 +177,7 @@ Problems[16] = {
       $('preset').value=['1/4','1/2','2/3','1/3','3/4'].includes(text)?text:'custom';
       render();
     }
-    $('r').addEventListener('change',()=>{state.r=Number($('r').value);state.n=1;error='';render();});
+    $('r').addEventListener('change',()=>{state.r=Number($('r').value);state.n=1;error='';restartConstruction();render();});
     $('initial').addEventListener('change',()=>setInitial($('initial').value));
     $('initial').addEventListener('keydown',e=>{if(e.key==='Enter')setInitial($('initial').value);});
     $('preset').addEventListener('change',()=>{if($('preset').value!=='custom')setInitial($('preset').value);});
@@ -172,8 +191,8 @@ Problems[16] = {
     web.addEventListener('pointermove',onMove);
     web.addEventListener('pointerup',()=>{dragging=false;});
     web.addEventListener('pointercancel',()=>{dragging=false;});
-    function reset(){state={r:2,initial:.25,initialText:'1/4',rational:[1n,4n],n:1};error='';$('initial').value='1/4';$('preset').value='1/4';render();}
+    function reset(){state={r:2,initial:.25,initialText:'1/4',rational:[1n,4n],n:1};error='';$('initial').value='1/4';$('preset').value='1/4';restartConstruction();render();}
     render();
-    return {render,reset,getState(){const d=generate();return {r:state.r,initial:state.initial,n:state.n,values:d.values,overflow:d.overflow};},destroy(){dragging=false;}};
+    return {render,reset,getConstructionSteps,getConstructionStep(){return constructionStep;},setConstructionStep(index){constructionStep=index===null?null:Math.max(0,Math.min(4,Math.trunc(index)));render();},getState(){const d=generate();return {r:state.r,initial:state.initial,n:state.n,values:d.values,overflow:d.overflow};},destroy(){dragging=false;}};
   }
 };

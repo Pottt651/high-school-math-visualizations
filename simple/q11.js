@@ -3,27 +3,54 @@ Problems[11] = {
   statement: `半径为 ${M.inline('4\\,\\mathrm m')} 的圆弧桥面 ${M.inline('ACB')}，两端接与圆相切的直线段 ${M.inline('AD,BE')}。直线段每米 0.4 万元，圆弧每米 2.5 万元。坡角 ${M.inline(String.raw`\theta\in\left[\arcsin\frac13,\frac\pi6\right]`)}，求使总费用最少的<span class="target">坡角</span>。〔原卷第 1 页〕`,
   mount(host) {
     const lo = Math.asin(1/3), hi = Math.PI/6, optimum = Math.asin(.4), C = Lab.C;
-    let theta = lo, view = 'total', bridgePlot, costPlot, dragging = null;
+    let theta = lo, view = 'total', bridgePlot, costPlot, dragging = null, constructionStep = null;
+    const show=step=>constructionStep===null||constructionStep>=step;
+    const constructionSteps=[
+      {title:'先画半径已知的参考圆',body:`桥面圆弧所在圆的半径为 ${M.inline('4\\,\\mathrm m')}。先画圆的上半部，标出圆心 ${M.inline('O')}、最高点 ${M.inline('C')} 和半径 ${M.inline('OC=4')}。浅色圆弧是定位用的参考线。`},
+      {title:'在圆上确定桥面的两个端点',body:`取关于竖直半径对称的 ${M.inline('A,B')}，用经过 ${M.inline('C')} 的短弧连接，金色部分就是桥面 ${M.inline('ACB')}。连接 ${M.inline('OA,OB')}，两条半径均长 ${M.inline('4')}。`},
+      {title:'按相切条件接上两段直桥',body:`过 ${M.inline('A,B')} 分别作垂直于半径的切线，与过 ${M.inline('O')} 的水平线交于 ${M.inline('D,E')}。保留 ${M.inline('AD,BE')}，并在 ${M.inline('D')} 处标出题设坡角 ${M.inline(String.raw`\theta`)}。`},
+      {title:'从桥形读出两类长度',body:`${M.inline(String.raw`OA\perp AD`)}，所以 ${M.inline(String.raw`\angle AOC=\theta`)}；对称得到 ${M.inline(String.raw`\angle AOB=2\theta`)}。于是每段切线长 ${M.inline(String.raw`4\cot\theta`)}，弧长为 ${M.inline(String.raw`4\cdot2\theta=8\theta`)}（角用弧度）。`},
+      {title:'把长度变成费用图',body:`将两段直线总长乘以 ${M.inline('0.4')}，圆弧长乘以 ${M.inline('2.5')}，得到 ${M.inline(String.raw`C(\theta)=\frac{16}{5}\cot\theta+20\theta`)}。右图横轴是坡角，纵轴是费用；寻找红色曲线的最低点，就是原题要求的坡角。`}
+    ];
     host.innerHTML = `<div class="controls"><label style="color:${C.target}">坡角 ${M.inline(String.raw`\theta`)} <input id="q11-angle" type="range" min="${lo}" max="${hi}" step="0.0001" value="${lo}"></label><input id="q11-degrees" type="number" aria-label="坡角（度）" min="${lo*180/Math.PI}" max="30" step="0.01" value="${lo*180/Math.PI}"><span>°</span><label>右图 <select id="q11-view"><option value="total">总费用局部放大</option><option value="parts">费用构成</option></select></label><button id="q11-best" class="aux">取费用最低的坡角</button></div><div class="figures"><svg id="q11-bridge" class="figure" role="img" aria-label="圆弧及两端切线构成的拱桥；拖动切点调整坡角"></svg><svg id="q11-cost" class="figure" role="img" aria-label="直线段、圆弧和总费用随坡角变化的曲线"></svg></div><div class="readout" id="q11-readout"></div><div class="explain"><section class="proof-step"><h3>把桥形写成费用</h3><p>每段切线长 ${M.inline(String.raw`4\cot\theta`)}，圆弧圆心角为 ${M.inline(String.raw`2\theta`)}，故弧长为 ${M.inline(String.raw`8\theta`)}（${M.inline(String.raw`\theta`)} 用弧度）。</p>${M.block(String.raw`C(\theta)=\frac{16}{5}\cot\theta+20\theta`)}</section><section class="proof-step"><h3>用变化率找最优坡角</h3>${M.block(String.raw`C'(\theta)=20-\frac{16}{5\sin^2\theta}`)}<p>令导数为零，得 ${M.inline(String.raw`\sin\theta=\frac25`)}。导数由负变正，最优角为 <span style="color:${C.target}">${M.inline(String.raw`\arcsin\frac25\approx23.578^\circ`)}</span>。</p><p>坡角增大时，直线段费用减少，圆弧费用增加。</p></section></div>`;
     const angle = host.querySelector('#q11-angle'), degrees = host.querySelector('#q11-degrees'), bridge = host.querySelector('#q11-bridge'), cost = host.querySelector('#q11-cost');
     const straight = t => 3.2/Math.tan(t), arc = t => 20*t, total = t => straight(t)+arc(t);
     function set(t) { if (!Number.isFinite(t)) return; theta = Math.max(lo, Math.min(hi,t)); render(); }
     function render() {
       angle.value=theta; degrees.value=+(theta*180/Math.PI).toFixed(3);
+      // Establish the two-column layout before either SVG measures its viewport.
+      cost.toggleAttribute('hidden',!show(4));
       const A=[-4*Math.sin(theta),4*Math.cos(theta)], B=[-A[0],A[1]], D=[-4/Math.sin(theta),0], E=[-D[0],0];
       const p = Lab.plot(bridge,{xmin:-13,xmax:13,ymin:-1.2,ymax:6.1,pad:30}); bridgePlot=p;
-      p.line([-12.5,0],[12.5,0],{stroke:C.gray,width:1});
+      if(constructionStep!==null){p.curve(x=>Math.sqrt(Math.max(0,16-x*x)),-4,4,{stroke:C.gray,width:1.3,dash:'5 5',opacity:.5});p.line([0,0],[0,4],{stroke:C.gray,dash:'5 5'});}
+      if(constructionStep===0)p.text([0,2],'4 m',{color:C.gray,dx:14,size:16});
+      if(show(2))p.line([-12.5,0],[12.5,0],{stroke:C.gray,width:1});
+      if(show(1)){
       p.curve(x=>Math.sqrt(16-x*x),A[0],B[0],{stroke:C.gold,width:4});
-      p.line(D,A,{stroke:C.blue,width:4}); p.line(B,E,{stroke:C.blue,width:4});
+      if(show(2)){p.line(D,A,{stroke:C.blue,width:4}); p.line(B,E,{stroke:C.blue,width:4});}
       p.line([0,0],A,{stroke:C.gray,dash:'5 5'});p.line([0,0],B,{stroke:C.gray,dash:'5 5'});
+      }
+      if(show(3)){
       p.add(`<polyline points="${Array.from({length:31},(_,i)=>{const a=Math.PI/2-theta+2*theta*i/30;return p.to([1.15*Math.cos(a),1.15*Math.sin(a)]).join(',');}).join(' ')}" fill="none" stroke="${C.target}" stroke-width="2.5"/>`);
       p.math([0,1.3],String.raw`2\theta`,{color:C.target,anchor:'middle',size:18});
+      }
+      if(show(2)){
       p.add(`<polyline points="${Array.from({length:21},(_,i)=>p.to([D[0]+1.7*Math.cos(theta*i/20),1.7*Math.sin(theta*i/20)]).join(',')).join(' ')}" fill="none" stroke="${C.target}" stroke-width="2.5"/>`);
       p.math([D[0]+2.15,.33],String.raw`\theta`,{color:C.target,size:20});
-      p.dot(D,'D',C.blue,-10,24);p.dot(E,'E',C.blue,5,24);p.dot(A,'A',C.blue,-22,-11);p.dot(B,'B',C.blue,10,-11);p.dot([0,4],'C',C.gold,0,-16);p.dot([0,0],'O',C.ink,-6,24);
-      p.text([A[0]/2,A[1]/2],'4 m',{color:C.gray,dx:-32,size:16});
-      p.screenText(18,25,'桥形：拖动 A 或 B 改变坡角',{size:17,color:C.ink});
-      p.screenText(18,p.h-18,`直线段总长 ${Lab.fmt(8/Math.tan(theta),2)} m　圆弧长 ${Lab.fmt(8*theta,2)} m`,{size:17,color:C.ink});p.finish();
+      p.dot(D,'D',C.blue,-10,24);p.dot(E,'E',C.blue,5,24);
+      if(constructionStep!==null){
+        for(const [X,T] of [[A,D],[B,E]]){
+          const r=.26,u=[-X[0]/4,-X[1]/4],length=Math.hypot(T[0]-X[0],T[1]-X[1]),v=[(T[0]-X[0])/length,(T[1]-X[1])/length];
+          const one=[X[0]+u[0]*r,X[1]+u[1]*r],two=[one[0]+v[0]*r,one[1]+v[1]*r],three=[X[0]+v[0]*r,X[1]+v[1]*r];
+          p.line(one,two,{stroke:C.gray,width:1.2});p.line(two,three,{stroke:C.gray,width:1.2});
+        }
+      }
+      }
+      if(show(1)){p.dot(A,'A',C.blue,-22,-11);p.dot(B,'B',C.blue,10,-11);p.text([A[0]/2,A[1]/2],'4 m',{color:C.gray,dx:-32,size:16});}
+      p.dot([0,4],'C',C.gold,0,-16);p.dot([0,0],'O',C.ink,-6,24);
+      if(show(1))p.screenText(18,25,'桥形：拖动 A 或 B 改变坡角',{size:17,color:C.ink});
+      if(show(3))p.screenText(18,p.h-18,`直线段总长 ${Lab.fmt(8/Math.tan(theta),2)} m　圆弧长 ${Lab.fmt(8*theta,2)} m`,{size:17,color:C.ink});p.finish();
+      if(show(4)){
       const zoom = view === 'total', ymin = zoom ? 15.5 : 0, ymax = zoom ? 16.1 : 22;
       const xmin = lo*180/Math.PI-.5, xmax = 30.5, deg = theta*180/Math.PI, best = optimum*180/Math.PI;
       const q=Lab.plot(cost,{xmin,xmax,ymin,ymax,equal:false,pad:58});costPlot=q;
@@ -68,13 +95,14 @@ Problems[11] = {
       q.screenText(q.w-12,q.h-9,'坡角 / °',{size:14,anchor:'end',color:C.gray});
       cost.setAttribute('aria-label',zoom?'总费用局部放大图，纵轴15.5至16.1万元，不从零开始；实心点是当前坡角，空心点是最低费用坡角':'直线段、圆弧和总费用随坡角变化，纵轴从零开始');
       q.finish();
+      }else{cost.replaceChildren();costPlot=null;}
       host.querySelector('#q11-readout').innerHTML=`<span style="color:${C.target}">${M.inline(String.raw`\theta=${Lab.fmt(theta*180/Math.PI,3)}^\circ`)}</span>直线段 <b style="color:${C.blue}">${Lab.fmt(straight(theta),3)}</b> + 圆弧 <b style="color:${C.gold}">${Lab.fmt(arc(theta),3)}</b> = 总费用 <b style="color:${C.target}">${Lab.fmt(total(theta),3)}</b> 万元${M.answer(`${M.inline(String.raw`\theta=\arcsin\frac25\approx23.578^\circ`)}；最低费用 ${M.inline(String.raw`C_{\min}=\frac{8\sqrt{21}}5+20\arcsin\frac25\approx${Lab.fmt(total(optimum),3)}`)} 万元。`)}`;
     }
     angle.oninput=()=>set(+angle.value);degrees.onchange=()=>set(+degrees.value*Math.PI/180);host.querySelector('#q11-best').onclick=()=>set(optimum);
     host.querySelector('#q11-view').onchange=e=>{view=e.target.value;render();};
-    bridge.onpointerdown=e=>{dragging='bridge';bridge.setPointerCapture(e.pointerId);};bridge.onpointermove=e=>{if(dragging!=='bridge')return;const [x,y]=bridgePlot.fromEvent(e);set(Math.atan2(Math.abs(x),Math.max(.01,y)));};bridge.onpointerup=()=>dragging=null;bridge.onpointercancel=()=>dragging=null;
-    cost.onpointerdown=e=>{dragging='cost';cost.setPointerCapture(e.pointerId);set(costPlot.fromEvent(e)[0]*Math.PI/180);};cost.onpointermove=e=>{if(dragging==='cost')set(costPlot.fromEvent(e)[0]*Math.PI/180);};cost.onpointerup=()=>dragging=null;cost.onpointercancel=()=>dragging=null;
-    render();return {render,reset(){theta=lo;view='total';host.querySelector('#q11-view').value=view;render();},getState(){return{theta,view,straight:straight(theta),arc:arc(theta),total:total(theta)};}};
+    bridge.onpointerdown=e=>{if(!show(1))return;dragging='bridge';bridge.setPointerCapture(e.pointerId);};bridge.onpointermove=e=>{if(dragging!=='bridge')return;const [x,y]=bridgePlot.fromEvent(e);set(Math.atan2(Math.abs(x),Math.max(.01,y)));};bridge.onpointerup=()=>dragging=null;bridge.onpointercancel=()=>dragging=null;
+    cost.onpointerdown=e=>{if(!costPlot)return;dragging='cost';cost.setPointerCapture(e.pointerId);set(costPlot.fromEvent(e)[0]*Math.PI/180);};cost.onpointermove=e=>{if(dragging==='cost'&&costPlot)set(costPlot.fromEvent(e)[0]*Math.PI/180);};cost.onpointerup=()=>dragging=null;cost.onpointercancel=()=>dragging=null;
+    render();return {render,reset(){theta=lo;view='total';host.querySelector('#q11-view').value=view;if(constructionStep!==null)constructionStep=0;render();},getState(){return{theta,view,straight:straight(theta),arc:arc(theta),total:total(theta)};},getConstructionSteps:()=>constructionSteps,getConstructionStep:()=>constructionStep,setConstructionStep(index){constructionStep=index===null?null:Math.max(0,Math.min(constructionSteps.length-1,Math.trunc(index)));dragging=null;render();}};
   }
 };
 

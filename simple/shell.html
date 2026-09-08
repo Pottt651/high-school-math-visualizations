@@ -18,11 +18,15 @@
   </header>
   <div class="toolbar">
     <h2 id="questionTitle"></h2>
-    <div class="buttons"><button id="keyButton" aria-pressed="false">显示关键关系</button><button id="resetButton">重置</button><button id="fullscreenButton">全屏</button></div>
+    <div class="buttons"><button id="drawButton" aria-pressed="false" aria-controls="constructionBar">按条件画图</button><button id="keyButton" aria-pressed="false">显示关键关系</button><button id="resetButton">重置</button><button id="fullscreenButton">全屏</button></div>
   </div>
   <section class="question-context" aria-label="题目与看图思路"><div id="statement" class="statement"></div><div id="lessonGuide" class="guide"></div></section>
+  <section id="constructionBar" class="construction-bar" aria-label="按题目条件逐步画图" hidden>
+    <div class="construction-copy" aria-live="polite" aria-atomic="true"><div><b id="constructionCount"></b><strong id="constructionTitle"></strong></div><div id="constructionBody"></div></div>
+    <div class="construction-buttons"><button id="constructionPrev" aria-label="画图上一步">上一步</button><button id="constructionNext" aria-label="画图下一步">下一步</button><button id="constructionFull">完整图</button></div>
+  </section>
   <main id="module"></main>
-  <footer><span id="sourceLine"></span><span class="footer-tools"><span class="target-legend">红色为所求量</span><span>← → 切题 · F 全屏 · R 重置</span></span></footer>
+  <footer><span id="sourceLine"></span><span class="footer-tools"><span class="target-legend">红色为所求量</span><span id="keyboardHint">← → 切题 · F 全屏 · R 重置</span></span></footer>
 </div>
 <script>window.PaperMeta=/*PAPER_DATA*/;</script><script>/*KATEX_JS*/</script><script>/*MATH*/</script><script>/*LAB*/</script><script>/*THREE*/</script><script>/*SPACE*/</script><script>/*MODEL*/</script><script>/*MODULES*/</script><script>/*GUIDES*/</script><script>/*APP*/</script>
 </body></html>

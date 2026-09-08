@@ -8,7 +8,7 @@
     "build": "python build.py",
     "test": "npm run test:build && npm run test:model && npm run test:browser",
     "test:model": "node tests/model.test.cjs",
-    "test:browser": "node tests/simple-browser.cjs && node tests/simple-interactions.cjs && node tests/math-presentation.cjs && node tests/theme-ui.cjs && node tests/graphics-learning.cjs && node tests/space-graphics.cjs && node tests/project-catalog.cjs",
+    "test:browser": "node tests/simple-browser.cjs && node tests/simple-interactions.cjs && node tests/math-presentation.cjs && node tests/theme-ui.cjs && node tests/graphics-learning.cjs && node tests/space-graphics.cjs && node tests/project-catalog.cjs && node tests/construction.cjs",
     "test:legacy": "node tests/browser.test.cjs",
     "skill:install": "python tools/install_skill.py",
     "test:build": "python tests/build-catalog.py"

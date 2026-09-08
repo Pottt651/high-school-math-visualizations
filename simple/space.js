@@ -90,7 +90,7 @@ window.Space = (() => {
         width=+content.getAttribute('width');height=+content.getAttribute('height');content.setAttribute('x','0');content.setAttribute('y','0');
       }else{
         const text=spec.text||spec.label||'';width=Math.max(size*.6,text.length*size*.61)+8;height=size*1.38;
-        const content=make('text',{x:4,y:size,fill:spec.color||Lab.C.ink,'font-size':size,'font-weight':spec.priority>=90?650:500,'paint-order':'stroke',stroke:'var(--canvas)','stroke-width':4,'stroke-linejoin':'round'});content.textContent=text;node.append(content);
+        const content=make('text',{x:4,y:size,fill:spec.color||Lab.C.ink,'font-size':size,'font-weight':700,'paint-order':'stroke',stroke:'var(--canvas)','stroke-width':4,'stroke-linejoin':'round'});content.textContent=text;node.append(content);
       }
       const leader=make('line',{stroke:spec.color||Lab.C.gray,'stroke-width':Lab.lineWidth(1),opacity:.5});node.prepend(leader);labelLayer.append(node);
       if(!spec.tex){const content=node.querySelector('text');width=Math.ceil(content.getComputedTextLength())+8;height=Math.max(height,Math.ceil(content.getBBox().height)+8);}
