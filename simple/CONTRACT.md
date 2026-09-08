@@ -32,6 +32,8 @@ KaTeX 与字体已内嵌到输出文件，运行时不依赖联网。源码用 `
 
 常用方法：`axes`、`line`、`poly`、`circle`、`dot`、`text`、`screenText`、`curve`、`add`、`finish`。`poly` 是闭合多边形；曲线采样必须服从同一数学模型。
 
+大屏线宽由 `Lab.lineWidth` 统一放大为基础值的 1.45 倍，虚线段长与间距由 `Lab.dashPattern` 同比例调整。二维图在 `finish` 时处理几何线条（包括 `add` 写入的图形），空间图在绘制棱时应用；题目模块仍填写基础线宽，不要重复放大。圆形点标记、文字描边与 KaTeX 字形不参与几何线宽放大。
+
 `p.math(point, tex, options)` 与 `p.screenMath(x,y,tex,options)` 在图中排版公式。`p.to(point)` 将数学坐标变成屏幕坐标，`p.fromEvent(event)` 反向转换；线型和文字通过 `color`、`stroke`、`width`、`dash`、`dx`、`dy`、`anchor` 等选项调整。
 
 将鼠标事件绑定在 SVG 容器上，避免重绘后子元素事件丢失。各视图读取同一个状态；不要分别手调图形以制造不变量。公共入口观察图形区大小和字体加载并重绘。

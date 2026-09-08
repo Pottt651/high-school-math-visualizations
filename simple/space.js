@@ -92,7 +92,7 @@ window.Space = (() => {
         const text=spec.text||spec.label||'';width=Math.max(size*.6,text.length*size*.61)+8;height=size*1.38;
         const content=make('text',{x:4,y:size,fill:spec.color||Lab.C.ink,'font-size':size,'font-weight':spec.priority>=90?650:500,'paint-order':'stroke',stroke:'var(--canvas)','stroke-width':4,'stroke-linejoin':'round'});content.textContent=text;node.append(content);
       }
-      const leader=make('line',{stroke:spec.color||Lab.C.gray,'stroke-width':1,opacity:.5});node.prepend(leader);labelLayer.append(node);
+      const leader=make('line',{stroke:spec.color||Lab.C.gray,'stroke-width':Lab.lineWidth(1),opacity:.5});node.prepend(leader);labelLayer.append(node);
       if(!spec.tex){const content=node.querySelector('text');width=Math.ceil(content.getComputedTextLength())+8;height=Math.max(height,Math.ceil(content.getBBox().height)+8);}
       item={node,leader,width,height,signature,slot:-1};labelNodes.set(spec.id,item);return item;
     }
@@ -138,7 +138,7 @@ window.Space = (() => {
         let entry=edgeNodes.get(edge.id);if(!entry){entry={front:make('path'),back:make('path')};edgeNodes.set(edge.id,entry);}
         let front='',back='';for(const piece of splitEdge(edge,pa,pb,faces)){const d=`M${piece.a[0].toFixed(2)},${piece.a[1].toFixed(2)}L${piece.b[0].toFixed(2)},${piece.b[1].toFixed(2)}`;if(piece.hidden){back+=d;stats.hiddenSegments++;}else{front+=d;stats.visibleSegments++;}}
         for(const [node,d,hidden] of [[entry.front,front,false],[entry.back,back,true]]){
-          node.setAttribute('d',d);node.setAttribute('fill','none');node.setAttribute('stroke',edge.color||Lab.C.ink);node.setAttribute('stroke-width',hidden?Math.max(1,(edge.width||2)*.7):edge.width||2);node.setAttribute('stroke-linecap','round');node.setAttribute('stroke-linejoin','round');node.setAttribute('stroke-dasharray',hidden?'5 5':edge.dash||'none');node.setAttribute('opacity',hidden?(edge.hiddenOpacity??.38):(edge.opacity??1));node.dataset.spaceEdge=edge.id;
+          node.setAttribute('d',d);node.setAttribute('fill','none');node.setAttribute('stroke',edge.color||Lab.C.ink);node.setAttribute('stroke-width',Lab.lineWidth(hidden?Math.max(1,(edge.width||2)*.7):edge.width||2));node.setAttribute('stroke-linecap','round');node.setAttribute('stroke-linejoin','round');node.setAttribute('stroke-dasharray',Lab.dashPattern(hidden?'5 5':edge.dash||'none'));node.setAttribute('opacity',hidden?(edge.hiddenOpacity??.38):(edge.opacity??1));node.dataset.spaceEdge=edge.id;
         }
         hiddenLayer.append(entry.back);lineLayer.append(entry.front);
       }

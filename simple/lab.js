@@ -4,6 +4,19 @@ window.Lab = (() => {
   const escape=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
   // Retain integer zeros; decimal trimming should never change 10 into 1.
   const number=(n,d=3)=>!Number.isFinite(n)?'未定义':(Math.abs(n)<.5*10**(-d)?0:n).toFixed(d).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1').replace('-','−');
+  // One projection weight for both 2D and 3D, preserving each figure's hierarchy.
+  const lineWidth=width=>Math.round(width*1.45*1000)/1000;
+  const dashPattern=pattern=>String(pattern).replace(/\d*\.?\d+/g,value=>lineWidth(Number(value)));
+  function projectionLines(markup){
+    // Only diagram primitives: text/KaTeX strokes and point halos stay unchanged.
+    return markup.replace(/<(?:line|path|polyline|polygon|ellipse|rect)\b[^>]*>/g,tag=>{
+      if(!/\sstroke="(?!none")[^"]+"/.test(tag))return tag;
+      const width=tag.match(/\sstroke-width="([^"]+)"/);
+      if(width&&!Number.isFinite(Number(width[1])))return tag;
+      tag=width?tag.replace(width[0],` stroke-width="${lineWidth(Number(width[1]))}"`):tag.replace(/\s*\/?>$/,end=>` stroke-width="${lineWidth(1)}"${end}`);
+      return tag.replace(/stroke-dasharray="([^"]+)"/g,(_,pattern)=>`stroke-dasharray="${dashPattern(pattern)}"`);
+    });
+  }
   let uid=0;
   const textCanvas=document.createElement('canvas'),textContext=textCanvas.getContext('2d');
   function plot(svg,b){
@@ -76,7 +89,7 @@ window.Lab = (() => {
       let leader='';
       if(item.movable&&o.leader!==false&&Math.hypot(dx,dy)>18){
         const endX=Math.max(left,Math.min(left+item.w,item.x)),endY=Math.max(top,Math.min(top+item.h,item.y));
-        leader=`<line class="label-leader" x1="${item.x}" y1="${item.y}" x2="${endX}" y2="${endY}" stroke="${color}" stroke-width=".8" opacity=".6"/>`;
+        leader=`<line class="label-leader" x1="${item.x}" y1="${item.y}" x2="${endX}" y2="${endY}" stroke="${color}" stroke-width="${lineWidth(.8)}" opacity=".6"/>`;
       }
       const markup=math?M.svg(x,y,value,o):`<text x="${x+(o.dx||0)}" y="${y+(o.dy||0)}" font-size="${size}" fill="${color}" text-anchor="${o.anchor||'start'}"${o.weight?` font-weight="${o.weight}"`:''} paint-order="stroke" stroke="var(--canvas)" stroke-width="3" stroke-linejoin="round">${escape(value)}</text>`;
       return `<g class="plot-label" data-label="${escape(value)}" data-label-movable="${item.movable}" data-label-box="${left},${top},${item.w},${item.h}" pointer-events="none">${leader}${markup}</g>`;
@@ -107,9 +120,9 @@ window.Lab = (() => {
         for(let i=0;i<=n;i++){const x=xmin+(xmax-xmin)*i/n;let y;try{y=fn(x);}catch{y=NaN;}if(!Number.isFinite(y)||Math.abs(y)>(Math.max(Math.abs(b.ymin),Math.abs(b.ymax))+1)*100){prev=null;continue;}const p=to([x,y]);const connected=prev&&Math.abs(y-prev[1])<(b.ymax-b.ymin)*1.5;d+=`${connected?'L':'M'}${p[0]},${p[1]}`;prev=[x,y];}
         chunks.push(`<path d="${d}" ${style(o)} clip-path="url(#${clipId})"/>`);
       },
-      finish:()=>{arrange();svg.innerHTML=chunks.map(item=>typeof item==='string'?item:renderLabel(item)).join('');}
+      finish:()=>{arrange();svg.innerHTML=chunks.map(item=>typeof item==='string'?projectionLines(item):renderLabel(item)).join('');}
     };
     return api;
   }
-  return {C,fmt:number,plot,escape};
+  return {C,fmt:number,plot,escape,lineWidth,dashPattern};
 })();
