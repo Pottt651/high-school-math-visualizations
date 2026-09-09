@@ -6,9 +6,11 @@
   "scripts": {
     "vendor:three": "node tools/vendor-three.cjs",
     "build": "python build.py",
-    "test": "npm run test:build && npm run test:model && npm run test:browser",
+    "test": "npm run test:build && npm run test:model && npm run test:browser && npm run test:layout && npm run test:baoshan",
+    "test:baoshan": "node tests/baoshan-functions-model.cjs && node tests/baoshan-browser.cjs && node tests/baoshan-space.cjs && node tests/baoshan-conics.cjs && node tests/baoshan-functions-browser.cjs && node tests/baoshan-reading.cjs",
     "test:model": "node tests/model.test.cjs",
     "test:browser": "node tests/simple-browser.cjs && node tests/simple-interactions.cjs && node tests/math-presentation.cjs && node tests/theme-ui.cjs && node tests/graphics-learning.cjs && node tests/space-graphics.cjs && node tests/project-catalog.cjs && node tests/construction.cjs",
+    "test:layout": "node tests/figure-layout.cjs && node tests/classroom-iteration.cjs && node tests/q11-cost-model.cjs",
     "test:legacy": "node tests/browser.test.cjs",
     "skill:install": "python tools/install_skill.py",
     "test:build": "python tests/build-catalog.py"

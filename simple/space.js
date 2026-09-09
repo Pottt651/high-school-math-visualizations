@@ -83,7 +83,7 @@ window.Space = (() => {
     function labelEntry(spec){
       const signature=[spec.tex,spec.text||spec.label,spec.size||18,spec.color,spec.priority].join('|');let item=labelNodes.get(spec.id);
       if(item?.signature===signature)return item;
-      if(item)item.node.remove();const node=make('g',{'data-space-label':spec.id,'pointer-events':'none'}),size=spec.size||18;
+      if(item)item.node.remove();const node=make('g',{'data-space-label':spec.id,'pointer-events':'none'}),size=Lab.labelSize(spec.size||18);
       let width,height;
       if(spec.tex){
         const markup=M.svg(0,0,spec.tex,{size,color:spec.color||Lab.C.ink});node.innerHTML=markup;const content=node.firstElementChild;

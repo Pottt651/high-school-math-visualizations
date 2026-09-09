@@ -20,7 +20,7 @@ Problems[10] = {
       const O=[0,0,0],A=[t,t,t],B1=[c,0,0],B2=[0,c,0],B3=[0,0,c],P=[c,c,c];
       return {t,c,O,A,B1,B2,B3,P,oa:norm(A),ap:norm(subtract(A,P)),unit:[B1,B2,B3].map(B=>norm(subtract(A,B)))};
     }
-    const viewport=Space.create(svg,{center:[.55,.55,.55],span:2.42,view:initial,onViewChange:next=>{state.yaw=next.yaw;state.pitch=next.pitch;}});
+    const viewport=Space.create(svg,{center:[.55,.55,.55],span:2.12,view:initial,onViewChange:next=>{state.yaw=next.yaw;state.pitch=next.pitch;}});
     const middle=(a,b)=>a.map((v,i)=>(v+b[i])/2);
     function sceneFor(m){
       const C=Lab.C,points=[],edges=[],faces=[],annotations=[];

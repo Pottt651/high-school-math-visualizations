@@ -1,6 +1,7 @@
 __pycache__/
 tests/screenshots/
 tests/simple-shots/
+tests/baoshan-functions-shots/
 *.log
 node_modules/
 playwright-report/

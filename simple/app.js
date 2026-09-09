@@ -5,10 +5,79 @@
   const topics=Object.fromEntries(paper.questions.map(q=>[q.id,q.topic]));
   const nav=document.getElementById('questionNav'),host=document.getElementById('module');
   let mounted=null,current=null,resizeFrame=0,restoreKey=false;
+  const collapsedProofs=new Set();
+  const proofObserver=new MutationObserver(()=>enhanceProofs());
   const drawButton=document.getElementById('drawButton'),constructionBar=document.getElementById('constructionBar');
   const previousStep=document.getElementById('constructionPrev'),nextStep=document.getElementById('constructionNext');
   const constructionStep=()=>mounted?.getConstructionStep?.()??null;
+  const layoutButton=document.getElementById('layoutButton');
+  const navigationButton=document.getElementById('navigationButton');
+  const layoutMedia=matchMedia('(min-width: 1000px)');
+  const preferenceKey='math-visualizations-display';
+  let saved={};try{saved=JSON.parse(localStorage.getItem(preferenceKey)||'{}')||{};}catch{}
+  let sideLayout=typeof saved.side==='boolean'?saved.side:paper.defaultLayout==='side',layoutMoves=[],textPanel=null;
+  document.body.classList.toggle('navigation-hidden',saved.navigationHidden===true);
+  const saveDisplay=()=>{try{localStorage.setItem(preferenceKey,JSON.stringify({side:sideLayout,navigationHidden:document.body.classList.contains('navigation-hidden')}));}catch{}};
+  navigationButton.setAttribute('aria-pressed',String(saved.navigationHidden===true));
+  navigationButton.textContent=saved.navigationHidden===true?'显示顶部':'隐藏顶部';
+  function restoreLayout(){
+    for(const [node,marker] of layoutMoves)marker.replaceWith(node);
+    layoutMoves=[];textPanel?.remove();textPanel=null;
+  }
+  function arrangeLayout(){
+    restoreLayout();
+    const active=sideLayout&&layoutMedia.matches&&!document.body.classList.contains('figure-focus');
+    document.body.classList.toggle('side-layout',active);
+    if(active){
+      textPanel=document.createElement('section');textPanel.className='lesson-text';
+      textPanel.setAttribute('aria-label','题目、答案与解析');host.prepend(textPanel);
+      const nodes=[document.querySelector('.question-context'),constructionBar,
+        ...host.querySelectorAll(':scope > .readout, :scope > .question-claims, :scope > .explain, :scope > .caption, :scope > .hint')];
+      for(const node of nodes){const marker=document.createComment('layout-position');node.replaceWith(marker);layoutMoves.push([node,marker]);textPanel.append(node);}
+    }
+    layoutButton.setAttribute('aria-pressed',String(sideLayout));
+    layoutButton.textContent=sideLayout?'上下布局':'左右布局';
+    requestAnimationFrame(()=>mounted?.render());
+  }
+  layoutButton.onclick=()=>{sideLayout=!sideLayout;arrangeLayout();saveDisplay();};
+  layoutMedia.addEventListener('change',arrangeLayout);
+  navigationButton.onclick=()=>{
+    const hidden=document.body.classList.toggle('navigation-hidden');
+    navigationButton.setAttribute('aria-pressed',String(hidden));
+    navigationButton.textContent=hidden?'显示顶部':'隐藏顶部';
+    saveDisplay();
+  };
+  const focusButton=document.getElementById('focusButton');
+  focusButton.onclick=()=>{
+    const focused=document.body.classList.toggle('figure-focus');
+    focusButton.setAttribute('aria-pressed',String(focused));
+    focusButton.textContent=focused?'还原布局':'放大图形';
+    arrangeLayout();
+  };
   function setKey(shown){document.body.classList.toggle('show-key',shown);const button=document.getElementById('keyButton');button.setAttribute('aria-pressed',String(shown));button.textContent=shown?'隐藏关键关系':'显示关键关系';}
+  function prepareReading(){
+    const context=document.querySelector('.question-context');
+    const reading=document.createElement('div');reading.className='reading-controls';
+    reading.innerHTML='<button type="button" id="statementButton" aria-expanded="true" aria-controls="statement">收起题目</button><button type="button" id="guideButton" aria-expanded="true" aria-controls="lessonGuide">收起思路</button><button type="button" id="answerButton" aria-pressed="false" title="仅收展答案栏；图形与解析保持当前显示">收起答案</button>';
+    context.querySelector('.reading-controls')?.remove();context.prepend(reading);
+    for(const [buttonId,targetId,name] of [['statementButton','statement','题目'],['guideButton','lessonGuide','思路']]){
+      const target=document.getElementById(targetId);target.hidden=false;target.classList.remove('reading-collapsed');
+      reading.querySelector('#'+buttonId).onclick=e=>{const closed=target.classList.toggle('reading-collapsed');e.currentTarget.setAttribute('aria-expanded',String(!closed));e.currentTarget.textContent=(closed?'展开':'收起')+name;};
+    }
+    document.body.classList.remove('answers-hidden');
+    reading.querySelector('#answerButton').onclick=e=>{const hidden=document.body.classList.toggle('answers-hidden');e.currentTarget.setAttribute('aria-pressed',String(hidden));e.currentTarget.textContent=hidden?'展开答案':'收起答案';};
+    enhanceProofs();
+    for(const explain of host.querySelectorAll('.explain'))proofObserver.observe(explain,{childList:true,subtree:true});
+  }
+  function enhanceProofs(){
+    // Keep each proof step in place: modules retain their existing query selectors.
+    for(const step of host.querySelectorAll('.proof-step')){
+      const heading=step.querySelector('h3');if(!heading||heading.querySelector('.proof-toggle'))continue;
+      const key=current+':'+heading.innerHTML,collapsed=collapsedProofs.has(key);
+      const button=document.createElement('button');button.type='button';button.className='proof-toggle';button.innerHTML=heading.innerHTML;button.setAttribute('aria-expanded',String(!collapsed));heading.replaceChildren(button);step.classList.toggle('proof-collapsed',collapsed);
+      button.onclick=()=>{const closed=step.classList.toggle('proof-collapsed');button.setAttribute('aria-expanded',String(!closed));if(closed)collapsedProofs.add(key);else collapsedProofs.delete(key);};
+    }
+  }
   function syncConstruction(){
     const steps=mounted?.getConstructionSteps?.()||[],index=constructionStep(),active=index!==null;
     drawButton.hidden=!steps.length;drawButton.setAttribute('aria-pressed',String(active));
@@ -43,7 +112,7 @@
   themeButton.onclick=()=>{const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('math-visualizations-theme',theme);}catch{}updateThemeButton();};
   function select(id){
     if(!Problems[id])id=ids[0];
-    figureObserver.disconnect();mounted?.destroy?.();current=Number(id);const entry=Problems[id];host.innerHTML='';
+    restoreLayout();proofObserver.disconnect();figureObserver.disconnect();mounted?.destroy?.();current=Number(id);const entry=Problems[id];host.innerHTML='';
     document.body.classList.remove('show-key','building');constructionBar.hidden=true;restoreKey=false;
     document.getElementById('keyButton').setAttribute('aria-pressed','false');document.getElementById('keyButton').textContent='显示关键关系';
     document.getElementById('questionTitle').innerHTML=`<span class="question-number" aria-label="第 ${id} 题">${id}</span><span>${Lab.escape(entry.title)}</span>`;
@@ -51,7 +120,7 @@
     document.getElementById('lessonGuide').innerHTML='<b>看图思路</b><span>'+LessonGuides[id]+'</span>';
     document.getElementById('sourceLine').textContent=paper.source+(pages[id]?` · 原卷第 ${pages[id]} 页`:'');
     nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',String(+b.dataset.question===+id)));
-    mounted=entry.mount(host);mounted.render();syncConstruction();
+    mounted=entry.mount(host);mounted.render();prepareReading();syncConstruction();arrangeLayout();
     const figures=host.querySelector('.figures');if(figures)figureObserver.observe(figures);
     if(location.hash!==`#q${id}`)history.replaceState(null,'',`#q${id}`);
   }

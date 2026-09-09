@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="lesson">
-  <header class="top">
+  <header class="top" id="topNavigation">
     <a class="brand" href="/*HOME_HREF*/" title="返回试卷目录">
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 4v23h23M7 23 17 7l10 16Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="17" cy="7" r="2.5" fill="currentColor"/></svg>
       <div><h1>高中数学题可视化</h1><p>/*PAPER_LABEL*/</p></div>
@@ -18,7 +18,8 @@
   </header>
   <div class="toolbar">
     <h2 id="questionTitle"></h2>
-    <div class="buttons"><button id="drawButton" aria-pressed="false" aria-controls="constructionBar">按条件画图</button><button id="keyButton" aria-pressed="false">显示关键关系</button><button id="resetButton">重置</button><button id="fullscreenButton">全屏</button></div>
+    <div class="layout-buttons"><button id="navigationButton" aria-pressed="false" aria-controls="topNavigation">隐藏顶部</button><button id="layoutButton" aria-pressed="false" aria-controls="module">左右布局</button></div>
+    <div class="buttons"><button id="focusButton" aria-pressed="false" aria-controls="module">放大图形</button><button id="drawButton" aria-pressed="false" aria-controls="constructionBar">按条件画图</button><button id="keyButton" aria-pressed="false">显示关键关系</button><button id="resetButton">重置</button><button id="fullscreenButton">全屏</button></div>
   </div>
   <section class="question-context" aria-label="题目与看图思路"><div id="statement" class="statement"></div><div id="lessonGuide" class="guide"></div></section>
   <section id="constructionBar" class="construction-bar" aria-label="按题目条件逐步画图" hidden>

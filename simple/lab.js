@@ -5,7 +5,8 @@ window.Lab = (() => {
   // Retain integer zeros; decimal trimming should never change 10 into 1.
   const number=(n,d=3)=>!Number.isFinite(n)?'未定义':(Math.abs(n)<.5*10**(-d)?0:n).toFixed(d).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1').replace('-','−');
   // One projection weight for both 2D and 3D, preserving each figure's hierarchy.
-  const lineWidth=width=>Math.round(width*1.45*1000)/1000;
+  const lineWidth=width=>Math.round(width*1.8*1000)/1000;
+  const labelSize=size=>Math.max(16,Math.round(size*1.25));
   const dashPattern=pattern=>String(pattern).replace(/\d*\.?\d+/g,value=>lineWidth(Number(value)));
   function projectionLines(markup){
     // Only diagram primitives: text/KaTeX strokes and point halos stay unchanged.
@@ -20,7 +21,7 @@ window.Lab = (() => {
   let uid=0;
   const textCanvas=document.createElement('canvas'),textContext=textCanvas.getContext('2d');
   function plot(svg,b){
-    const w=Math.max(svg.clientWidth||800,100),h=Math.max(svg.clientHeight||430,100),pad=b.pad??34;
+    const w=Math.max(svg.clientWidth||800,100),h=Math.max(svg.clientHeight||430,100),pad=b.pad??28;
     svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
     let sx=(w-2*pad)/(b.xmax-b.xmin),sy=(h-2*pad)/(b.ymax-b.ymin);
     if(b.equal!==false)sx=sy=Math.min(sx,sy);
@@ -35,7 +36,8 @@ window.Lab = (() => {
     // Put object labels near their mathematical anchors, while reserving tick
     // labels and figure headings. The solver only changes annotation position.
     function label(x,y,value,o={},math=false){
-      o={...o,weight:Math.max(700,o.weight||700)};
+      // Region labels already derive their size from the available polygon area.
+      o={...o,size:o.region?(o.size||18):labelSize(o.size||18),weight:Math.max(700,o.weight||700)};
       const size=o.size||18,anchor=o.anchor||'start';
       textContext.font=`${o.weight} ${size}px ${getComputedStyle(svg).fontFamily}`;
       const measure=math?M.measure(value,size,true):{w:Math.ceil(textContext.measureText(String(value)).width)+2,h:Math.ceil(size*1.2)};
@@ -126,8 +128,8 @@ window.Lab = (() => {
         const color='var(--plot-axis)',zeroY=Math.max(b.ymin,Math.min(b.ymax,0)),zeroX=Math.max(b.xmin,Math.min(b.xmax,0));
         line([b.xmin,zeroY],[b.xmax,zeroY],{stroke:color,width:1});line([zeroX,b.ymin],[zeroX,b.ymax],{stroke:color,width:1});
         const stepX=labels.stepX||nice(b.xmax-b.xmin),stepY=labels.stepY||nice(b.ymax-b.ymin);
-        for(let x=Math.ceil(b.xmin/stepX)*stepX;x<=b.xmax+stepX/100;x+=stepX){if(Math.abs(x)<1e-9)continue;const q=to([x,zeroY]);chunks.push(`<line x1="${q[0]}" y1="${q[1]-3}" x2="${q[0]}" y2="${q[1]+3}" stroke="${color}"/>`);screenText(q[0],q[1]+20,number(x,4),{size:12,anchor:'middle',color:C.gray});}
-        for(let y=Math.ceil(b.ymin/stepY)*stepY;y<=b.ymax+stepY/100;y+=stepY){if(Math.abs(y)<1e-9)continue;const q=to([zeroX,y]);screenText(q[0]-8,q[1]+4,number(y,4),{size:12,anchor:'end',color:C.gray});}
+        for(let x=Math.ceil(b.xmin/stepX)*stepX;x<=b.xmax+stepX/100;x+=stepX){if(Math.abs(x)<1e-9)continue;const q=to([x,zeroY]);chunks.push(`<line x1="${q[0]}" y1="${q[1]-3}" x2="${q[0]}" y2="${q[1]+3}" stroke="${color}"/>`);screenText(q[0],q[1]+22,number(x,4),{size:labels.tickSize||12,anchor:'middle',color:C.gray});}
+        for(let y=Math.ceil(b.ymin/stepY)*stepY;y<=b.ymax+stepY/100;y+=stepY){if(Math.abs(y)<1e-9)continue;const q=to([zeroX,y]);screenText(q[0]-8,q[1]+4,number(y,4),{size:labels.tickSize||12,anchor:'end',color:C.gray});}
         api.text([b.xmax,zeroY],labels.x??'x',{dy:-8,size:15,color:C.gray,avoid:false});api.text([zeroX,b.ymax],labels.y??'y',{dx:8,size:15,color:C.gray,avoid:false});
       },
       curve:(fn,xmin,xmax,o={})=>{
@@ -139,5 +141,5 @@ window.Lab = (() => {
     };
     return api;
   }
-  return {C,fmt:number,plot,escape,lineWidth,dashPattern};
+  return {C,fmt:number,plot,escape,lineWidth,labelSize,dashPattern};
 })();

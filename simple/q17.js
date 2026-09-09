@@ -24,7 +24,7 @@ Problems[17] = {
     const svg=host.querySelector('#q17-svg'),part=host.querySelector('#q17-part'),shift=host.querySelector('#q17-shift'),height=host.querySelector('#q17-height');
     const add=(a,b)=>a.map((v,i)=>v+b[i]),sub=(a,b)=>a.map((v,i)=>v-b[i]),mid=(a,b)=>a.map((v,i)=>(v+b[i])/2),norm=a=>Math.hypot(...a);
     function model(){const one=state.part===1,v=one?[1,0,Math.sqrt(3)]:[state.shift,0,state.height],A=[0,one?Math.sqrt(3):state.base,0],B=[-1,0,0],C=[1,0,0],A1=add(A,v),B1=add(B,v),C1=add(C,v),E=mid(B,C),F=mid(A1,C1),D=mid(A,B),H=[C1[0],C1[1],0];return {A,B,C,A1,B1,C1,E,F,D,H,v,height:v[2],baseArea:A[1],volume:A[1]*v[2],side:norm(v),ef:sub(F,E),da1:sub(A1,D)};}
-    const viewport=Space.create(svg,{center:[.35,.55,.88],span:3.85,view:initial,onViewChange:next=>{state.yaw=next.yaw;state.pitch=next.pitch;}});
+    const viewport=Space.create(svg,{center:[.35,.55,.88],span:3.4,view:initial,onViewChange:next=>{state.yaw=next.yaw;state.pitch=next.pitch;}});
     function sceneFor(m,reveal){
       const C=Lab.C,one=state.part===1,points=[],edges=[],faces=[],annotations=[];
       const emphasizeTarget=!one&&(constructionStep===null||constructionStep>=3);

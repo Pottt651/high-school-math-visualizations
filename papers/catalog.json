@@ -22,5 +22,29 @@
       "model": "src/model.js",
       "legacyOutputs": ["嘉定一模_互动讲题.html", "嘉定一模_第20题_交互样章.html"]
     }
+  },
+  {
+    "id": "baoshan-2026",
+    "defaultLayout": "side",
+    "title": "上海宝山 · 2026届高三一模",
+    "shortTitle": "宝山一模 · 2026届",
+    "subtitle": "2025学年第一学期期末",
+    "year": 2026,
+    "source": "2025学年 宝山区第一学期期末高三数学质量监测试卷",
+    "href": "papers/baoshan-2026/index.html",
+    "questions": [
+      {"id": 11, "title": "圆柱中的异面直线夹角", "topic": "异面夹角", "page": 2},
+      {"id": 12, "title": "向量条件：平面与球的距离", "topic": "平面与球", "page": 2},
+      {"id": 15, "title": "冷却塔：截面半径与双曲线", "topic": "冷却塔", "page": 2},
+      {"id": 16, "title": "增长数列：每一步都超过 1", "topic": "增长数列", "page": 3},
+      {"id": 17, "title": "四棱锥：变化中的定距离", "topic": "棱锥距离", "page": 4},
+      {"id": 19, "title": "摩天轮：位置怎样变成函数？", "topic": "摩天轮", "page": 6},
+      {"id": 20, "title": "双曲线：最短切线与垂足轨迹", "topic": "双曲线", "page": 7},
+      {"id": 21, "title": "函数比较：从交点到切线", "topic": "函数与切线", "page": 8}
+    ],
+    "build": {
+      "moduleDir": "papers/baoshan-2026/src",
+      "legacyOutputs": ["宝山一模_互动讲题.html"]
+    }
   }
 ]

@@ -1,6 +1,6 @@
 Problems[11] = {
   title: '拱桥费用',
-  statement: `半径为 ${M.inline('4\\,\\mathrm m')} 的圆弧桥面 ${M.inline('ACB')}，两端接与圆相切的直线段 ${M.inline('AD,BE')}。直线段每米 0.4 万元，圆弧每米 2.5 万元。坡角 ${M.inline(String.raw`\theta\in\left[\arcsin\frac13,\frac\pi6\right]`)}，求使总费用最少的<span class="target">坡角</span>。〔原卷第 1 页〕`,
+  statement: `半径为 ${M.inline('4\\,\\mathrm m')} 的圆弧桥面 ${M.inline('ACB')}，两端接与圆相切的直线段 ${M.inline('AD,BE')}。图示中 ${M.inline('D,O,E')} 在同一水平线上，桥关于 ${M.inline('OC')} 左右对称，坡角为 ${M.inline(String.raw`\angle ADO=\theta`)}。直线段每米 0.4 万元，圆弧每米 2.5 万元。${M.inline(String.raw`\theta\in\left[\arcsin\frac13,\frac\pi6\right]`)}，求使总费用最少的<span class="target">坡角</span>。〔原卷第 1 页〕`,
   mount(host) {
     const lo = Math.asin(1/3), hi = Math.PI/6, optimum = Math.asin(.4), C = Lab.C;
     let theta = lo, view = 'total', bridgePlot, costPlot, dragging = null, constructionStep = null;
@@ -12,7 +12,39 @@ Problems[11] = {
       {title:'从桥形读出两类长度',body:`${M.inline(String.raw`OA\perp AD`)}，所以 ${M.inline(String.raw`\angle AOC=\theta`)}；对称得到 ${M.inline(String.raw`\angle AOB=2\theta`)}。于是每段切线长 ${M.inline(String.raw`4\cot\theta`)}，弧长为 ${M.inline(String.raw`4\cdot2\theta=8\theta`)}（角用弧度）。`},
       {title:'把长度变成费用图',body:`将两段直线总长乘以 ${M.inline('0.4')}，圆弧长乘以 ${M.inline('2.5')}，得到 ${M.inline(String.raw`C(\theta)=\frac{16}{5}\cot\theta+20\theta`)}。右图横轴是坡角，纵轴是费用；寻找红色曲线的最低点，就是原题要求的坡角。`}
     ];
-    host.innerHTML = `<div class="controls"><label style="color:${C.target}">坡角 ${M.inline(String.raw`\theta`)} <input id="q11-angle" type="range" min="${lo}" max="${hi}" step="0.0001" value="${lo}"></label><input id="q11-degrees" type="number" aria-label="坡角（度）" min="${lo*180/Math.PI}" max="30" step="0.01" value="${lo*180/Math.PI}"><span>°</span><label>右图 <select id="q11-view"><option value="total">总费用局部放大</option><option value="parts">费用构成</option></select></label><button id="q11-best" class="aux">取费用最低的坡角</button></div><div class="figures"><svg id="q11-bridge" class="figure" role="img" aria-label="圆弧及两端切线构成的拱桥；拖动切点调整坡角"></svg><svg id="q11-cost" class="figure" role="img" aria-label="直线段、圆弧和总费用随坡角变化的曲线"></svg></div><div class="readout" id="q11-readout"></div><div class="explain"><section class="proof-step"><h3>把桥形写成费用</h3><p>每段切线长 ${M.inline(String.raw`4\cot\theta`)}，圆弧圆心角为 ${M.inline(String.raw`2\theta`)}，故弧长为 ${M.inline(String.raw`8\theta`)}（${M.inline(String.raw`\theta`)} 用弧度）。</p>${M.block(String.raw`C(\theta)=\frac{16}{5}\cot\theta+20\theta`)}</section><section class="proof-step"><h3>用变化率找最优坡角</h3>${M.block(String.raw`C'(\theta)=20-\frac{16}{5\sin^2\theta}`)}<p>令导数为零，得 ${M.inline(String.raw`\sin\theta=\frac25`)}。导数由负变正，最优角为 <span style="color:${C.target}">${M.inline(String.raw`\arcsin\frac25\approx23.578^\circ`)}</span>。</p><p>坡角增大时，直线段费用减少，圆弧费用增加。</p></section></div>`;
+    host.innerHTML = `<div class="controls"><label style="color:${C.target}">坡角 ${M.inline(String.raw`\theta`)} <input id="q11-angle" type="range" min="${lo}" max="${hi}" step="0.0001" value="${lo}"></label><input id="q11-degrees" type="number" aria-label="坡角（度）" min="${lo*180/Math.PI}" max="30" step="0.01" value="${lo*180/Math.PI}"><span>°</span><label>费用图 <select id="q11-view"><option value="total">总费用局部放大</option><option value="parts">费用构成</option></select></label><button id="q11-best" class="aux">取费用最低的坡角</button></div>
+    <div class="figures"><svg id="q11-bridge" class="figure" role="img" aria-label="圆弧及两端切线构成的拱桥；拖动切点调整坡角"></svg><svg id="q11-cost" class="figure" role="img" aria-label="直线段、圆弧和总费用随坡角变化的曲线"></svg></div>
+    <div class="readout" id="q11-readout"></div>
+    <div class="explain" id="q11-proof">
+      <section class="proof-step"><h3>① 相切条件 → 两段直桥长度</h3>
+        <p>图中 ${M.inline('D,O,E')} 共线且水平，${M.inline(String.raw`OA\perp AD`)}。在直角三角形 ${M.inline('OAD')} 中，坡角为 ${M.inline(String.raw`\angle ADO=\theta`)}，故</p>
+        ${M.block(String.raw`\tan\theta=\frac{OA}{AD}=\frac4{AD}`)}
+        ${M.block(String.raw`AD=BE=4\cot\theta`)}
+        <p>左右对称，所以两段直桥总长为 <span class="blue">${M.inline(String.raw`L_{\text{直}}=8\cot\theta`)}</span> 米。</p>
+      </section>
+      <section class="proof-step"><h3>② 圆心角 → 圆弧长度</h3>
+        <p>${M.inline('OC')} 垂直于水平线，${M.inline('OA')} 垂直于切线。因此 ${M.inline(String.raw`\angle AOC=\theta`)}，对称得 ${M.inline(String.raw`\angle AOB=2\theta`)}。</p>
+        ${M.block(String.raw`L_{\text{弧}}=r\alpha=4\cdot2\theta=8\theta`)}
+        <p class="proof-note">弧长公式中的 ${M.inline(String.raw`\theta`)} 必须用弧度。输入框和图上横轴用度，计算时先乘 ${M.inline(String.raw`\pi/180`)}。</p>
+      </section>
+      <section class="proof-step"><h3>③ 长度 × 单价 → 费用函数</h3>
+        <p class="blue">直桥每米 0.4 万元：</p>
+        ${M.block(String.raw`C_{\text{直}}=0.4\cdot8\cot\theta=\frac{16}{5}\cot\theta`)}
+        <p class="gold">圆弧每米 2.5 万元：</p>
+        ${M.block(String.raw`C_{\text{弧}}=2.5\cdot8\theta=20\theta`)}
+        <div class="target">${M.block(String.raw`C(\theta)=\frac{16}{5}\cot\theta+20\theta`)}</div>
+        <p>费用单位为万元，定义域为 ${M.inline(String.raw`\theta\in[\arcsin\frac13,\frac\pi6]`)}。红色总费用曲线就是两项相加的结果。</p>
+      </section>
+      <section class="proof-step"><h3>④ 代入当前坡角，逐项算费用</h3><div id="q11-worked"></div></section>
+      <section class="proof-step"><h3>⑤ 求导并判断最小值</h3>
+        ${M.block(String.raw`C'(\theta)=20-\frac{16}{5\sin^2\theta}`)}
+        ${M.block(String.raw`C'(\theta)=0\ \Longrightarrow\ \sin^2\theta=\frac4{25}`)}
+        <p>坡角是锐角，故 ${M.inline(String.raw`\sin\theta=\frac25`)}。又 ${M.inline(String.raw`\frac13<\frac25<\frac12`)}，临界点 ${M.inline(String.raw`\theta_* =\arcsin\frac25`)} 在定义域内部。其左侧导数为负、右侧为正，所以总费用先减后增。</p>
+        <p>此时 ${M.inline(String.raw`\cos\theta_* =\frac{\sqrt{21}}5`)}，${M.inline(String.raw`\cot\theta_* =\frac{\sqrt{21}}2`)}，代回费用函数：</p>
+        <div class="target">${M.block(String.raw`\begin{aligned}C_{\min}&=\frac{16}{5}\cdot\frac{\sqrt{21}}2+20\arcsin\frac25\\&=\frac{8\sqrt{21}}5+20\arcsin\frac25.\end{aligned}`)}</div>
+        <p>最优坡角约 ${M.inline('23.578^\\circ')}，最低费用约 ${M.inline('15.562')} 万元。</p>
+      </section>
+    </div>`;
     const angle = host.querySelector('#q11-angle'), degrees = host.querySelector('#q11-degrees'), bridge = host.querySelector('#q11-bridge'), cost = host.querySelector('#q11-cost');
     const straight = t => 3.2/Math.tan(t), arc = t => 20*t, total = t => straight(t)+arc(t);
     function set(t) { if (!Number.isFinite(t)) return; theta = Math.max(lo, Math.min(hi,t)); render(); }
@@ -96,14 +128,24 @@ Problems[11] = {
       cost.setAttribute('aria-label',zoom?'总费用局部放大图，纵轴15.5至16.1万元，不从零开始；实心点是当前坡角，空心点是最低费用坡角':'直线段、圆弧和总费用随坡角变化，纵轴从零开始');
       q.finish();
       }else{cost.replaceChildren();costPlot=null;}
-      host.querySelector('#q11-readout').innerHTML=`<span style="color:${C.target}">${M.inline(String.raw`\theta=${Lab.fmt(theta*180/Math.PI,3)}^\circ`)}</span>直线段 <b style="color:${C.blue}">${Lab.fmt(straight(theta),3)}</b> + 圆弧 <b style="color:${C.gold}">${Lab.fmt(arc(theta),3)}</b> = 总费用 <b style="color:${C.target}">${Lab.fmt(total(theta),3)}</b> 万元${M.answer(`${M.inline(String.raw`\theta=\arcsin\frac25\approx23.578^\circ`)}；最低费用 ${M.inline(String.raw`C_{\min}=\frac{8\sqrt{21}}5+20\arcsin\frac25\approx${Lab.fmt(total(optimum),3)}`)} 万元。`)}`;
+      const straightLength=8/Math.tan(theta),arcLength=8*theta,deg=theta*180/Math.PI;
+      host.querySelector('#q11-readout').innerHTML=`<div class="q11-cost-summary">
+        <div class="q11-cost-model"><b>费用函数</b><span class="target">${M.inline(String.raw`C(\theta)=\frac{16}{5}\cot\theta+20\theta`)}</span><small>θ 用弧度 · 费用单位：万元</small><button type="button" data-q11-explain aria-controls="q11-proof">查看计算过程</button></div>
+        <div class="q11-current-cost"><span>当前 ${M.inline(String.raw`\theta=${Lab.fmt(deg,3)}^\circ\approx${Lab.fmt(theta,4)}\,\mathrm{rad}`)}</span><span class="blue">直桥：${M.inline(`0.4\\times${Lab.fmt(straightLength,3)}\\approx${Lab.fmt(straight(theta),3)}`)}</span><span class="gold">圆弧：${M.inline(`2.5\\times${Lab.fmt(arcLength,3)}\\approx${Lab.fmt(arc(theta),3)}`)}</span><span class="target">合计 ${M.inline(Lab.fmt(total(theta),3))} 万元</span></div>
+      </div>${M.answer(`${M.inline(String.raw`\theta=\arcsin\frac25\approx23.578^\circ`)}；最低费用 ${M.inline(String.raw`C_{\min}=\frac{8\sqrt{21}}5+20\arcsin\frac25\approx${Lab.fmt(total(optimum),3)}`)} 万元。`)}`;
+      host.querySelector('#q11-worked').innerHTML=`<p>先把输入的角度转成弧度：</p>${M.block(String.raw`\theta\approx${Lab.fmt(deg,4)}\cdot\frac\pi{180}\approx${Lab.fmt(theta,5)}`)}
+        <p>两类长度（米）：</p>${M.block(String.raw`\begin{aligned}L_{\text{直}}&=8\cot\theta\approx${Lab.fmt(straightLength,4)}\\L_{\text{弧}}&=8\theta\approx${Lab.fmt(arcLength,4)}\end{aligned}`)}
+        <p>乘单价并相加（万元）：</p>${M.block(String.raw`\begin{aligned}C_{\text{直}}&\approx0.4\cdot${Lab.fmt(straightLength,4)}\approx${Lab.fmt(straight(theta),4)}\\C_{\text{弧}}&\approx2.5\cdot${Lab.fmt(arcLength,4)}\approx${Lab.fmt(arc(theta),4)}\\C(\theta)&=C_{\text{直}}+C_{\text{弧}}\approx${Lab.fmt(total(theta),4)}\end{aligned}`)}<p class="note">显示值已四舍五入；曲线和合计使用未舍入的数据。拖动坡角，这里的计算同步更新。</p>`;
     }
     angle.oninput=()=>set(+angle.value);degrees.onchange=()=>set(+degrees.value*Math.PI/180);host.querySelector('#q11-best').onclick=()=>set(optimum);
     host.querySelector('#q11-view').onchange=e=>{view=e.target.value;render();};
+    const showCalculation=e=>{if(!e.target.closest('[data-q11-explain]'))return;
+      if(!document.body.classList.contains('show-key'))document.getElementById('keyButton').click();
+      const proof=host.querySelector('#q11-proof');proof.scrollIntoView({block:'nearest'});proof.querySelector('.proof-toggle')?.focus({preventScroll:true});
+    };
+    host.addEventListener('click',showCalculation);
     bridge.onpointerdown=e=>{if(!show(1))return;dragging='bridge';bridge.setPointerCapture(e.pointerId);};bridge.onpointermove=e=>{if(dragging!=='bridge')return;const [x,y]=bridgePlot.fromEvent(e);set(Math.atan2(Math.abs(x),Math.max(.01,y)));};bridge.onpointerup=()=>dragging=null;bridge.onpointercancel=()=>dragging=null;
     cost.onpointerdown=e=>{if(!costPlot)return;dragging='cost';cost.setPointerCapture(e.pointerId);set(costPlot.fromEvent(e)[0]*Math.PI/180);};cost.onpointermove=e=>{if(dragging==='cost'&&costPlot)set(costPlot.fromEvent(e)[0]*Math.PI/180);};cost.onpointerup=()=>dragging=null;cost.onpointercancel=()=>dragging=null;
-    render();return {render,reset(){theta=lo;view='total';host.querySelector('#q11-view').value=view;if(constructionStep!==null)constructionStep=0;render();},getState(){return{theta,view,straight:straight(theta),arc:arc(theta),total:total(theta)};},getConstructionSteps:()=>constructionSteps,getConstructionStep:()=>constructionStep,setConstructionStep(index){constructionStep=index===null?null:Math.max(0,Math.min(constructionSteps.length-1,Math.trunc(index)));dragging=null;render();}};
+    render();return {render,destroy(){host.removeEventListener('click',showCalculation);},reset(){theta=lo;view='total';host.querySelector('#q11-view').value=view;if(constructionStep!==null)constructionStep=0;render();},getState(){return{theta,view,straight:straight(theta),arc:arc(theta),total:total(theta)};},getConstructionSteps:()=>constructionSteps,getConstructionStep:()=>constructionStep,setConstructionStep(index){constructionStep=index===null?null:Math.max(0,Math.min(constructionSteps.length-1,Math.trunc(index)));dragging=null;render();}};
   }
 };
-
-

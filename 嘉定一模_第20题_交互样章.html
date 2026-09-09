@@ -245,11 +245,121 @@ footer { display: flex; justify-content: space-between; gap: 12px; font-size: 11
   footer { flex-wrap: wrap; gap: 6px; } .footer-tools { flex-wrap: wrap; gap: 10px; }
 }
 @media (prefers-reduced-motion: reduce) { button { transition: none; } }
+
+/* Give the diagram more room while keeping the text readable on a projector. */
+@media (min-width: 1280px) {
+  .lesson { max-width: 1920px; padding-left: 18px; padding-right: 18px; gap: 8px; }
+  .question-context { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(260px, 1fr); gap: 20px; }
+  .guide { margin-top: 0; }
+  .lesson:has(#q16-web) .question-context { display: block; }
+  .show-key #module { grid-template-columns: minmax(0,1fr) 320px; }
+  .figures { padding: 3px; }
+  .figure-focus .question-context { display: none; }
+}
+.figure-focus #module { display: flex; flex-direction: column; }
+.figure-focus #module > .figures { flex: 1; height: auto; }
+.figure-focus #module > .readout,
+.figure-focus #module > .explain,
+.figure-focus #module > .question-claims,
+.figure-focus #module > .hint,
+.figure-focus #module > .caption { display: none; }
+@media (max-width: 1279px) {
+  .figure-focus .question-context { display: none; }
+  .figure-focus #module > .figures { flex: none; height: max(420px, 65dvh); }
+}
+@media (max-width: 700px) {
+  .figure-focus #module > .figures { height: auto; }
+}
+
+.toolbar { flex-wrap: wrap; gap: 8px 12px; }
+.toolbar h2 { flex: 1; }
+.layout-buttons { display: flex; gap: 7px; }
+.layout-buttons button { font-size: 14px; }
+.navigation-hidden .top { display: none; }
+@media (min-width: 1000px) {
+  .side-layout .lesson { height: 100dvh; min-height: 640px; }
+  .side-layout #module { display: grid; grid-template-columns: clamp(320px, 29vw, 460px) minmax(0,1fr);
+    grid-template-rows: auto minmax(0,1fr); gap: 10px 16px; }
+  .side-layout #module > .controls { grid-column: 2; grid-row: 1; }
+  .side-layout #module > .figures { grid-column: 2; grid-row: 2; height: 100%; min-height: 240px; }
+  .side-layout #module:has(#q16-web) { grid-template-rows: auto minmax(0,1fr); }
+  .side-layout #module:has(#q16-web) > .figures { grid-row: 2; }
+  .side-layout .lesson-text { grid-column: 1; grid-row: 1 / 3; overflow: auto; min-height: 0;
+    padding: 18px; border: 1px solid var(--line); border-radius: 9px; background: var(--panel);
+    scrollbar-width: thin; display: flex; flex-direction: column; gap: 18px; }
+  .side-layout .lesson-text > * { flex-shrink: 0; }
+  .side-layout .lesson-text .question-context { display: block; padding: 0; border: 0; }
+  .side-layout .statement { max-height: none; overflow: visible; }
+  .side-layout .guide { display: block; margin-top: 14px; }
+  .side-layout .guide > b { display: block; margin-bottom: 4px; }
+  .side-layout .lesson-text .readout { padding: 0; }
+  .side-layout .lesson-text .explain { height: auto; max-height: none; overflow: visible; padding: 0; }
+  .side-layout .lesson-text .question-claims { height: auto; overflow: visible; padding: 0; }
+  .side-layout .construction-bar { flex-direction: column; align-items: stretch; padding: 10px; gap: 10px; }
+  .side-layout .construction-buttons { flex-wrap: wrap; }
+  .side-layout.figure-focus #module { display: flex; }
+  .side-layout.figure-focus .lesson-text { display: none; }
+  .side-layout.figure-focus #module > .figures { height: auto; }
+}
+@media (max-width: 999px) {
+  #layoutButton { display: none; }
+}
+
+/* Reading controls are local to the text column, away from the drawing toolbar. */
+.reading-controls { display: none; }
+.q11-cost-summary { display: grid; gap: 6px; }
+.q11-cost-model, .q11-current-cost { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 14px; }
+.q11-cost-model { padding-bottom: 5px; border-bottom: 1px solid var(--line); }
+.q11-cost-model > b { font-size: 14px; color: var(--body); }
+.q11-cost-model > small { font-size: 12px; color: var(--muted); }
+.q11-cost-model button { padding: 4px 8px; min-height: 28px; font-size: 13px; }
+.q11-current-cost { font-size: 15px; }
+.q11-current-cost > span { white-space: nowrap; }
+.side-layout .q11-cost-model { align-items: flex-start; }
+.side-layout .q11-cost-model > .target { flex-basis: 100%; }
+.side-layout .q11-current-cost { align-items: flex-start; flex-direction: column; }
+@media (min-width: 1600px) and (min-height: 850px) {
+  .q11-cost-model > b, .q11-current-cost { font-size: 17px; }
+  .q11-cost-model > small, .q11-cost-model button { font-size: 14px; }
+}
+.side-layout .reading-controls { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.reading-controls button { font-size: 13px; padding: 5px 8px; min-height: 30px; }
+.side-layout.answers-hidden .answer, .side-layout .reading-collapsed { display: none !important; }
+.proof-toggle { border: 0; background: transparent; padding: 0; min-height: 28px;
+  width: 100%; justify-content: space-between; font: inherit; color: inherit; text-align: left; }
+.proof-toggle::after { content: '−'; font-size: 18px; color: var(--muted); }
+.proof-collapsed .proof-toggle::after { content: '+'; }
+.proof-collapsed > :not(h3) { display: none; }
+.side-layout .lesson-text { overscroll-behavior: contain; }
+.phase-view { display: flex; flex-direction: column; min-height: 0; flex: 1; }
+.phase-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  gap: 5px 12px; color: var(--body); font-size: 16px; padding: 6px 12px 0; }
+.phase-heading > span:last-child:not(.math-inline) { color: var(--muted); font-size: 13px; }
+.phase-readout { display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap;
+  gap: 8px 16px; padding: 0 12px 8px; font-size: 16px; color: var(--body); }
+.phase-readout > span { white-space: nowrap; }
+.figures .phase-view > #q18-phase { min-height: 125px; flex: 1; height: 0; }
+@media (min-width: 1000px) {
+  .side-layout .q18-figures { display: grid; grid-template-rows: minmax(220px,1fr) 220px; gap: 0; }
+  .side-layout .q18-figures > #q18-function { height: 100%; min-height: 220px; }
+  .side-layout .phase-view { border-top: 1px solid var(--line); }
+}
+@media (min-width: 1600px) and (min-height: 850px) {
+  .side-layout .q18-figures { grid-template-rows: minmax(250px,1fr) 245px; }
+  .phase-heading, .phase-readout { font-size: 18px; }
+  .reading-controls button { font-size: 15px; }
+}
+@media (max-width: 700px) {
+  .phase-view { flex: none; min-height: 255px; }
+  .figures .phase-view > #q18-phase { height: 130px; min-height: 130px; flex: none; }
+  .phase-heading { font-size: 15px; }
+  .phase-readout { font-size: 14px; }
+}
 </style>
 </head>
 <body>
 <div class="lesson">
-  <header class="top">
+  <header class="top" id="topNavigation">
     <a class="brand" href="index.html" title="返回试卷目录">
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 4v23h23M7 23 17 7l10 16Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="17" cy="7" r="2.5" fill="currentColor"/></svg>
       <div><h1>高中数学题可视化</h1><p>嘉定一模 · 2025届</p></div>
@@ -259,7 +369,8 @@ footer { display: flex; justify-content: space-between; gap: 12px; font-size: 11
   </header>
   <div class="toolbar">
     <h2 id="questionTitle"></h2>
-    <div class="buttons"><button id="drawButton" aria-pressed="false" aria-controls="constructionBar">按条件画图</button><button id="keyButton" aria-pressed="false">显示关键关系</button><button id="resetButton">重置</button><button id="fullscreenButton">全屏</button></div>
+    <div class="layout-buttons"><button id="navigationButton" aria-pressed="false" aria-controls="topNavigation">隐藏顶部</button><button id="layoutButton" aria-pressed="false" aria-controls="module">左右布局</button></div>
+    <div class="buttons"><button id="focusButton" aria-pressed="false" aria-controls="module">放大图形</button><button id="drawButton" aria-pressed="false" aria-controls="constructionBar">按条件画图</button><button id="keyButton" aria-pressed="false">显示关键关系</button><button id="resetButton">重置</button><button id="fullscreenButton">全屏</button></div>
   </div>
   <section class="question-context" aria-label="题目与看图思路"><div id="statement" class="statement"></div><div id="lessonGuide" class="guide"></div></section>
   <section id="constructionBar" class="construction-bar" aria-label="按题目条件逐步画图" hidden>
@@ -313,7 +424,8 @@ window.Lab = (() => {
   // Retain integer zeros; decimal trimming should never change 10 into 1.
   const number=(n,d=3)=>!Number.isFinite(n)?'未定义':(Math.abs(n)<.5*10**(-d)?0:n).toFixed(d).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1').replace('-','−');
   // One projection weight for both 2D and 3D, preserving each figure's hierarchy.
-  const lineWidth=width=>Math.round(width*1.45*1000)/1000;
+  const lineWidth=width=>Math.round(width*1.8*1000)/1000;
+  const labelSize=size=>Math.max(16,Math.round(size*1.25));
   const dashPattern=pattern=>String(pattern).replace(/\d*\.?\d+/g,value=>lineWidth(Number(value)));
   function projectionLines(markup){
     // Only diagram primitives: text/KaTeX strokes and point halos stay unchanged.
@@ -328,7 +440,7 @@ window.Lab = (() => {
   let uid=0;
   const textCanvas=document.createElement('canvas'),textContext=textCanvas.getContext('2d');
   function plot(svg,b){
-    const w=Math.max(svg.clientWidth||800,100),h=Math.max(svg.clientHeight||430,100),pad=b.pad??34;
+    const w=Math.max(svg.clientWidth||800,100),h=Math.max(svg.clientHeight||430,100),pad=b.pad??28;
     svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
     let sx=(w-2*pad)/(b.xmax-b.xmin),sy=(h-2*pad)/(b.ymax-b.ymin);
     if(b.equal!==false)sx=sy=Math.min(sx,sy);
@@ -343,7 +455,8 @@ window.Lab = (() => {
     // Put object labels near their mathematical anchors, while reserving tick
     // labels and figure headings. The solver only changes annotation position.
     function label(x,y,value,o={},math=false){
-      o={...o,weight:Math.max(700,o.weight||700)};
+      // Region labels already derive their size from the available polygon area.
+      o={...o,size:o.region?(o.size||18):labelSize(o.size||18),weight:Math.max(700,o.weight||700)};
       const size=o.size||18,anchor=o.anchor||'start';
       textContext.font=`${o.weight} ${size}px ${getComputedStyle(svg).fontFamily}`;
       const measure=math?M.measure(value,size,true):{w:Math.ceil(textContext.measureText(String(value)).width)+2,h:Math.ceil(size*1.2)};
@@ -434,8 +547,8 @@ window.Lab = (() => {
         const color='var(--plot-axis)',zeroY=Math.max(b.ymin,Math.min(b.ymax,0)),zeroX=Math.max(b.xmin,Math.min(b.xmax,0));
         line([b.xmin,zeroY],[b.xmax,zeroY],{stroke:color,width:1});line([zeroX,b.ymin],[zeroX,b.ymax],{stroke:color,width:1});
         const stepX=labels.stepX||nice(b.xmax-b.xmin),stepY=labels.stepY||nice(b.ymax-b.ymin);
-        for(let x=Math.ceil(b.xmin/stepX)*stepX;x<=b.xmax+stepX/100;x+=stepX){if(Math.abs(x)<1e-9)continue;const q=to([x,zeroY]);chunks.push(`<line x1="${q[0]}" y1="${q[1]-3}" x2="${q[0]}" y2="${q[1]+3}" stroke="${color}"/>`);screenText(q[0],q[1]+20,number(x,4),{size:12,anchor:'middle',color:C.gray});}
-        for(let y=Math.ceil(b.ymin/stepY)*stepY;y<=b.ymax+stepY/100;y+=stepY){if(Math.abs(y)<1e-9)continue;const q=to([zeroX,y]);screenText(q[0]-8,q[1]+4,number(y,4),{size:12,anchor:'end',color:C.gray});}
+        for(let x=Math.ceil(b.xmin/stepX)*stepX;x<=b.xmax+stepX/100;x+=stepX){if(Math.abs(x)<1e-9)continue;const q=to([x,zeroY]);chunks.push(`<line x1="${q[0]}" y1="${q[1]-3}" x2="${q[0]}" y2="${q[1]+3}" stroke="${color}"/>`);screenText(q[0],q[1]+22,number(x,4),{size:labels.tickSize||12,anchor:'middle',color:C.gray});}
+        for(let y=Math.ceil(b.ymin/stepY)*stepY;y<=b.ymax+stepY/100;y+=stepY){if(Math.abs(y)<1e-9)continue;const q=to([zeroX,y]);screenText(q[0]-8,q[1]+4,number(y,4),{size:labels.tickSize||12,anchor:'end',color:C.gray});}
         api.text([b.xmax,zeroY],labels.x??'x',{dy:-8,size:15,color:C.gray,avoid:false});api.text([zeroX,b.ymax],labels.y??'y',{dx:8,size:15,color:C.gray,avoid:false});
       },
       curve:(fn,xmin,xmax,o={})=>{
@@ -447,7 +560,7 @@ window.Lab = (() => {
     };
     return api;
   }
-  return {C,fmt:number,plot,escape,lineWidth,dashPattern};
+  return {C,fmt:number,plot,escape,lineWidth,labelSize,dashPattern};
 })();
 </script><script>(()=>{var pg=Object.defineProperty;var mg=(s,t)=>{for(var e in t)pg(s,e,{get:t[e],enumerable:!0})};var nf={};mg(nf,{ACESFilmicToneMapping:()=>Rh,AddEquation:()=>ri,AddOperation:()=>pd,AdditiveAnimationBlendMode:()=>Vh,AdditiveBlending:()=>bh,AgXToneMapping:()=>Ph,AlphaFormat:()=>Bh,AlwaysCompare:()=>Ed,AlwaysDepth:()=>ca,AlwaysStencilFunc:()=>pc,AmbientLight:()=>_o,AnimationAction:()=>Co,AnimationClip:()=>Ui,AnimationLoader:()=>Nc,AnimationMixer:()=>Yc,AnimationObjectGroup:()=>qc,AnimationUtils:()=>Dc,ArcCurve:()=>Ua,ArrayCamera:()=>To,ArrowHelper:()=>gh,AttachedBindMode:()=>dc,Audio:()=>Eo,AudioAnalyser:()=>Xc,AudioContext:()=>Er,AudioListener:()=>Hc,AudioLoader:()=>kc,AxesHelper:()=>_h,BackSide:()=>qe,BasicDepthPacking:()=>vd,BasicShadowMap:()=>Ep,BatchedMesh:()=>Ea,BezierInterpolant:()=>co,Bone:()=>ir,BooleanKeyframeTrack:()=>Wn,Box2:()=>Ro,Box3:()=>Le,Box3Helper:()=>ph,BoxGeometry:()=>Li,BoxHelper:()=>fh,BufferAttribute:()=>oe,BufferGeometry:()=>qt,BufferGeometryLoader:()=>So,ByteType:()=>Nh,Cache:()=>En,Camera:()=>ds,CameraHelper:()=>dh,CanvasTexture:()=>Ic,CapsuleGeometry:()=>Pa,CatmullRomCurve3:()=>Fa,CineonToneMapping:()=>Ch,CircleGeometry:()=>La,ClampToEdgeWrapping:()=>Ke,Clock:()=>th,Color:()=>St,ColorKeyframeTrack:()=>Mr,ColorManagement:()=>te,Compatibility:()=>pm,CompressedArrayTexture:()=>Cc,CompressedCubeTexture:()=>Rc,CompressedTexture:()=>as,CompressedTextureLoader:()=>Uc,ConeGeometry:()=>or,ConstantAlphaFactor:()=>ud,ConstantColorFactor:()=>cd,Controls:()=>vh,CubeCamera:()=>bo,CubeDepthTexture:()=>Ia,CubeReflectionMapping:()=>Dn,CubeRefractionMapping:()=>hi,CubeTexture:()=>Pi,CubeTextureLoader:()=>Fc,CubeUVReflectionMapping:()=>ps,CubicBezierCurve:()=>lr,CubicBezierCurve3:()=>Oa,CubicInterpolant:()=>oo,CullFaceBack:()=>Sh,CullFaceFront:()=>Yu,CullFaceFrontBack:()=>Ap,CullFaceNone:()=>qu,Curve:()=>on,CurvePath:()=>za,CustomBlending:()=>Ju,CustomToneMapping:()=>Ih,CylinderGeometry:()=>ar,Cylindrical:()=>nh,Data3DTexture:()=>ns,DataArrayTexture:()=>es,DataTexture:()=>Qe,DataTextureLoader:()=>Oc,DataUtils:()=>_c,DecrementStencilOp:()=>Xp,DecrementWrapStencilOp:()=>Yp,DefaultLoadingManager:()=>Ld,DepthFormat:()=>wn,DepthStencilFormat:()=>ui,DepthTexture:()=>Hn,DetachedBindMode:()=>md,DirectionalLight:()=>go,DirectionalLightHelper:()=>uh,DiscreteInterpolant:()=>lo,DodecahedronGeometry:()=>Da,DoubleSide:()=>Pn,DstAlphaFactor:()=>sd,DstColorFactor:()=>ad,DynamicCopyUsage:()=>lm,DynamicDrawUsage:()=>nm,DynamicReadUsage:()=>rm,EdgesGeometry:()=>Na,EllipseCurve:()=>os,EqualCompare:()=>bd,EqualDepth:()=>ua,EqualStencilFunc:()=>Kp,EquirectangularReflectionMapping:()=>Rr,EquirectangularRefractionMapping:()=>Ir,Euler:()=>_n,EventDispatcher:()=>an,ExternalTexture:()=>rr,ExtrudeGeometry:()=>Ha,FileLoader:()=>xn,Float16BufferAttribute:()=>bc,Float32BufferAttribute:()=>bt,FloatType:()=>He,Fog:()=>xa,FogExp2:()=>_a,FramebufferTexture:()=>wc,FrontSide:()=>kn,Frustum:()=>Gn,FrustumArray:()=>Aa,GLBufferAttribute:()=>Qc,GLSL1:()=>hm,GLSL3:()=>kh,GreaterCompare:()=>Td,GreaterDepth:()=>fa,GreaterEqualCompare:()=>ml,GreaterEqualDepth:()=>da,GreaterEqualStencilFunc:()=>em,GreaterStencilFunc:()=>jp,GridHelper:()=>ch,Group:()=>ni,HTMLTexture:()=>Pc,HalfFloatType:()=>Un,HemisphereLight:()=>uo,HemisphereLightHelper:()=>lh,IcosahedronGeometry:()=>Wa,ImageBitmapLoader:()=>Vc,ImageLoader:()=>Fi,ImageUtils:()=>ga,IncrementStencilOp:()=>Wp,IncrementWrapStencilOp:()=>qp,InstancedBufferAttribute:()=>oi,InstancedBufferGeometry:()=>Mo,InstancedInterleavedBuffer:()=>Kc,InstancedMesh:()=>Ta,Int16BufferAttribute:()=>Mc,Int32BufferAttribute:()=>Sc,Int8BufferAttribute:()=>xc,IntType:()=>Po,InterleavedBuffer:()=>rs,InterleavedBufferAttribute:()=>Ii,Interpolant:()=>ci,InterpolateBezier:()=>fc,InterpolateDiscrete:()=>qs,InterpolateLinear:()=>ma,InterpolateSmooth:()=>na,InterpolationSamplingMode:()=>fm,InterpolationSamplingType:()=>dm,InvertStencilOp:()=>Zp,KeepStencilOp:()=>bi,KeyframeTrack:()=>tn,LOD:()=>Ma,LatheGeometry:()=>Xa,Layers:()=>is,LessCompare:()=>Sd,LessDepth:()=>ha,LessEqualCompare:()=>pl,LessEqualDepth:()=>wi,LessEqualStencilFunc:()=>Qp,LessStencilFunc:()=>$p,Light:()=>In,LightProbe:()=>vo,Line:()=>Rn,Line3:()=>sh,LineBasicMaterial:()=>Oe,LineCurve:()=>cr,LineCurve3:()=>Ba,LineDashedMaterial:()=>ao,LineLoop:()=>wa,LineSegments:()=>dn,LinearFilter:()=>_e,LinearInterpolant:()=>yr,LinearMipMapLinearFilter:()=>Pp,LinearMipMapNearestFilter:()=>Ip,LinearMipmapLinearFilter:()=>Nn,LinearMipmapNearestFilter:()=>Pr,LinearSRGBColorSpace:()=>Zs,LinearToneMapping:()=>Eh,LinearTransfer:()=>Js,Loader:()=>Be,LoaderUtils:()=>Ar,LoadingManager:()=>br,LoopOnce:()=>gd,LoopPingPong:()=>xd,LoopRepeat:()=>_d,MOUSE:()=>bp,Material:()=>Pe,MaterialBlending:()=>wp,MaterialLoader:()=>yo,MathUtils:()=>Mm,Matrix2:()=>ih,Matrix3:()=>Xt,Matrix4:()=>kt,MaxEquation:()=>ju,Mesh:()=>ve,MeshBasicMaterial:()=>Cn,MeshDepthMaterial:()=>xr,MeshDistanceMaterial:()=>vr,MeshLambertMaterial:()=>so,MeshMatcapMaterial:()=>ro,MeshNormalMaterial:()=>io,MeshPhongMaterial:()=>eo,MeshPhysicalMaterial:()=>to,MeshStandardMaterial:()=>_r,MeshToonMaterial:()=>no,MinEquation:()=>Qu,MirroredRepeatWrapping:()=>Xs,MixOperation:()=>fd,MultiplyBlending:()=>Ah,MultiplyOperation:()=>Cr,NearestFilter:()=>be,NearestMipMapLinearFilter:()=>Rp,NearestMipMapNearestFilter:()=>Cp,NearestMipmapLinearFilter:()=>ms,NearestMipmapNearestFilter:()=>Dh,NeutralToneMapping:()=>Lh,NeverCompare:()=>Md,NeverDepth:()=>la,NeverStencilFunc:()=>Jp,NoBlending:()=>Ln,NoColorSpace:()=>Yn,NoNormalPacking:()=>zp,NoToneMapping:()=>vn,NormalAnimationBlendMode:()=>fl,NormalBlending:()=>Ei,NormalGAPacking:()=>kp,NormalRGPacking:()=>Vp,NotEqualCompare:()=>Ad,NotEqualDepth:()=>pa,NotEqualStencilFunc:()=>tm,NumberKeyframeTrack:()=>hs,Object3D:()=>se,ObjectLoader:()=>zc,ObjectSpaceNormalMap:()=>yd,OctahedronGeometry:()=>pr,OneFactor:()=>ed,OneMinusConstantAlphaFactor:()=>dd,OneMinusConstantColorFactor:()=>hd,OneMinusDstAlphaFactor:()=>rd,OneMinusDstColorFactor:()=>od,OneMinusSrcAlphaFactor:()=>oa,OneMinusSrcColorFactor:()=>id,OrthographicCamera:()=>Oi,PCFShadowMap:()=>wr,PCFSoftShadowMap:()=>Zu,PMREMGenerator:()=>vl,Path:()=>Di,PerspectiveCamera:()=>Re,Plane:()=>bn,PlaneGeometry:()=>cs,PlaneHelper:()=>mh,PointLight:()=>mo,PointLightHelper:()=>oh,Points:()=>Ca,PointsMaterial:()=>sr,PolarGridHelper:()=>hh,PolyhedronGeometry:()=>li,PositionalAudio:()=>Wc,PropertyBinding:()=>le,PropertyMixer:()=>wo,QuadraticBezierCurve:()=>hr,QuadraticBezierCurve3:()=>ur,Quaternion:()=>Fe,QuaternionKeyframeTrack:()=>us,QuaternionLinearInterpolant:()=>ho,R11_EAC_Format:()=>Wo,RED_GREEN_RGTC2_Format:()=>Br,RED_RGTC1_Format:()=>hl,REVISION:()=>Xu,RG11_EAC_Format:()=>Or,RGBADepthPacking:()=>Fp,RGBAFormat:()=>We,RGBAIntegerFormat:()=>Fo,RGBA_ASTC_10x10_Format:()=>sl,RGBA_ASTC_10x5_Format:()=>el,RGBA_ASTC_10x6_Format:()=>nl,RGBA_ASTC_10x8_Format:()=>il,RGBA_ASTC_12x10_Format:()=>rl,RGBA_ASTC_12x12_Format:()=>al,RGBA_ASTC_4x4_Format:()=>Yo,RGBA_ASTC_5x4_Format:()=>Zo,RGBA_ASTC_5x5_Format:()=>Jo,RGBA_ASTC_6x5_Format:()=>$o,RGBA_ASTC_6x6_Format:()=>Ko,RGBA_ASTC_8x5_Format:()=>Qo,RGBA_ASTC_8x6_Format:()=>jo,RGBA_ASTC_8x8_Format:()=>tl,RGBA_BPTC_Format:()=>ol,RGBA_ETC2_EAC_Format:()=>Ho,RGBA_PVRTC_2BPPV1_Format:()=>Vo,RGBA_PVRTC_4BPPV1_Format:()=>zo,RGBA_S3TC_DXT1_Format:()=>Nr,RGBA_S3TC_DXT3_Format:()=>Ur,RGBA_S3TC_DXT5_Format:()=>Fr,RGBDepthPacking:()=>Op,RGBFormat:()=>zh,RGBIntegerFormat:()=>Lp,RGB_BPTC_SIGNED_Format:()=>ll,RGB_BPTC_UNSIGNED_Format:()=>cl,RGB_ETC1_Format:()=>ko,RGB_ETC2_Format:()=>Go,RGB_PVRTC_2BPPV1_Format:()=>Bo,RGB_PVRTC_4BPPV1_Format:()=>Oo,RGB_S3TC_DXT1_Format:()=>Dr,RGDepthPacking:()=>Bp,RGFormat:()=>di,RGIntegerFormat:()=>Uo,RawShaderMaterial:()=>gr,Ray:()=>ai,Raycaster:()=>jc,RectAreaLight:()=>xo,RedFormat:()=>No,RedIntegerFormat:()=>Lr,ReinhardToneMapping:()=>wh,RenderTarget:()=>js,RenderTarget3D:()=>Zc,RepeatWrapping:()=>Ws,ReplaceStencilOp:()=>Hp,ReverseSubtractEquation:()=>Ku,RingGeometry:()=>qa,SIGNED_R11_EAC_Format:()=>Xo,SIGNED_RED_GREEN_RGTC2_Format:()=>dl,SIGNED_RED_RGTC1_Format:()=>ul,SIGNED_RG11_EAC_Format:()=>qo,SRGBColorSpace:()=>Je,SRGBTransfer:()=>ae,Scene:()=>va,ShaderChunk:()=>Kt,ShaderLib:()=>Fn,ShaderMaterial:()=>je,ShadowMaterial:()=>ja,Shape:()=>Ni,ShapeGeometry:()=>Ya,ShapePath:()=>xh,ShapeUtils:()=>gn,ShortType:()=>Uh,Skeleton:()=>ba,SkeletonHelper:()=>ah,SkinnedMesh:()=>Sa,Source:()=>An,Sphere:()=>Ie,SphereGeometry:()=>mr,Spherical:()=>eh,SphericalHarmonics3:()=>Tr,SplineCurve:()=>dr,SpotLight:()=>po,SpotLightHelper:()=>rh,Sprite:()=>ya,SpriteMaterial:()=>nr,SrcAlphaFactor:()=>aa,SrcAlphaSaturateFactor:()=>ld,SrcColorFactor:()=>nd,StaticCopyUsage:()=>om,StaticDrawUsage:()=>$s,StaticReadUsage:()=>sm,StereoCamera:()=>Gc,StreamCopyUsage:()=>cm,StreamDrawUsage:()=>im,StreamReadUsage:()=>am,StringKeyframeTrack:()=>Xn,SubtractEquation:()=>$u,SubtractiveBlending:()=>Th,TOUCH:()=>Tp,TangentSpaceNormalMap:()=>qn,TetrahedronGeometry:()=>Za,Texture:()=>Te,TextureLoader:()=>Bc,TextureUtils:()=>yh,Timer:()=>Ao,TimestampQuery:()=>um,TorusGeometry:()=>Ja,TorusKnotGeometry:()=>$a,Triangle:()=>Tn,TriangleFanDrawMode:()=>Up,TriangleStripDrawMode:()=>Np,TrianglesDrawMode:()=>Dp,TubeGeometry:()=>Ka,UVMapping:()=>Io,Uint16BufferAttribute:()=>tr,Uint32BufferAttribute:()=>er,Uint8BufferAttribute:()=>vc,Uint8ClampedBufferAttribute:()=>yc,Uniform:()=>Jc,UniformsGroup:()=>$c,UniformsLib:()=>mt,UniformsUtils:()=>Pd,UnsignedByteType:()=>en,UnsignedInt101111Type:()=>Oh,UnsignedInt248Type:()=>_s,UnsignedInt5999Type:()=>Fh,UnsignedIntType:()=>fn,UnsignedShort4444Type:()=>Lo,UnsignedShort5551Type:()=>Do,UnsignedShortType:()=>gs,VSMShadowMap:()=>fs,Vector2:()=>Q,Vector3:()=>C,Vector4:()=>ce,VectorKeyframeTrack:()=>Sr,VideoFrameTexture:()=>Ec,VideoTexture:()=>Ra,WebGL3DRenderTarget:()=>gc,WebGLArrayRenderTarget:()=>mc,WebGLCoordinateSystem:()=>rn,WebGLCubeRenderTarget:()=>yl,WebGLRenderTarget:()=>Xe,WebGLRenderer:()=>ef,WebGLUtils:()=>rg,WebGPUCoordinateSystem:()=>Ci,WebXRController:()=>ss,WireframeGeometry:()=>Qa,WrapAroundEnding:()=>Ys,ZeroCurvatureEnding:()=>Ti,ZeroFactor:()=>td,ZeroSlopeEnding:()=>Ai,ZeroStencilOp:()=>Gp,createCanvasElement:()=>wd,error:()=>Ct,getConsoleFunction:()=>_m,log:()=>Qs,setConsoleFunction:()=>gm,warn:()=>at,warnOnce:()=>ii});/**
  * @license
@@ -4650,7 +4763,7 @@ window.Space = (() => {
     function labelEntry(spec){
       const signature=[spec.tex,spec.text||spec.label,spec.size||18,spec.color,spec.priority].join('|');let item=labelNodes.get(spec.id);
       if(item?.signature===signature)return item;
-      if(item)item.node.remove();const node=make('g',{'data-space-label':spec.id,'pointer-events':'none'}),size=spec.size||18;
+      if(item)item.node.remove();const node=make('g',{'data-space-label':spec.id,'pointer-events':'none'}),size=Lab.labelSize(spec.size||18);
       let width,height;
       if(spec.tex){
         const markup=M.svg(0,0,spec.tex,{size,color:spec.color||Lab.C.ink});node.innerHTML=markup;const content=node.firstElementChild;
@@ -4805,7 +4918,7 @@ window.Space = (() => {
       const O=[0,0,0],A=[t,t,t],B1=[c,0,0],B2=[0,c,0],B3=[0,0,c],P=[c,c,c];
       return {t,c,O,A,B1,B2,B3,P,oa:norm(A),ap:norm(subtract(A,P)),unit:[B1,B2,B3].map(B=>norm(subtract(A,B)))};
     }
-    const viewport=Space.create(svg,{center:[.55,.55,.55],span:2.42,view:initial,onViewChange:next=>{state.yaw=next.yaw;state.pitch=next.pitch;}});
+    const viewport=Space.create(svg,{center:[.55,.55,.55],span:2.12,view:initial,onViewChange:next=>{state.yaw=next.yaw;state.pitch=next.pitch;}});
     const middle=(a,b)=>a.map((v,i)=>(v+b[i])/2);
     function sceneFor(m){
       const C=Lab.C,points=[],edges=[],faces=[],annotations=[];
@@ -4856,7 +4969,7 @@ window.Space = (() => {
 
 Problems[11] = {
   title: '拱桥费用',
-  statement: `半径为 ${M.inline('4\\,\\mathrm m')} 的圆弧桥面 ${M.inline('ACB')}，两端接与圆相切的直线段 ${M.inline('AD,BE')}。直线段每米 0.4 万元，圆弧每米 2.5 万元。坡角 ${M.inline(String.raw`\theta\in\left[\arcsin\frac13,\frac\pi6\right]`)}，求使总费用最少的<span class="target">坡角</span>。〔原卷第 1 页〕`,
+  statement: `半径为 ${M.inline('4\\,\\mathrm m')} 的圆弧桥面 ${M.inline('ACB')}，两端接与圆相切的直线段 ${M.inline('AD,BE')}。图示中 ${M.inline('D,O,E')} 在同一水平线上，桥关于 ${M.inline('OC')} 左右对称，坡角为 ${M.inline(String.raw`\angle ADO=\theta`)}。直线段每米 0.4 万元，圆弧每米 2.5 万元。${M.inline(String.raw`\theta\in\left[\arcsin\frac13,\frac\pi6\right]`)}，求使总费用最少的<span class="target">坡角</span>。〔原卷第 1 页〕`,
   mount(host) {
     const lo = Math.asin(1/3), hi = Math.PI/6, optimum = Math.asin(.4), C = Lab.C;
     let theta = lo, view = 'total', bridgePlot, costPlot, dragging = null, constructionStep = null;
@@ -4868,7 +4981,39 @@ Problems[11] = {
       {title:'从桥形读出两类长度',body:`${M.inline(String.raw`OA\perp AD`)}，所以 ${M.inline(String.raw`\angle AOC=\theta`)}；对称得到 ${M.inline(String.raw`\angle AOB=2\theta`)}。于是每段切线长 ${M.inline(String.raw`4\cot\theta`)}，弧长为 ${M.inline(String.raw`4\cdot2\theta=8\theta`)}（角用弧度）。`},
       {title:'把长度变成费用图',body:`将两段直线总长乘以 ${M.inline('0.4')}，圆弧长乘以 ${M.inline('2.5')}，得到 ${M.inline(String.raw`C(\theta)=\frac{16}{5}\cot\theta+20\theta`)}。右图横轴是坡角，纵轴是费用；寻找红色曲线的最低点，就是原题要求的坡角。`}
     ];
-    host.innerHTML = `<div class="controls"><label style="color:${C.target}">坡角 ${M.inline(String.raw`\theta`)} <input id="q11-angle" type="range" min="${lo}" max="${hi}" step="0.0001" value="${lo}"></label><input id="q11-degrees" type="number" aria-label="坡角（度）" min="${lo*180/Math.PI}" max="30" step="0.01" value="${lo*180/Math.PI}"><span>°</span><label>右图 <select id="q11-view"><option value="total">总费用局部放大</option><option value="parts">费用构成</option></select></label><button id="q11-best" class="aux">取费用最低的坡角</button></div><div class="figures"><svg id="q11-bridge" class="figure" role="img" aria-label="圆弧及两端切线构成的拱桥；拖动切点调整坡角"></svg><svg id="q11-cost" class="figure" role="img" aria-label="直线段、圆弧和总费用随坡角变化的曲线"></svg></div><div class="readout" id="q11-readout"></div><div class="explain"><section class="proof-step"><h3>把桥形写成费用</h3><p>每段切线长 ${M.inline(String.raw`4\cot\theta`)}，圆弧圆心角为 ${M.inline(String.raw`2\theta`)}，故弧长为 ${M.inline(String.raw`8\theta`)}（${M.inline(String.raw`\theta`)} 用弧度）。</p>${M.block(String.raw`C(\theta)=\frac{16}{5}\cot\theta+20\theta`)}</section><section class="proof-step"><h3>用变化率找最优坡角</h3>${M.block(String.raw`C'(\theta)=20-\frac{16}{5\sin^2\theta}`)}<p>令导数为零，得 ${M.inline(String.raw`\sin\theta=\frac25`)}。导数由负变正，最优角为 <span style="color:${C.target}">${M.inline(String.raw`\arcsin\frac25\approx23.578^\circ`)}</span>。</p><p>坡角增大时，直线段费用减少，圆弧费用增加。</p></section></div>`;
+    host.innerHTML = `<div class="controls"><label style="color:${C.target}">坡角 ${M.inline(String.raw`\theta`)} <input id="q11-angle" type="range" min="${lo}" max="${hi}" step="0.0001" value="${lo}"></label><input id="q11-degrees" type="number" aria-label="坡角（度）" min="${lo*180/Math.PI}" max="30" step="0.01" value="${lo*180/Math.PI}"><span>°</span><label>费用图 <select id="q11-view"><option value="total">总费用局部放大</option><option value="parts">费用构成</option></select></label><button id="q11-best" class="aux">取费用最低的坡角</button></div>
+    <div class="figures"><svg id="q11-bridge" class="figure" role="img" aria-label="圆弧及两端切线构成的拱桥；拖动切点调整坡角"></svg><svg id="q11-cost" class="figure" role="img" aria-label="直线段、圆弧和总费用随坡角变化的曲线"></svg></div>
+    <div class="readout" id="q11-readout"></div>
+    <div class="explain" id="q11-proof">
+      <section class="proof-step"><h3>① 相切条件 → 两段直桥长度</h3>
+        <p>图中 ${M.inline('D,O,E')} 共线且水平，${M.inline(String.raw`OA\perp AD`)}。在直角三角形 ${M.inline('OAD')} 中，坡角为 ${M.inline(String.raw`\angle ADO=\theta`)}，故</p>
+        ${M.block(String.raw`\tan\theta=\frac{OA}{AD}=\frac4{AD}`)}
+        ${M.block(String.raw`AD=BE=4\cot\theta`)}
+        <p>左右对称，所以两段直桥总长为 <span class="blue">${M.inline(String.raw`L_{\text{直}}=8\cot\theta`)}</span> 米。</p>
+      </section>
+      <section class="proof-step"><h3>② 圆心角 → 圆弧长度</h3>
+        <p>${M.inline('OC')} 垂直于水平线，${M.inline('OA')} 垂直于切线。因此 ${M.inline(String.raw`\angle AOC=\theta`)}，对称得 ${M.inline(String.raw`\angle AOB=2\theta`)}。</p>
+        ${M.block(String.raw`L_{\text{弧}}=r\alpha=4\cdot2\theta=8\theta`)}
+        <p class="proof-note">弧长公式中的 ${M.inline(String.raw`\theta`)} 必须用弧度。输入框和图上横轴用度，计算时先乘 ${M.inline(String.raw`\pi/180`)}。</p>
+      </section>
+      <section class="proof-step"><h3>③ 长度 × 单价 → 费用函数</h3>
+        <p class="blue">直桥每米 0.4 万元：</p>
+        ${M.block(String.raw`C_{\text{直}}=0.4\cdot8\cot\theta=\frac{16}{5}\cot\theta`)}
+        <p class="gold">圆弧每米 2.5 万元：</p>
+        ${M.block(String.raw`C_{\text{弧}}=2.5\cdot8\theta=20\theta`)}
+        <div class="target">${M.block(String.raw`C(\theta)=\frac{16}{5}\cot\theta+20\theta`)}</div>
+        <p>费用单位为万元，定义域为 ${M.inline(String.raw`\theta\in[\arcsin\frac13,\frac\pi6]`)}。红色总费用曲线就是两项相加的结果。</p>
+      </section>
+      <section class="proof-step"><h3>④ 代入当前坡角，逐项算费用</h3><div id="q11-worked"></div></section>
+      <section class="proof-step"><h3>⑤ 求导并判断最小值</h3>
+        ${M.block(String.raw`C'(\theta)=20-\frac{16}{5\sin^2\theta}`)}
+        ${M.block(String.raw`C'(\theta)=0\ \Longrightarrow\ \sin^2\theta=\frac4{25}`)}
+        <p>坡角是锐角，故 ${M.inline(String.raw`\sin\theta=\frac25`)}。又 ${M.inline(String.raw`\frac13<\frac25<\frac12`)}，临界点 ${M.inline(String.raw`\theta_* =\arcsin\frac25`)} 在定义域内部。其左侧导数为负、右侧为正，所以总费用先减后增。</p>
+        <p>此时 ${M.inline(String.raw`\cos\theta_* =\frac{\sqrt{21}}5`)}，${M.inline(String.raw`\cot\theta_* =\frac{\sqrt{21}}2`)}，代回费用函数：</p>
+        <div class="target">${M.block(String.raw`\begin{aligned}C_{\min}&=\frac{16}{5}\cdot\frac{\sqrt{21}}2+20\arcsin\frac25\\&=\frac{8\sqrt{21}}5+20\arcsin\frac25.\end{aligned}`)}</div>
+        <p>最优坡角约 ${M.inline('23.578^\\circ')}，最低费用约 ${M.inline('15.562')} 万元。</p>
+      </section>
+    </div>`;
     const angle = host.querySelector('#q11-angle'), degrees = host.querySelector('#q11-degrees'), bridge = host.querySelector('#q11-bridge'), cost = host.querySelector('#q11-cost');
     const straight = t => 3.2/Math.tan(t), arc = t => 20*t, total = t => straight(t)+arc(t);
     function set(t) { if (!Number.isFinite(t)) return; theta = Math.max(lo, Math.min(hi,t)); render(); }
@@ -4952,17 +5097,27 @@ Problems[11] = {
       cost.setAttribute('aria-label',zoom?'总费用局部放大图，纵轴15.5至16.1万元，不从零开始；实心点是当前坡角，空心点是最低费用坡角':'直线段、圆弧和总费用随坡角变化，纵轴从零开始');
       q.finish();
       }else{cost.replaceChildren();costPlot=null;}
-      host.querySelector('#q11-readout').innerHTML=`<span style="color:${C.target}">${M.inline(String.raw`\theta=${Lab.fmt(theta*180/Math.PI,3)}^\circ`)}</span>直线段 <b style="color:${C.blue}">${Lab.fmt(straight(theta),3)}</b> + 圆弧 <b style="color:${C.gold}">${Lab.fmt(arc(theta),3)}</b> = 总费用 <b style="color:${C.target}">${Lab.fmt(total(theta),3)}</b> 万元${M.answer(`${M.inline(String.raw`\theta=\arcsin\frac25\approx23.578^\circ`)}；最低费用 ${M.inline(String.raw`C_{\min}=\frac{8\sqrt{21}}5+20\arcsin\frac25\approx${Lab.fmt(total(optimum),3)}`)} 万元。`)}`;
+      const straightLength=8/Math.tan(theta),arcLength=8*theta,deg=theta*180/Math.PI;
+      host.querySelector('#q11-readout').innerHTML=`<div class="q11-cost-summary">
+        <div class="q11-cost-model"><b>费用函数</b><span class="target">${M.inline(String.raw`C(\theta)=\frac{16}{5}\cot\theta+20\theta`)}</span><small>θ 用弧度 · 费用单位：万元</small><button type="button" data-q11-explain aria-controls="q11-proof">查看计算过程</button></div>
+        <div class="q11-current-cost"><span>当前 ${M.inline(String.raw`\theta=${Lab.fmt(deg,3)}^\circ\approx${Lab.fmt(theta,4)}\,\mathrm{rad}`)}</span><span class="blue">直桥：${M.inline(`0.4\\times${Lab.fmt(straightLength,3)}\\approx${Lab.fmt(straight(theta),3)}`)}</span><span class="gold">圆弧：${M.inline(`2.5\\times${Lab.fmt(arcLength,3)}\\approx${Lab.fmt(arc(theta),3)}`)}</span><span class="target">合计 ${M.inline(Lab.fmt(total(theta),3))} 万元</span></div>
+      </div>${M.answer(`${M.inline(String.raw`\theta=\arcsin\frac25\approx23.578^\circ`)}；最低费用 ${M.inline(String.raw`C_{\min}=\frac{8\sqrt{21}}5+20\arcsin\frac25\approx${Lab.fmt(total(optimum),3)}`)} 万元。`)}`;
+      host.querySelector('#q11-worked').innerHTML=`<p>先把输入的角度转成弧度：</p>${M.block(String.raw`\theta\approx${Lab.fmt(deg,4)}\cdot\frac\pi{180}\approx${Lab.fmt(theta,5)}`)}
+        <p>两类长度（米）：</p>${M.block(String.raw`\begin{aligned}L_{\text{直}}&=8\cot\theta\approx${Lab.fmt(straightLength,4)}\\L_{\text{弧}}&=8\theta\approx${Lab.fmt(arcLength,4)}\end{aligned}`)}
+        <p>乘单价并相加（万元）：</p>${M.block(String.raw`\begin{aligned}C_{\text{直}}&\approx0.4\cdot${Lab.fmt(straightLength,4)}\approx${Lab.fmt(straight(theta),4)}\\C_{\text{弧}}&\approx2.5\cdot${Lab.fmt(arcLength,4)}\approx${Lab.fmt(arc(theta),4)}\\C(\theta)&=C_{\text{直}}+C_{\text{弧}}\approx${Lab.fmt(total(theta),4)}\end{aligned}`)}<p class="note">显示值已四舍五入；曲线和合计使用未舍入的数据。拖动坡角，这里的计算同步更新。</p>`;
     }
     angle.oninput=()=>set(+angle.value);degrees.onchange=()=>set(+degrees.value*Math.PI/180);host.querySelector('#q11-best').onclick=()=>set(optimum);
     host.querySelector('#q11-view').onchange=e=>{view=e.target.value;render();};
+    const showCalculation=e=>{if(!e.target.closest('[data-q11-explain]'))return;
+      if(!document.body.classList.contains('show-key'))document.getElementById('keyButton').click();
+      const proof=host.querySelector('#q11-proof');proof.scrollIntoView({block:'nearest'});proof.querySelector('.proof-toggle')?.focus({preventScroll:true});
+    };
+    host.addEventListener('click',showCalculation);
     bridge.onpointerdown=e=>{if(!show(1))return;dragging='bridge';bridge.setPointerCapture(e.pointerId);};bridge.onpointermove=e=>{if(dragging!=='bridge')return;const [x,y]=bridgePlot.fromEvent(e);set(Math.atan2(Math.abs(x),Math.max(.01,y)));};bridge.onpointerup=()=>dragging=null;bridge.onpointercancel=()=>dragging=null;
     cost.onpointerdown=e=>{if(!costPlot)return;dragging='cost';cost.setPointerCapture(e.pointerId);set(costPlot.fromEvent(e)[0]*Math.PI/180);};cost.onpointermove=e=>{if(dragging==='cost'&&costPlot)set(costPlot.fromEvent(e)[0]*Math.PI/180);};cost.onpointerup=()=>dragging=null;cost.onpointercancel=()=>dragging=null;
-    render();return {render,reset(){theta=lo;view='total';host.querySelector('#q11-view').value=view;if(constructionStep!==null)constructionStep=0;render();},getState(){return{theta,view,straight:straight(theta),arc:arc(theta),total:total(theta)};},getConstructionSteps:()=>constructionSteps,getConstructionStep:()=>constructionStep,setConstructionStep(index){constructionStep=index===null?null:Math.max(0,Math.min(constructionSteps.length-1,Math.trunc(index)));dragging=null;render();}};
+    render();return {render,destroy(){host.removeEventListener('click',showCalculation);},reset(){theta=lo;view='total';host.querySelector('#q11-view').value=view;if(constructionStep!==null)constructionStep=0;render();},getState(){return{theta,view,straight:straight(theta),arc:arc(theta),total:total(theta)};},getConstructionSteps:()=>constructionSteps,getConstructionStep:()=>constructionStep,setConstructionStep(index){constructionStep=index===null?null:Math.max(0,Math.min(constructionSteps.length-1,Math.trunc(index)));dragging=null;render();}};
   }
 };
-
-
 
 Problems[12] = {
   title: '绝对值：两段距离的和',
@@ -5264,7 +5419,7 @@ Problems[17] = {
     const svg=host.querySelector('#q17-svg'),part=host.querySelector('#q17-part'),shift=host.querySelector('#q17-shift'),height=host.querySelector('#q17-height');
     const add=(a,b)=>a.map((v,i)=>v+b[i]),sub=(a,b)=>a.map((v,i)=>v-b[i]),mid=(a,b)=>a.map((v,i)=>(v+b[i])/2),norm=a=>Math.hypot(...a);
     function model(){const one=state.part===1,v=one?[1,0,Math.sqrt(3)]:[state.shift,0,state.height],A=[0,one?Math.sqrt(3):state.base,0],B=[-1,0,0],C=[1,0,0],A1=add(A,v),B1=add(B,v),C1=add(C,v),E=mid(B,C),F=mid(A1,C1),D=mid(A,B),H=[C1[0],C1[1],0];return {A,B,C,A1,B1,C1,E,F,D,H,v,height:v[2],baseArea:A[1],volume:A[1]*v[2],side:norm(v),ef:sub(F,E),da1:sub(A1,D)};}
-    const viewport=Space.create(svg,{center:[.35,.55,.88],span:3.85,view:initial,onViewChange:next=>{state.yaw=next.yaw;state.pitch=next.pitch;}});
+    const viewport=Space.create(svg,{center:[.35,.55,.88],span:3.4,view:initial,onViewChange:next=>{state.yaw=next.yaw;state.pitch=next.pitch;}});
     function sceneFor(m,reveal){
       const C=Lab.C,one=state.part===1,points=[],edges=[],faces=[],annotations=[];
       const emphasizeTarget=!one&&(constructionStep===null||constructionStep>=3);
@@ -5351,13 +5506,17 @@ Problems[18] = {
     function getConstructionSteps(){return[
       {title:'先画当前余弦函数',body:`由 ${M.inline(String.raw`f(x)=2\cos(\omega x+\frac{3\pi}4),\ \omega>0`)}，先画当前参数的函数图像。横向窗口只用于观察，后续筛选仍依据题设的开区间。`},
       {title:'把题设开区间标在函数图上',body:`由 ${M.inline(String.raw`x\in(\frac\pi4,\frac\pi3)`)}，画两条端点竖线并标出中间区域；曲线端点画空心圆，说明端点处的极值不计入。`},
-      {title:'把开区间映射到相位轴',body:`令 ${M.inline(String.raw`t=\omega x+\frac{3\pi}4`)}。因 ${M.inline(String.raw`\omega>0`)}，相位随横坐标增加；在右图画 ${M.inline(String.raw`t\in(\frac{(\omega+3)\pi}4,\frac{(4\omega+9)\pi}{12})`)}，两端仍为空心，长度为 ${M.inline(String.raw`\frac{\omega\pi}{12}`)}。`},
+      {title:'把开区间映射到相位轴',body:`令 ${M.inline(String.raw`t=\omega x+\frac{3\pi}4`)}。因 ${M.inline(String.raw`\omega>0`)}，相位随横坐标增加；在相位图画 ${M.inline(String.raw`t\in(\frac{(\omega+3)\pi}4,\frac{(4\omega+9)\pi}{12})`)}，两端仍为空心，长度为 ${M.inline(String.raw`\frac{\omega\pi}{12}`)}。`},
       {title:'用左端零点限定合法候选',body:`由 ${M.inline(String.raw`f(\frac\pi4)=0`)}，左端相位必须是 ${M.inline(String.raw`(k+\frac12)\pi`)}，故 ${M.inline(String.raw`\omega=4k-1,\ k\in\mathbb N^*`)}。标出左端零点并逐个查看候选；连续模式若不满足此等式，图中会注明，不能作为合法候选。`},
       {title:'标极值并检查开区间内部',body:`在相位轴标出 ${M.inline(String.raw`t=n\pi`)}：奇数 ${M.inline('n')} 对应极小值，偶数对应极大值，再同步标到曲线上。合法候选须先遇极小值，因此 ${M.inline('k')} 为偶数，且 ${M.inline(String.raw`\frac\pi2<\frac{\omega\pi}{12}\le\frac{3\pi}2`)}；结合得 ${M.inline(String.raw`\omega=7\ \text{或}\ 15`)}。右端极大值可恰在端点，左端到极小值的距离必须严格小于区间长度。`}
     ];}
     function restartConstruction(){if(constructionStep!==null)constructionStep=0;host.dispatchEvent(new Event('constructionchange'));}
     host.innerHTML=`<div class="controls"><label>条件 <select id="q18-mode"><option value="candidate">满足左端零点条件</option><option value="free">连续改变 ω</option></select></label><label id="q18-label">k <input id="q18-range" type="range" min="1" max="12" step="1" value="2"></label><input id="q18-number" type="number" aria-label="频率参数" min="1" max="12" step="1" value="2"><span id="q18-value" style="color:${C.target}"></span><button id="q18-next">下一个候选</button></div><div class="figures"><svg id="q18-function" class="figure" role="img" aria-label="固定开区间内的余弦函数及极值点"></svg><svg id="q18-phase" class="figure" role="img" aria-label="相位轴上的开区间及极值位置"></svg></div><div class="readout" id="q18-readout"></div><div class="explain"><section class="proof-step"><h3>零点给出离散候选</h3><p>零点条件给出 ${M.inline(String.raw`\omega=4k-1,\quad k\in\mathbb N^*`)}。</p></section><section class="proof-step"><h3>按极值顺序筛选</h3><p>${M.inline('k')} 为奇数：先遇极大值，再遇极小值，不合题意。</p><p>${M.inline('k')} 为偶数：先遇极小值，再遇极大值，需</p>${M.block(String.raw`\frac\pi2<\frac{\omega\pi}{12}\le\frac{3\pi}2`)}<p>即 ${M.inline(String.raw`6<\omega\le18`)}，结合 ${M.inline('k')} 为偶数，得 <span style="color:${C.target}">${M.inline(String.raw`\omega=7\ \text{或}\ 15`)}</span>。</p></section><section class="proof-step"><h3>核对开区间边界</h3><p>右端点恰有极大值时不计入；极小值必须严格落在区间内部。图像用于观察，上述不等式负责排除全部其他候选。</p></section></div>`;
     const range=host.querySelector('#q18-range'),number=host.querySelector('#q18-number'),main=host.querySelector('#q18-function'),phase=host.querySelector('#q18-phase');
+    const figures=host.querySelector('.figures');figures.classList.add('q18-figures');
+    const phaseView=document.createElement('section');phaseView.className='phase-view';
+    phase.replaceWith(phaseView);phaseView.innerHTML='<div class="phase-heading"></div><div class="phase-readout"></div>';
+    phaseView.insertBefore(phase,phaseView.lastElementChild);
     function piFraction(n,d){let a=n,b=d;while(b){const r=a%b;a=b;b=r;}n/=a;d/=a;const term=n===1?String.raw`\pi`:`${n}\\pi`;return d===1?term:String.raw`\dfrac{${term}}{${d}}`;}
     function update(v){if(!Number.isFinite(v))return;if(mode==='candidate'){k=Math.max(1,Math.min(100,Math.round(v)));omega=4*k-1;}else omega=Math.max(.1,Math.min(80,v));render();}
     function render(){
@@ -5366,21 +5525,46 @@ Problems[18] = {
       const t0=omega/4+.75,t1=omega/3+.75,inside=n=>12*n>3*omega+9+1e-9&&12*n<4*omega+9-1e-9;
       const minima=[],maxima=[];for(let n=Math.floor(t0)-1;n<=Math.ceil(t1)+1;n++){if(inside(n))(Math.abs(n)%2===1?minima:maxima).push(n);}
       const f=x=>2*Math.cos(omega*x+3*Math.PI/4),p=Lab.plot(main,{xmin:.53,xmax:1.27,ymin:-3,ymax:3.1,equal:false,pad:44});plot=p;
-      if(show(1))p.poly([[Math.PI/4,-2.65],[Math.PI/3,-2.65],[Math.PI/3,2.65],[Math.PI/4,2.65]],{fill:C.blue,opacity:.055,stroke:'none'});p.axes();
+      if(show(1))p.poly([[Math.PI/4,-2.65],[Math.PI/3,-2.65],[Math.PI/3,2.65],[Math.PI/4,2.65]],{fill:C.blue,opacity:.09,stroke:'none'});p.axes({tickSize:14});
       p.curve(f,.53,1.27,{stroke:C.blue,width:2.8,n:Math.max(350,omega*25)});
       if(show(1))[Math.PI/4,Math.PI/3].forEach((x,i)=>{p.line([x,-2.6],[x,2.6],{stroke:C.gray,dash:'5 5',width:1});const z=p.to([x,f(x)]);p.add(`<circle cx="${z[0]}" cy="${z[1]}" r="6" fill="var(--canvas)" stroke="${C.ink}" stroke-width="2"/>`);p.math([x,-2.75],i?String.raw`\dfrac\pi3`:String.raw`\dfrac\pi4`,{anchor:'middle',size:18});});
-      if(show(4))for(let n=Math.ceil(omega*.53/Math.PI+.75);n<=Math.floor(omega*1.27/Math.PI+.75);n++){const x=(n-.75)*Math.PI/omega,y=2*(n%2===0?1:-1),isMin=Math.abs(n)%2===1;p.dot([x,y],inside(n)&&omega<60?(isMin?'极小':'极大'):'',isMin?C.green:C.gold,-15,-13);}
+      if(show(4))for(let n=Math.ceil(omega*.53/Math.PI+.75);n<=Math.floor(omega*1.27/Math.PI+.75);n++){
+        const x=(n-.75)*Math.PI/omega,y=2*(n%2===0?1:-1),isMin=Math.abs(n)%2===1,color=isMin?C.green:C.gold;
+        if(inside(n))p.dot([x,y],omega<60?(isMin?'极小':'极大'):'',color,-15,-13);
+        else{const z=p.to([x,y]);p.add(`<circle data-excluded-extremum="${n}" cx="${z[0]}" cy="${z[1]}" r="5" fill="var(--canvas)" stroke="${color}" stroke-width="2"/>`);}
+      }
       const zero=candidate||Number.isInteger((omega+1)/4);
       if(constructionStep!==null&&show(3))p.screenText(16,p.h-12,zero?'左端满足零点条件：当前为合法候选。':'左端不是零点：当前参数不属于合法候选。',{size:15,color:zero?C.target:C.gray});
-      p.screenText(16,23,show(1)?'固定 x 窗口：阴影为题设开区间':'当前函数：先观察曲线形状',{size:17});p.finish();
-      const q=Lab.plot(phase,{xmin:t0-.25,xmax:t1+.25,ymin:-1.65,ymax:1.55,equal:false,pad:44});
+      p.screenText(16,23,show(1)?'函数图 · 阴影为题设开区间':'当前函数：先观察曲线形状',{size:14,color:C.gray});p.finish();
+      // Include the nearest exterior extrema, so rejected candidates have a visual reason.
+      const first=Math.floor(t0+1e-9),last=Math.ceil(t1-1e-9);
+      const q=Lab.plot(phase,{xmin:first-.3,xmax:last+.3,ymin:-1,ymax:1,equal:false,pad:34});
+      const axisY=Math.round(q.h*.62),worldY=(q.h/2-axisY)/q.sy;
+      const heading=phaseView.querySelector('.phase-heading'),readout=phaseView.querySelector('.phase-readout');
+      heading.innerHTML=show(2)?M.inline(String.raw`\text{相位 }t=\omega x+\frac{3\pi}4`)+'<span>实心极值在区间内 · 空心点不计入</span>':'相位轴：将在区间建立后画出';
+      readout.hidden=!show(2);
       if(show(2)){
-        q.line([t0-.2,0],[t1+.2,0],{stroke:C.gray,width:1});q.line([t0,0],[t1,0],{stroke:C.blue,width:5});
-        [t0,t1].forEach((t,i)=>{const z=q.to([t,0]);q.add(`<circle cx="${z[0]}" cy="${z[1]}" r="7" fill="var(--canvas)" stroke="${C.blue}" stroke-width="2"/>`);q.text([t,-.48],i?'右端（不含）':'左端（不含）',{anchor:'middle',size:16});const label=candidate?(i?piFraction(4*omega+9,12):piFraction(omega+3,4)):String.raw`\approx${Lab.fmt(t,3)}\pi`;q.math([t,-.84],label,{anchor:'middle',size:16,color:C.gray});});
-        q.screenMath(16,27,String.raw`\text{相位 }t=\omega x+\frac{3\pi}4`,{size:17});q.screenMath(18,q.h-24,String.raw`\text{相位区间长度：}\frac{\omega\pi}{12}${candidate?'='+piFraction(omega,12):String.raw`\approx${Lab.fmt(omega/12,3)}\pi`}`,{size:17});
-      }else q.screenText(16,27,'相位轴：将在区间建立后画出',{size:17,color:C.gray});
-      if(show(4))for(let n=Math.ceil(t0-.2);n<=Math.floor(t1+.2);n++){const isMin=Math.abs(n)%2===1;q.line([n,-.08],[n,.2],{stroke:isMin?C.green:C.gold,width:2});q.dot([n,0],'',isMin?C.green:C.gold);if(omega<100){q.math([n,.52],`${n}\\pi`,{anchor:'middle',size:17,color:isMin?C.green:C.gold});q.text([n,.85],isMin?'极小':'极大',{anchor:'middle',size:16,color:isMin?C.green:C.gold});}}
-      if(constructionStep!==null&&show(3)&&!show(4))q.math([t0,.65],zero?String.raw`t_0=(k+\frac12)\pi`:String.raw`t_0\notin\{(k+\frac12)\pi\}`,{color:zero?C.target:C.gray,size:18,anchor:'start'});
+        q.line([first-.2,worldY],[last+.2,worldY],{stroke:C.gray,width:1});q.line([t0,worldY],[t1,worldY],{stroke:C.blue,width:4});
+        const endpoints=[];
+        [t0,t1].forEach((t,i)=>{
+          const x=q.to([t,worldY])[0];q.add(`<circle data-phase-end="${i}" cx="${x}" cy="${axisY}" r="6" fill="var(--canvas)" stroke="${C.blue}" stroke-width="2"/>`);
+          // Split the short endpoint names outwards; exact values live in the shared readout.
+          q.screenText(x+(i?9:-9),axisY+27,i?'右端':'左端',{anchor:i?'start':'end',size:14,color:C.blue,avoid:true});
+          endpoints.push(candidate?(i?piFraction(4*omega+9,12):piFraction(omega+3,4)):String.raw`\approx${Lab.fmt(t,3)}\pi`);
+        });
+        readout.innerHTML=`<span>左端 ${M.inline(endpoints[0])}</span><span>右端 ${M.inline(endpoints[1])}</span><span>长度 ${M.inline(String.raw`\frac{\omega\pi}{12}${candidate?'='+piFraction(omega,12):String.raw`\approx${Lab.fmt(omega/12,3)}\pi`}`)}</span>`;
+      }
+      if(show(4))for(let n=first;n<=last;n++){
+        const isMin=Math.abs(n)%2===1,color=isMin?C.green:C.gold,x=q.to([n,worldY])[0],included=inside(n),endpoint=Math.abs(n-t0)<1e-9||Math.abs(n-t1)<1e-9;
+        q.add(`<circle data-phase-extremum="${n}" data-inside="${included}" cx="${x}" cy="${axisY}" r="5" fill="${included?color:'var(--canvas)'}" stroke="${color}" stroke-width="2"/>`);
+        const every=Math.max(1,Math.ceil((last-first+1)*100/q.w));
+        const edgeClearance=Math.min(x-q.to([first,worldY])[0],q.to([last,worldY])[0]-x);
+        if(n===first||n===last||(n%every===0&&edgeClearance>=110)){
+          q.screenText(x,19,(isMin?'极小':'极大')+(included?'':endpoint?'（端点）':'（外）'),{anchor:'middle',size:14,color,avoid:true});
+          q.screenMath(x,44,n===0?'0':n===1?String.raw`\pi`:`${n}\\pi`,{anchor:'middle',size:15,color,avoid:true});
+        }
+      }
+      if(constructionStep!==null&&show(3)&&!show(4))q.screenText(16,25,zero?'左端为零点：满足候选条件':'左端不是零点：不属于合法候选',{color:zero?C.target:C.gray,size:14});
       q.finish();
       host.querySelector('#q18-readout').innerHTML=`区间内：<b style="color:${C.green}">${minima.length} 个极小值</b>，<b style="color:${C.gold}">${maxima.length} 个极大值</b>。${zero?(minima.length>0&&maxima.length===0?' <b>满足本题条件。</b>':' 不满足极值要求。'):' 当前不满足左端零点条件。'}${M.answer(`第二问：${M.inline(String.raw`\omega=7\ \text{或}\ 15`)}。`)}`;
     }
@@ -5389,7 +5573,6 @@ Problems[18] = {
     render();return{render,getConstructionSteps,getConstructionStep(){return constructionStep;},setConstructionStep(index){constructionStep=index===null?null:Math.max(0,Math.min(4,Math.trunc(index)));render();},reset(){mode='candidate';k=2;omega=7;host.querySelector('#q18-mode').value=mode;restartConstruction();render();},getState(){return{mode,k,omega,leftPhase:omega/4+.75,rightPhase:omega/3+.75};}};
   }
 };
-
 
 Problems[20]={
   title:'椭圆中的定面积',
@@ -5562,11 +5745,11 @@ Problems[21] = {
 };
 </script><script>window.LessonGuides={
   10:`三个绿色的“1”对应题设的三个已知距离。改变 ${M.inline('AP')}，看红色 ${M.inline('OA')} 能取哪些值；图给出合法例子，关键关系里的平方恒等式负责证明完整范围。`,
-  11:'坡角改变时，直线段和圆弧的长度一起变；右图把长度乘单价，再相加。找到红色总费用曲线的最低点，就找到了原题要求的坡角。',
+  11:'先由切线和圆心角算出两段直桥及圆弧的长度，再分别乘每米单价。费用函数和当前代入值就在读数区；点“查看计算过程”可展开从长度到最小费用的推导。蓝色直桥费与金色圆弧费相加，得到红色总费用曲线。',
   12:`每个绝对值除以 ${M.inline(String.raw`\sqrt2`)}，就是一个点到直线的距离。转动两点始终保持 ${M.inline('60^\\circ')} 夹角，找红色距离和的最小值；“一个点落在线上”是绝对值变号的临界位置。`,
   16:'本题判断四个命题。左图“竖直到函数、水平到对角线”是一轮递推，右图记录同一数列；换初值找递增、正值或最终相等的例子，再用关键关系证明。',
   17:`第（1）问先从 ${M.inline('C_1')} 向底面作垂线，找到高后求体积；第（2）问要在目标平面内找到一条与红线 ${M.inline('EF')} 平行的线。旋转方便看构型，展开关键关系可见辅助线为什么成立。`,
-  18:'左图的阴影就是题设开区间，右图把同一区间换算到相位轴。只考察满足零点条件的候选参数，筛选“区间内有极小值、没有极大值”，空心端点不计入。',
+  18:'函数图中的阴影是题设开区间；相位轴把同一区间放到极值刻度上比较。实心极值在区间内，空心端点和区间外极值不计入。改变候选参数，找出“有极小值、没有极大值”的情形。',
   20:'红色阴影三角形就是题目要求面积的对象。先保持条件转动弦，再解除条件平移，比较面积；单位圆把斜率约束解释成固定弦心距，从而说明面积为什么固定。',
   21:`红色候选值 ${M.inline('f(x_0)')} 被整体减去，得到右图差值曲线。整条曲线都在绿色允许区域内，候选值才是 ${M.inline('A')} 值；下方完整值域负责判断屏幕外的部分。`
 };
@@ -5577,10 +5760,79 @@ Problems[21] = {
   const topics=Object.fromEntries(paper.questions.map(q=>[q.id,q.topic]));
   const nav=document.getElementById('questionNav'),host=document.getElementById('module');
   let mounted=null,current=null,resizeFrame=0,restoreKey=false;
+  const collapsedProofs=new Set();
+  const proofObserver=new MutationObserver(()=>enhanceProofs());
   const drawButton=document.getElementById('drawButton'),constructionBar=document.getElementById('constructionBar');
   const previousStep=document.getElementById('constructionPrev'),nextStep=document.getElementById('constructionNext');
   const constructionStep=()=>mounted?.getConstructionStep?.()??null;
+  const layoutButton=document.getElementById('layoutButton');
+  const navigationButton=document.getElementById('navigationButton');
+  const layoutMedia=matchMedia('(min-width: 1000px)');
+  const preferenceKey='math-visualizations-display';
+  let saved={};try{saved=JSON.parse(localStorage.getItem(preferenceKey)||'{}')||{};}catch{}
+  let sideLayout=typeof saved.side==='boolean'?saved.side:paper.defaultLayout==='side',layoutMoves=[],textPanel=null;
+  document.body.classList.toggle('navigation-hidden',saved.navigationHidden===true);
+  const saveDisplay=()=>{try{localStorage.setItem(preferenceKey,JSON.stringify({side:sideLayout,navigationHidden:document.body.classList.contains('navigation-hidden')}));}catch{}};
+  navigationButton.setAttribute('aria-pressed',String(saved.navigationHidden===true));
+  navigationButton.textContent=saved.navigationHidden===true?'显示顶部':'隐藏顶部';
+  function restoreLayout(){
+    for(const [node,marker] of layoutMoves)marker.replaceWith(node);
+    layoutMoves=[];textPanel?.remove();textPanel=null;
+  }
+  function arrangeLayout(){
+    restoreLayout();
+    const active=sideLayout&&layoutMedia.matches&&!document.body.classList.contains('figure-focus');
+    document.body.classList.toggle('side-layout',active);
+    if(active){
+      textPanel=document.createElement('section');textPanel.className='lesson-text';
+      textPanel.setAttribute('aria-label','题目、答案与解析');host.prepend(textPanel);
+      const nodes=[document.querySelector('.question-context'),constructionBar,
+        ...host.querySelectorAll(':scope > .readout, :scope > .question-claims, :scope > .explain, :scope > .caption, :scope > .hint')];
+      for(const node of nodes){const marker=document.createComment('layout-position');node.replaceWith(marker);layoutMoves.push([node,marker]);textPanel.append(node);}
+    }
+    layoutButton.setAttribute('aria-pressed',String(sideLayout));
+    layoutButton.textContent=sideLayout?'上下布局':'左右布局';
+    requestAnimationFrame(()=>mounted?.render());
+  }
+  layoutButton.onclick=()=>{sideLayout=!sideLayout;arrangeLayout();saveDisplay();};
+  layoutMedia.addEventListener('change',arrangeLayout);
+  navigationButton.onclick=()=>{
+    const hidden=document.body.classList.toggle('navigation-hidden');
+    navigationButton.setAttribute('aria-pressed',String(hidden));
+    navigationButton.textContent=hidden?'显示顶部':'隐藏顶部';
+    saveDisplay();
+  };
+  const focusButton=document.getElementById('focusButton');
+  focusButton.onclick=()=>{
+    const focused=document.body.classList.toggle('figure-focus');
+    focusButton.setAttribute('aria-pressed',String(focused));
+    focusButton.textContent=focused?'还原布局':'放大图形';
+    arrangeLayout();
+  };
   function setKey(shown){document.body.classList.toggle('show-key',shown);const button=document.getElementById('keyButton');button.setAttribute('aria-pressed',String(shown));button.textContent=shown?'隐藏关键关系':'显示关键关系';}
+  function prepareReading(){
+    const context=document.querySelector('.question-context');
+    const reading=document.createElement('div');reading.className='reading-controls';
+    reading.innerHTML='<button type="button" id="statementButton" aria-expanded="true" aria-controls="statement">收起题目</button><button type="button" id="guideButton" aria-expanded="true" aria-controls="lessonGuide">收起思路</button><button type="button" id="answerButton" aria-pressed="false" title="仅收展答案栏；图形与解析保持当前显示">收起答案</button>';
+    context.querySelector('.reading-controls')?.remove();context.prepend(reading);
+    for(const [buttonId,targetId,name] of [['statementButton','statement','题目'],['guideButton','lessonGuide','思路']]){
+      const target=document.getElementById(targetId);target.hidden=false;target.classList.remove('reading-collapsed');
+      reading.querySelector('#'+buttonId).onclick=e=>{const closed=target.classList.toggle('reading-collapsed');e.currentTarget.setAttribute('aria-expanded',String(!closed));e.currentTarget.textContent=(closed?'展开':'收起')+name;};
+    }
+    document.body.classList.remove('answers-hidden');
+    reading.querySelector('#answerButton').onclick=e=>{const hidden=document.body.classList.toggle('answers-hidden');e.currentTarget.setAttribute('aria-pressed',String(hidden));e.currentTarget.textContent=hidden?'展开答案':'收起答案';};
+    enhanceProofs();
+    for(const explain of host.querySelectorAll('.explain'))proofObserver.observe(explain,{childList:true,subtree:true});
+  }
+  function enhanceProofs(){
+    // Keep each proof step in place: modules retain their existing query selectors.
+    for(const step of host.querySelectorAll('.proof-step')){
+      const heading=step.querySelector('h3');if(!heading||heading.querySelector('.proof-toggle'))continue;
+      const key=current+':'+heading.innerHTML,collapsed=collapsedProofs.has(key);
+      const button=document.createElement('button');button.type='button';button.className='proof-toggle';button.innerHTML=heading.innerHTML;button.setAttribute('aria-expanded',String(!collapsed));heading.replaceChildren(button);step.classList.toggle('proof-collapsed',collapsed);
+      button.onclick=()=>{const closed=step.classList.toggle('proof-collapsed');button.setAttribute('aria-expanded',String(!closed));if(closed)collapsedProofs.add(key);else collapsedProofs.delete(key);};
+    }
+  }
   function syncConstruction(){
     const steps=mounted?.getConstructionSteps?.()||[],index=constructionStep(),active=index!==null;
     drawButton.hidden=!steps.length;drawButton.setAttribute('aria-pressed',String(active));
@@ -5615,7 +5867,7 @@ Problems[21] = {
   themeButton.onclick=()=>{const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('math-visualizations-theme',theme);}catch{}updateThemeButton();};
   function select(id){
     if(!Problems[id])id=ids[0];
-    figureObserver.disconnect();mounted?.destroy?.();current=Number(id);const entry=Problems[id];host.innerHTML='';
+    restoreLayout();proofObserver.disconnect();figureObserver.disconnect();mounted?.destroy?.();current=Number(id);const entry=Problems[id];host.innerHTML='';
     document.body.classList.remove('show-key','building');constructionBar.hidden=true;restoreKey=false;
     document.getElementById('keyButton').setAttribute('aria-pressed','false');document.getElementById('keyButton').textContent='显示关键关系';
     document.getElementById('questionTitle').innerHTML=`<span class="question-number" aria-label="第 ${id} 题">${id}</span><span>${Lab.escape(entry.title)}</span>`;
@@ -5623,7 +5875,7 @@ Problems[21] = {
     document.getElementById('lessonGuide').innerHTML='<b>看图思路</b><span>'+LessonGuides[id]+'</span>';
     document.getElementById('sourceLine').textContent=paper.source+(pages[id]?` · 原卷第 ${pages[id]} 页`:'');
     nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',String(+b.dataset.question===+id)));
-    mounted=entry.mount(host);mounted.render();syncConstruction();
+    mounted=entry.mount(host);mounted.render();prepareReading();syncConstruction();arrangeLayout();
     const figures=host.querySelector('.figures');if(figures)figureObserver.observe(figures);
     if(location.hash!==`#q${id}`)history.replaceState(null,'',`#q${id}`);
   }
