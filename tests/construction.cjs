@@ -16,7 +16,8 @@ const { launchBrowser, reportFailure } = require('./browser-runtime.cjs');
   fs.mkdirSync(shots, { recursive: true });
   const settle = () => page.evaluate(async () => {
     await document.fonts.ready;
-    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    // The caption resize, module render and 3D projection each schedule a frame.
+    for(let i=0;i<4;i++)await new Promise(resolve => requestAnimationFrame(resolve));
   });
   const select = async id => { await page.locator(`[data-question="${id}"]`).click(); await settle(); };
   const state = () => page.evaluate(() => Lesson.getState());
@@ -25,6 +26,9 @@ const { launchBrowser, reportFailure } = require('./browser-runtime.cjs');
     .filter(svg => !svg.closest('.katex') && svg.getClientRects().length && getComputedStyle(svg).display !== 'none')
     .map(svg => [...svg.querySelectorAll('line,path,circle,ellipse,polygon,polyline,rect,text,annotation')]
       .filter(node => !node.closest('.katex svg,defs'))
+      // Labels retain a valid placement to avoid jumping after a layer is removed.
+      // Compare their identities; leader endpoints are not mathematical geometry.
+      .filter(node => !node.closest('.plot-label,[data-space-label]') || ['text','annotation'].includes(node.tagName))
       .map(node => [node.tagName, node.getAttribute('stroke'), node.getAttribute('fill'),
         node.tagName === 'text' || node.tagName === 'annotation' ? node.textContent :
           ['d','points','x1','x2','y1','y2','cx','cy','r','rx','ry'].map(key => node.getAttribute(key))])));
@@ -68,7 +72,7 @@ const { launchBrowser, reportFailure } = require('./browser-runtime.cjs');
     assert.ok(new Set(views).size >= 3, `q${id}: steps only changed captions, not the actual diagram`);
     assert.equal(await page.locator('#constructionNext').isDisabled(), true);
     await page.locator('#constructionPrev').click(); await settle();
-    assert.ok(JSON.stringify(await signature()) === views.at(-2), `q${id}: stepping back must remove later objects and restore the earlier layout`);
+    assert.ok(JSON.stringify(await signature()) === views.at(-2), `q${id}: stepping back must remove later objects and restore the earlier mathematical geometry`);
     await page.locator('#constructionFull').click(); await settle();
     assert.equal((await progress()).step, null);
     assert.equal(await page.locator('.readout').isVisible(), true);
