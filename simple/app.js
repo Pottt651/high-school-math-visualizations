@@ -4,7 +4,14 @@
   const pages=Object.fromEntries(paper.questions.map(q=>[q.id,q.page]));
   const topics=Object.fromEntries(paper.questions.map(q=>[q.id,q.topic]));
   const nav=document.getElementById('questionNav'),host=document.getElementById('module');
-  let mounted=null,current=null,resizeFrame=0,restoreKey=false;
+  const questionContext=document.querySelector('.question-context');
+  let mounted=null,current=null,resizeFrame=0,restoreKey=false,readingPane=null,readingHint=null;
+  function updateReadingHint(){
+    if(!readingPane||!readingHint)return;
+    readingHint.hidden=!(wideScreen.matches&&document.documentElement.dataset.layout==='side-by-side'
+      &&readingPane.scrollHeight-readingPane.clientHeight-readingPane.scrollTop>8);
+  }
+  const readingResize=new ResizeObserver(updateReadingHint),readingChanges=new MutationObserver(updateReadingHint);
   const drawButton=document.getElementById('drawButton'),constructionBar=document.getElementById('constructionBar');
   const previousStep=document.getElementById('constructionPrev'),nextStep=document.getElementById('constructionNext');
   const constructionStep=()=>mounted?.getConstructionStep?.()??null;
@@ -41,17 +48,56 @@
   function updateThemeButton(){const dark=document.documentElement.dataset.theme==='dark';themeButton.textContent=dark?'深色':'浅色';themeButton.setAttribute('aria-label',`当前${dark?'深色':'浅色'}模式，切换为${dark?'浅色':'深色'}`);}
   updateThemeButton();
   themeButton.onclick=()=>{const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('math-visualizations-theme',theme);}catch{}updateThemeButton();};
+  const layoutButton=document.getElementById('layoutButton'),wideScreen=matchMedia('(min-width: 1100px)');
+  function updateLayoutButton(){
+    const sideBySide=document.documentElement.dataset.layout==='side-by-side';
+    layoutButton.disabled=!wideScreen.matches;
+    layoutButton.textContent=wideScreen.matches&&sideBySide?'上下排版':'左右排版';
+    const description=wideScreen.matches
+      ?`当前${sideBySide?'左文右图':'上下排版'}，点击切换为${sideBySide?'上下排版':'左文右图'}`
+      :'窄屏采用上下排版，回到宽屏后恢复左右偏好';
+    layoutButton.title=description;layoutButton.setAttribute('aria-label',description);
+    updateReadingHint();
+  }
+  updateLayoutButton();wideScreen.addEventListener('change',updateLayoutButton);
+  layoutButton.onclick=()=>{
+    const layout=document.documentElement.dataset.layout==='side-by-side'?'stacked':'side-by-side';
+    document.documentElement.dataset.layout=layout;
+    try{localStorage.setItem('math-visualizations-layout',layout);}catch{}
+    updateLayoutButton();
+  };
+  function arrangePanes(){
+    const diagram=document.createElement('section'),reading=document.createElement('section');
+    diagram.className='diagram-pane';diagram.setAttribute('aria-label','图形与操作');
+    reading.className='reading-pane';reading.setAttribute('aria-label','题目与讲解');
+    reading.tabIndex=0;
+    const content=[...host.children];
+    reading.append(questionContext,constructionBar);
+    for(const node of content)if(!node.matches('.readout,.explain,.question-claims'))diagram.append(node);
+    for(const selector of ['.readout','.question-claims','.explain']){
+      for(const node of content)if(node.matches(selector))reading.append(node);
+    }
+    // Modules keep querying the same host; only their presentation is grouped.
+    const hint=document.createElement('div');hint.className='reading-scroll-hint';hint.textContent='↓ 向下滚动查看内容';hint.hidden=true;
+    hint.setAttribute('aria-hidden','true');
+    host.append(reading,diagram,hint);
+    readingPane=reading;readingHint=hint;
+    reading.addEventListener('scroll',updateReadingHint,{passive:true});
+    readingResize.observe(reading);readingChanges.observe(reading,{childList:true,subtree:true,attributes:true,characterData:true});
+  }
   function select(id){
     if(!Problems[id])id=ids[0];
-    figureObserver.disconnect();mounted?.destroy?.();current=Number(id);const entry=Problems[id];host.innerHTML='';
+    figureObserver.disconnect();readingResize.disconnect();readingChanges.disconnect();
+    readingPane=null;readingHint=null;mounted?.destroy?.();current=Number(id);const entry=Problems[id];
+    questionContext.remove();constructionBar.remove();host.innerHTML='';
     document.body.classList.remove('show-key','building');constructionBar.hidden=true;restoreKey=false;
     document.getElementById('keyButton').setAttribute('aria-pressed','false');document.getElementById('keyButton').textContent='显示关键关系';
     document.getElementById('questionTitle').innerHTML=`<span class="question-number" aria-label="第 ${id} 题">${id}</span><span>${Lab.escape(entry.title)}</span>`;
-    document.getElementById('statement').innerHTML=entry.statement||'';
-    document.getElementById('lessonGuide').innerHTML='<b>看图思路</b><span>'+LessonGuides[id]+'</span>';
+    questionContext.querySelector('#statement').innerHTML=entry.statement||'';
+    questionContext.querySelector('#lessonGuide').innerHTML='<b>看图思路</b><span>'+LessonGuides[id]+'</span>';
     document.getElementById('sourceLine').textContent=paper.source+(pages[id]?` · 原卷第 ${pages[id]} 页`:'');
     nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',String(+b.dataset.question===+id)));
-    mounted=entry.mount(host);mounted.render();syncConstruction();
+    mounted=entry.mount(host);arrangePanes();mounted.render();syncConstruction();
     const figures=host.querySelector('.figures');if(figures)figureObserver.observe(figures);
     if(location.hash!==`#q${id}`)history.replaceState(null,'',`#q${id}`);
   }

@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN" data-theme="dark" data-layout="side-by-side">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>/*PAGE_TITLE*/</title>
   <script>try{const theme=localStorage.getItem('math-visualizations-theme')||localStorage.getItem('jiading-lesson-theme');if(theme==='light'||theme==='dark')document.documentElement.dataset.theme=theme;}catch{}</script>
+  <script>try{const layout=localStorage.getItem('math-visualizations-layout');if(layout==='side-by-side'||layout==='stacked')document.documentElement.dataset.layout=layout;}catch{}</script>
   <style>/*KATEX_CSS*/</style><style>/*STYLE*/</style>
 </head>
 <body>
@@ -18,7 +19,7 @@
   </header>
   <div class="toolbar">
     <h2 id="questionTitle"></h2>
-    <div class="buttons"><button id="drawButton" aria-pressed="false" aria-controls="constructionBar">按条件画图</button><button id="keyButton" aria-pressed="false">显示关键关系</button><button id="resetButton">重置</button><button id="fullscreenButton">全屏</button></div>
+    <div class="buttons"><button id="layoutButton" aria-controls="module">上下排版</button><button id="drawButton" aria-pressed="false" aria-controls="constructionBar">按条件画图</button><button id="keyButton" aria-pressed="false">显示关键关系</button><button id="resetButton">重置</button><button id="fullscreenButton">全屏</button></div>
   </div>
   <section class="question-context" aria-label="题目与看图思路"><div id="statement" class="statement"></div><div id="lessonGuide" class="guide"></div></section>
   <section id="constructionBar" class="construction-bar" aria-label="按题目条件逐步画图" hidden>

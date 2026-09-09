@@ -12,7 +12,7 @@ const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-8*Math.max(1,Math.abs(a),Math.abs(b
   const state=()=>page.evaluate(()=>Lesson.getState());
   const choose=async n=>{await page.evaluate(n=>Lesson.select(n),n);await settle();};
   const input=async(id,value)=>{await page.locator(id).evaluate((el,v)=>{el.value=String(v);el.dispatchEvent(new Event(el.tagName==='SELECT'?'change':el.type==='range'?'input':'change',{bubbles:true}));},value);await settle();};
-  const geo=()=>page.locator('.figures').evaluate(el=>[...el.querySelectorAll('svg[role="img"]')].filter(s=>s.getBoundingClientRect().width>0).map(s=>[...s.querySelectorAll('line,path,polyline,polygon,circle,ellipse')].filter(n=>!n.closest('foreignObject')&&!n.classList.contains('label-leader')).map(n=>[n.tagName,...['x1','y1','x2','y2','d','points','cx','cy','rx','ry','r','stroke','fill'].map(a=>n.getAttribute(a))])));
+  const geo=()=>page.locator('.figures').evaluate(el=>[...el.querySelectorAll('svg[role="img"]')].filter(s=>s.getBoundingClientRect().width>0).map(s=>[...s.querySelectorAll('line,path,polyline,polygon,circle,ellipse,rect')].filter(n=>!n.closest('foreignObject')&&!n.classList.contains('label-leader')).map(n=>[n.tagName,...['x','y','width','height','x1','y1','x2','y2','d','points','cx','cy','rx','ry','r','stroke','fill'].map(a=>n.getAttribute(a))])));
   const math=s=>Object.fromEntries(Object.entries(s).filter(([k])=>k!=='space'&&k!=='revealed'));
   let count=0;
   for(const [id,ids] of Object.entries(expected)){
