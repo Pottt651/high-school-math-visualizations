@@ -1,0 +1,11 @@
+{
+  "id":"putuo-2024","defaultLayout":"side","title":"上海普陀 · 2024届高三一模","shortTitle":"普陀一模 · 2024届","subtitle":"2024届","year":2024,"source":"2024届普陀区高三一模数学试卷","href":"papers/putuo-2024/index.html",
+  "questions":[
+    {"id":7,"title":"开区间里的一个元素","topic":"区间计数","page":1},
+    {"id":10,"title":"正弦交点的长短间距","topic":"正弦间距","page":1},
+    {"id":12,"title":"内切球与表面动点的点积","topic":"球与点积","page":1},
+    {"id":16,"title":"分段函数零点与原题核对","topic":"分段零点","page":2},
+    {"id":19,"title":"偶对称与距离比较","topic":"偶函数","page":3},
+    {"id":21,"title":"H(t)数列与严格不等式","topic":"新定义递推","page":4}
+  ],"build":{"moduleDir":"papers/putuo-2024/src","legacyOutputs":["普陀2024一模_互动讲题.html"]}
+}

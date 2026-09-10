@@ -1,0 +1,13 @@
+{
+  "id":"yangpu-2025", "defaultLayout":"side", "title":"上海杨浦 · 2025届高三一模", "shortTitle":"杨浦一模 · 2025届", "subtitle":"2024学年第一学期 · 2024年12月", "year":2025,
+  "source":"杨浦区2024学年度第一学期高三年级模拟质量调研数学试卷", "href":"papers/yangpu-2025/index.html",
+  "questions":[
+    {"id":9,"title":"球内圆柱：截面约束与侧面积","topic":"圆柱侧面积","page":1},
+    {"id":10,"title":"分段定义域怎样筛掉候选根","topic":"分段零点","page":1},
+    {"id":11,"title":"变轨中的近月点、远月点与离心率","topic":"椭圆变轨","page":1},
+    {"id":12,"title":"复映射删掉的线段与圆周避让","topic":"复数映射","page":1},
+    {"id":17,"title":"正方体的线面截取与二面角","topic":"空间二面角","page":3},
+    {"id":20,"title":"平行弦、中点共线与定面积","topic":"抛物线面积","page":4},
+    {"id":21,"title":"p生成函数：弦差与割线斜率","topic":"新定义函数","page":4}
+  ],"build":{"moduleDir":"papers/yangpu-2025/src","model":"papers/yangpu-2025/src/model.js","legacyOutputs":["杨浦2025一模_互动讲题.html"]}
+}

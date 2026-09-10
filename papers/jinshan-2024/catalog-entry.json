@@ -1,0 +1,14 @@
+{
+ "id":"jinshan-2024","defaultLayout":"side","title":"上海金山 · 2024届高三一模","shortTitle":"金山一模 · 2024届","subtitle":"2023学年第一学期质量监控","year":2024,
+ "source":"2023学年金山区第一学期质量监控高三数学试卷","href":"papers/jinshan-2024/index.html",
+ "questions":[
+  {"id":9,"title":"单调性与对称锁定频率","topic":"正弦参数","page":1},
+  {"id":11,"title":"对称四次函数的七个零点","topic":"参数与零点","page":1},
+  {"id":17,"title":"中位线与四棱锥体积","topic":"空间平行与体积","page":2},
+  {"id":18,"title":"相邻差与严格递增","topic":"数列全称条件","page":2},
+  {"id":19,"title":"冰箱过门与直角转弯","topic":"实际几何优化","page":2},
+  {"id":20,"title":"抛物线弦与等比数列","topic":"解析几何","page":3},
+  {"id":21,"title":"均值点与对称求和","topic":"新定义函数","page":4}
+ ],
+ "build":{"moduleDir":"papers/jinshan-2024/src","legacyOutputs":["金山2024一模_互动讲题.html"]}
+}

@@ -1,0 +1,13 @@
+{
+  "id": "yangpu-2024", "defaultLayout": "side",
+  "title": "上海杨浦 · 2024届高三一模", "shortTitle": "杨浦一模 · 2024届", "subtitle": "2024届", "year": 2024,
+  "source": "2024届杨浦区高三一模数学试卷", "href": "papers/yangpu-2024/index.html",
+  "questions": [
+    {"id":11,"title":"焦距差与抛物线弦","topic":"抛物线","page":2},
+    {"id":15,"title":"离散前缀和的唯一最大值","topic":"数列最值","page":2},
+    {"id":17,"title":"两平面垂直与点面距离","topic":"空间垂直","page":3},
+    {"id":18,"title":"指数方程与最高支撑直线","topic":"指数切线","page":3},
+    {"id":19,"title":"雨棚形状、板材面积与遮挡高度","topic":"雨棚优化","page":4},
+    {"id":21,"title":"正弦递推：等差限制与负公比","topic":"正弦递推","page":6}
+  ], "build": {"moduleDir":"papers/yangpu-2024/src","legacyOutputs":["杨浦2024一模_互动讲题.html"]}
+}

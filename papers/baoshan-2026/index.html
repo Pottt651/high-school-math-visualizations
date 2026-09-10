@@ -103,8 +103,8 @@ nav button[aria-current="true"] .nav-number { color: inherit; font-weight: 700; 
 .construction-buttons button { font-size: 14px; }
 #constructionNext { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 body.building #lessonGuide, body.building .readout, body.building .explain, body.building .question-claims { display: none !important; }
-body.building #module { display: flex; flex-direction: column; }
-body.building #module > .figures { flex: 1; height: auto; }
+body.building:not(.side-layout) #module { display: flex; flex-direction: column; }
+body.building:not(.side-layout) #module > .figures { flex: 1; height: auto; }
 #module { min-height: 0; flex: 1; display: flex; flex-direction: column; gap: 8px; }
 .controls { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap;
   gap: 8px 20px; padding: 8px 12px; border-radius: 7px; background: var(--panel); color: var(--body); }
@@ -5508,7 +5508,12 @@ Problems[20] = {
     document.getElementById('sourceLine').textContent=paper.source+(pages[id]?` · 原卷第 ${pages[id]} 页`:'');
     nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',String(+b.dataset.question===+id)));
     mounted=entry.mount(host);mounted.render();prepareReading();syncConstruction();arrangeLayout();
-    const figures=host.querySelector('.figures');if(figures)figureObserver.observe(figures);
+    const figures=host.querySelector('.figures');if(figures){
+      figureObserver.observe(figures);
+      // Switching a subquestion may hide one of two plots without resizing
+      // their parent. Observe each classroom canvas, never nested KaTeX SVGs.
+      for(const canvas of figures.querySelectorAll('svg.main-figure, svg.figure, .figure-wrap > svg, .q20-figure > svg'))figureObserver.observe(canvas);
+    }
     if(location.hash!==`#q${id}`)history.replaceState(null,'',`#q${id}`);
   }
   nav.addEventListener('click',e=>{const b=e.target.closest('[data-question]');if(b)select(+b.dataset.question);});

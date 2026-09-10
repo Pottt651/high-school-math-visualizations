@@ -1,0 +1,16 @@
+window.LessonGuides={10:'保持两个端点在圆上、两条黄色线互相垂直，转动弦的中点；最短弦对应中点离圆心最远。',11:'红色弦的两个端点关于 y=x 对称。移动直线时，两段横纵坐标之差同时决定弦长。',16:'旋转后能否成为函数，取决于新横坐标是否一一对应。先看原图，再切换旋转图；完整定义域的判定见左侧证明。',17:'沿 AC 折叠只改变二面角，不改变三角形边长。取 PB=√3 后锁定构型，再延长 CE 找到 N。',18:'开区间端点不计入极小值个数；第二问先按恒等式筛出离散频率，再检查整个指定区间的单调性。',20:'所有分问共用同一条双曲线。焦点弦变化时，观察平行四边形的第四顶点和跨两支三角形的面积。',21:'“每一项”不能用有限个点代替。第二问关注比值的最小上界与不可取到的下界，第三问用递推不等式证明全部项。'};
+window.PT25={
+ mount(host,c){let s={...c.initial};const id=c.id;host.innerHTML=`<div class="controls">${c.controls}</div><div class="figures"><svg class="main-figure" id="${id}-svg" role="img" aria-label="${c.label}"></svg></div><div class="readout" id="${id}-read"></div><div class="explain">${c.proof}</div>`;const svg=host.querySelector('#'+id+'-svg'),read=host.querySelector('#'+id+'-read');for(const e of host.querySelectorAll('[data-k]'))e.id=id+'-'+e.dataset.k;for(const e of host.querySelectorAll('[data-action]'))e.id=id+'-'+e.dataset.action;
+  function render(){for(const e of host.querySelectorAll('[data-k]'))e.value=s[e.dataset.k];for(const e of host.querySelectorAll('[data-part]'))e.hidden=!e.dataset.part.split(',').includes(String(s.part));c.draw(svg,s);read.innerHTML=c.read(s);c.sync?.(host,s);}
+  for(const e of host.querySelectorAll('[data-k]'))e.addEventListener(e.tagName==='SELECT'?'change':'input',()=>{s[e.dataset.k]=e.type==='range'||e.type==='number'?+e.value:e.value;c.change?.(s,e.dataset.k);render();});for(const e of host.querySelectorAll('[data-action]'))e.onclick=()=>{c.action?.(s,e.dataset.action);render();};return{render,reset(){s={...c.initial};render();},getState:()=>({...s,...c.model?.(s)})};
+ },
+ path(p,points,color,width=2){const visible=points.filter(v=>v.every(Number.isFinite));p.add(`<polyline points="${visible.map(v=>p.to(v).join(',')).join(' ')}" fill="none" stroke="${color}" stroke-width="${width}"/>`);},
+ chord(angle){const t=angle*Math.PI/180,H=[1+Math.sqrt(7)*Math.cos(t),Math.sqrt(7)*Math.sin(t)],r=Math.hypot(...H),d=Math.sqrt(16-r*r),v=[-H[1]/r,H[0]/r],M=H.map((x,i)=>x+d*v[i]),N=H.map((x,i)=>x-d*v[i]);return{H,M,N,P:[0,0],Q:[2,0],radius:r,length:2*d,dot:(M[0]-2)*(N[0]-2)+M[1]*N[1]};},
+ inverse(u){return{P:[u,u*u/4],Q:[u*u/4,u],t:u+u*u/4,length:Math.SQRT2*(u-u*u/4)};},
+ rotated(part,value,x,rotate=true){const y=part==='g'?(value-1)*x+1/x:value*(x+1)*Math.exp(-x);return rotate?[(x-y)/Math.SQRT2,(x+y)/Math.SQRT2]:[x,y];},
+ fold(degrees=90){const t=degrees*Math.PI/180,P=[1,-Math.cos(t),Math.sin(t)],A=[1,0,0],B=[0,1,0],C=[0,0,0],M=P.map(v=>v/2),E=[.5,.5,0],N=[1,1,0];return{A,B,C,P,M,E,N,PB:Math.sqrt(3+2*Math.cos(t)),dotAMBC:Math.cos(t)/2,angle:degrees};},
+ minima(m){const roots=[];for(let k=0;5/4+2*k<m-1e-10;k++)roots.push(5/4+2*k);return{roots,count:roots.length,valid:m>1.25+1e-10&&m<=3.25+1e-10};},
+ hyperbola(m){const d=3-m*m,v=Math.sqrt(3*(m*m+1)),ya=(2*m+v)/d,yb=(2*m-v)/d,A=[m*ya+2,ya],B=[m*yb+2,yb];return{A,B,G:A.map(x=>-x),P:A.map((x,i)=>x+B[i]),dot:(11+3*m*m)/d,area:4*v/d,m,valid:m>=Math.SQRT2-1e-10};},
+ recurrence(x){return x<1e-5?x/2+x*x/24-x**4/2880:Math.log(Math.expm1(x)/x);},
+ sequence(n){const a=[2/3];for(let i=1;i<n;i++)a.push(PT25.recurrence(a.at(-1)));return{a,sum:a.reduce((s,x)=>s+x,0),bound:1-3**(-n),ratios:a.slice(1).map((x,i)=>x/a[i])};}
+};

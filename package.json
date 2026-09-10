@@ -6,11 +6,13 @@
   "scripts": {
     "vendor:three": "node tools/vendor-three.cjs",
     "build": "python build.py",
-    "test": "npm run test:build && npm run test:model && npm run test:browser && npm run test:layout && npm run test:baoshan",
+    "test": "npm run test:build && npm run test:model && npm run test:browser && npm run test:layout && npm run test:baoshan && npm run test:2024 && npm run test:2025",
+    "test:2025": "node tests/2025-source.cjs && node tests/new-papers-model.cjs && node tests/2025-ja-model.cjs && node tests/2025-pt-model.cjs && node tests/2025-yp-model.cjs && node tests/2025-js-model.cjs && node tests/new-papers-browser.cjs && node tests/2025-ja-browser.cjs && node tests/2025-pt-browser.cjs && node tests/2025-yp-browser.cjs && node tests/2025-yp-construction.cjs && node tests/2025-js-browser.cjs && node tests/2025-js-space.cjs && node tests/2025-classroom.cjs",
+    "test:2024": "node tests/2024-source.cjs && node tests/2024-hp-model.cjs && node tests/2024-jd-model.cjs && node tests/2024-js-model.cjs && node tests/2024-yp-model.cjs && node tests/2024-hp-browser.cjs && node tests/2024-xh.cjs && node tests/2024-ja.cjs && node tests/2024-pt.cjs && node tests/2024-yp-browser.cjs && node tests/2024-yp-space.cjs && node tests/2024-jd-browser.cjs && node tests/2024-js-browser.cjs && node tests/2024-jd-controls.cjs && node tests/2024-classroom.cjs",
     "test:baoshan": "node tests/baoshan-functions-model.cjs && node tests/baoshan-browser.cjs && node tests/baoshan-space.cjs && node tests/baoshan-conics.cjs && node tests/baoshan-functions-browser.cjs && node tests/baoshan-reading.cjs",
     "test:model": "node tests/model.test.cjs",
     "test:browser": "node tests/simple-browser.cjs && node tests/simple-interactions.cjs && node tests/math-presentation.cjs && node tests/theme-ui.cjs && node tests/graphics-learning.cjs && node tests/space-graphics.cjs && node tests/project-catalog.cjs && node tests/construction.cjs",
-    "test:layout": "node tests/figure-layout.cjs && node tests/classroom-iteration.cjs && node tests/q11-cost-model.cjs",
+    "test:layout": "node tests/figure-layout.cjs && node tests/classroom-iteration.cjs && node tests/q11-cost-model.cjs && node tests/classroom-construction-layout.cjs",
     "test:legacy": "node tests/browser.test.cjs",
     "skill:install": "python tools/install_skill.py",
     "test:build": "python tests/build-catalog.py"

@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict'),Y=require('../papers/yangpu-2025/src/model.js');
+const near=(a,b,tol=1e-9)=>assert.ok(Math.abs(a-b)<=tol*Math.max(1,Math.abs(a),Math.abs(b)),`${a} != ${b}`),dot=(a,b)=>a.reduce((v,x,i)=>v+x*b[i],0),sub=(a,b)=>a.map((x,i)=>x-b[i]),cross=(a,b)=>a[0]*b[1]-a[1]*b[0];
+for(let i=1;i<1000;i++){const m=Y.cylinder(i/1000);near(m.r*m.r+m.h*m.h/4,1);near(m.area,2*Math.PI*m.r*m.h);assert.ok(m.area<=2*Math.PI+1e-12);}near(Y.cylinder(Math.SQRT1_2).area,2*Math.PI);
+for(const [a,roots]of[[7.99,[9]],[8,[8,9]],[8.5,[8,9]],[8.999,[8,9]],[9,[8]],[10,[8]]])assert.deepEqual(Y.piecewise(a).roots,roots);
+for(let i=1;i<90;i++){const e=i/100,m=Y.orbit(e);near(m.a*(1-e),1);near(m.a*(1+e),m.R);near(m.nextA*(1-m.nextE),1);near(m.nextA*(1+m.nextE),4*m.R);near(m.b*m.b,m.a*m.a*(1-e*e));}const orbit=Y.orbit((Math.sqrt(65)-5)/10);near(orbit.ratio,2.5);near(Math.round(orbit.e*100)/100,.31);
+for(const r of[1.001,1.2,2,3])for(let k=0;k<100;k++){const m=Y.joukowski(r,k*Math.PI/50,.7),w2=dot(m.w,m.w);near(m.z[0],m.w[0]+m.w[0]/w2);near(m.z[1],m.w[1]-m.w[1]/w2);assert.ok(Math.abs(m.z[1])>1e-10||Math.abs(m.z[0])>2);}
+for(const a of[.1,.99,1,1.01,Math.sqrt(2),3,Math.sqrt(10),Math.sqrt(10)+1e-5,4]){const m=Y.joukowski(1.7,.6,a);assert.equal(m.allowed,m.intersections.length===0);for(const x of m.intersections){assert.ok(x>=-2-1e-9&&x<=2+1e-9);near((x-1)**2+1,a*a);}}
+const cube=Y.cube(),EF=sub(cube.F,cube.E),HB=sub(cube.B,cube.H),HB1=sub(cube.B1,cube.H);near(dot(EF,sub(cube.D1,cube.B)),0);near(dot(EF,HB),0);near(dot(EF,HB1),0);near(dot(HB,HB1)/Math.sqrt(dot(HB,HB)*dot(HB1,HB1)),1/3);
+for(const r of[.8,1,2])for(const s of[.6,1.4,3])if(r!==s)for(const tau of[-.9,-.2,0,.5,.9]){const m=Y.trapezoid(tau*Math.min(r,s),r,s);assert.ok(m.valid);for(const k of['A','B','C','D'])near(m[k][0],m[k][1]**2);assert.ok(m.A[1]>0&&m.D[1]>0&&m.B[1]<0&&m.C[1]<0);near(cross(sub(m.A,m.B),sub(m.D,m.C)),0);near(cross(sub(m.H,m.A),sub(m.C,m.A)),0);near(cross(sub(m.H,m.B),sub(m.D,m.B)),0);const pts=[m.A,m.B,m.C,m.D];near(Math.abs(pts.reduce((v,p,i)=>v+cross(p,pts[(i+1)%4]),0))/2,m.area);near(Math.hypot(...sub(m.H,m.M)),m.HM);near(Math.hypot(...sub(m.H,m.N)),m.HN);}
+for(const t of[-.99,-.5,0,.5,.99]){const m=Y.trapezoid(t,1,2);near(m.HM,1);near(m.HN,2);near(m.area,9);}
+near(Y.generated('1',1/3).value,-.25);near(Y.generated('1',1).value,2);for(let i=0;i<=1000;i++){const f=Y.generated('1',i/1000).value;assert.ok(f>=-.25-1e-12&&f<=2+1e-12);}
+for(const a of[-20,-.2,0,.1,.4,.49,.499,.499999]){const x=Y.witness(a);assert.ok(x>0&&x<=1);assert.ok(Y.F(a,x)<0,`a=${a}, x=${x}`);}
+for(const a of[.5,.500001,1,10])for(let i=0;i<=1000;i++)assert.ok(Y.F(a,i/1000)>=-1e-13);
+for(const kind of['square','cube','exp'])for(const p of[.01,.3,.6,.99])for(const x of[.01,.3,.6,.99]){const m=Y.generated('3',x,0,p,kind);assert.ok(m.value>0&&m.slopeX>m.slopeU);near(m.value,m.u*(m.slopeX-m.slopeU));}
+console.log('PASS: 2025 YP seven models; geometry, branch endpoints, eccentricities, complex mapping, area invariants and quantified derivative conditions.');

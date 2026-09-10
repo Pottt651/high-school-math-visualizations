@@ -44,5 +44,7 @@ jobs:
             papers/*/index.html
             嘉定一模_互动讲题.html
             宝山一模_互动讲题.html
+            *2024一模_互动讲题.html
+            *2025一模_互动讲题.html
           if-no-files-found: error
           retention-days: 30

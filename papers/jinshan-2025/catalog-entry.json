@@ -1,0 +1,5 @@
+{
+ "id":"jinshan-2025","title":"上海金山 · 2025届高三一模","shortTitle":"金山一模 · 2025届","subtitle":"2024—2025学年","year":2025,"defaultLayout":"side","source":"2024学年金山区第一学期质量监控 · 高三数学试卷","href":"papers/jinshan-2025/index.html",
+ "questions":[{"id":10,"title":"瞭望角最大时的浮桥","topic":"圆弧最优视角","page":1},{"id":12,"title":"旋转向量中的椭圆","topic":"旋转与轨迹","page":2},{"id":15,"title":"双圆锥的竖直截面","topic":"双曲线截面","page":2},{"id":16,"title":"只有两种距离的点","topic":"空间等距点","page":2},{"id":18,"title":"梯形底四棱锥","topic":"平行与点面距","page":3},{"id":20,"title":"两条垂直焦点弦","topic":"圆锥曲线面积","page":3},{"id":21,"title":"T 点与和谐 T 点","topic":"切线与弦","page":4}],
+ "build":{"moduleDir":"papers/jinshan-2025/src","model":"papers/jinshan-2025/src/model.js","legacyOutputs":["金山2025一模_互动讲题.html"]}
+}

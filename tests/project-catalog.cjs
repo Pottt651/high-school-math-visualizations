@@ -59,8 +59,8 @@ const themeKey = 'math-visualizations-theme', legacyThemeKey = 'jiading-lesson-t
 
   const search = page.getByRole('searchbox', { name: '查找试卷或题目' });
   await search.fill('三棱柱');
-  assert.equal(await page.locator('.question-link').count(), 1);
-  assert.equal(await page.locator('.question-link').getAttribute('href'), `${paper.href}#q17`);
+  assert.ok(await page.locator('.question-link').count() >= 1);
+  assert.equal(await page.locator(`.question-link[href="${paper.href}#q17"]`).count(), 1);
   await search.fill('不存在的主题-zzzz');
   assert.equal(await page.locator('.question-link').count(), 0);
   assert.equal(await page.locator('#emptyState').isVisible(), true);

@@ -96,8 +96,8 @@ nav button[aria-current="true"] .nav-number { color: inherit; font-weight: 700; 
 .construction-buttons button { font-size: 14px; }
 #constructionNext { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 body.building #lessonGuide, body.building .readout, body.building .explain, body.building .question-claims { display: none !important; }
-body.building #module { display: flex; flex-direction: column; }
-body.building #module > .figures { flex: 1; height: auto; }
+body.building:not(.side-layout) #module { display: flex; flex-direction: column; }
+body.building:not(.side-layout) #module > .figures { flex: 1; height: auto; }
 #module { min-height: 0; flex: 1; display: flex; flex-direction: column; gap: 8px; }
 .controls { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap;
   gap: 8px 20px; padding: 8px 12px; border-radius: 7px; background: var(--panel); color: var(--body); }

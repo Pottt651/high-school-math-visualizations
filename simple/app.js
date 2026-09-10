@@ -121,7 +121,12 @@
     document.getElementById('sourceLine').textContent=paper.source+(pages[id]?` · 原卷第 ${pages[id]} 页`:'');
     nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',String(+b.dataset.question===+id)));
     mounted=entry.mount(host);mounted.render();prepareReading();syncConstruction();arrangeLayout();
-    const figures=host.querySelector('.figures');if(figures)figureObserver.observe(figures);
+    const figures=host.querySelector('.figures');if(figures){
+      figureObserver.observe(figures);
+      // Switching a subquestion may hide one of two plots without resizing
+      // their parent. Observe each classroom canvas, never nested KaTeX SVGs.
+      for(const canvas of figures.querySelectorAll('svg.main-figure, svg.figure, .figure-wrap > svg, .q20-figure > svg'))figureObserver.observe(canvas);
+    }
     if(location.hash!==`#q${id}`)history.replaceState(null,'',`#q${id}`);
   }
   nav.addEventListener('click',e=>{const b=e.target.closest('[data-question]');if(b)select(+b.dataset.question);});

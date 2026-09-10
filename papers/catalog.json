@@ -8,19 +8,62 @@
     "source": "2024—2025 上海嘉定高三一模",
     "href": "papers/jiading-2025/index.html",
     "questions": [
-      {"id": 10, "title": "空间距离：哪些量一起变？", "topic": "空间距离", "page": 1},
-      {"id": 11, "title": "拱桥费用：怎样找到最小值？", "topic": "拱桥费用", "page": 1},
-      {"id": 12, "title": "绝对值与两段距离", "topic": "绝对值", "page": 2},
-      {"id": 16, "title": "递推数列：下一项怎样得到？", "topic": "递推数列", "page": 2},
-      {"id": 17, "title": "斜三棱柱：高与辅助线", "topic": "斜三棱柱", "page": 3},
-      {"id": 18, "title": "开区间内的极值点", "topic": "区间极值", "page": 4},
-      {"id": 20, "title": "椭圆中的定面积", "topic": "椭圆面积", "page": 6},
-      {"id": 21, "title": "新定义 A 值与整个值域", "topic": "A 值", "page": 7}
+      {
+        "id": 10,
+        "title": "空间距离：哪些量一起变？",
+        "topic": "空间距离",
+        "page": 1
+      },
+      {
+        "id": 11,
+        "title": "拱桥费用：怎样找到最小值？",
+        "topic": "拱桥费用",
+        "page": 1
+      },
+      {
+        "id": 12,
+        "title": "绝对值与两段距离",
+        "topic": "绝对值",
+        "page": 2
+      },
+      {
+        "id": 16,
+        "title": "递推数列：下一项怎样得到？",
+        "topic": "递推数列",
+        "page": 2
+      },
+      {
+        "id": 17,
+        "title": "斜三棱柱：高与辅助线",
+        "topic": "斜三棱柱",
+        "page": 3
+      },
+      {
+        "id": 18,
+        "title": "开区间内的极值点",
+        "topic": "区间极值",
+        "page": 4
+      },
+      {
+        "id": 20,
+        "title": "椭圆中的定面积",
+        "topic": "椭圆面积",
+        "page": 6
+      },
+      {
+        "id": 21,
+        "title": "新定义 A 值与整个值域",
+        "topic": "A 值",
+        "page": 7
+      }
     ],
     "build": {
       "moduleDir": "simple",
       "model": "src/model.js",
-      "legacyOutputs": ["嘉定一模_互动讲题.html", "嘉定一模_第20题_交互样章.html"]
+      "legacyOutputs": [
+        "嘉定一模_互动讲题.html",
+        "嘉定一模_第20题_交互样章.html"
+      ]
     }
   },
   {
@@ -33,18 +76,803 @@
     "source": "2025学年 宝山区第一学期期末高三数学质量监测试卷",
     "href": "papers/baoshan-2026/index.html",
     "questions": [
-      {"id": 11, "title": "圆柱中的异面直线夹角", "topic": "异面夹角", "page": 2},
-      {"id": 12, "title": "向量条件：平面与球的距离", "topic": "平面与球", "page": 2},
-      {"id": 15, "title": "冷却塔：截面半径与双曲线", "topic": "冷却塔", "page": 2},
-      {"id": 16, "title": "增长数列：每一步都超过 1", "topic": "增长数列", "page": 3},
-      {"id": 17, "title": "四棱锥：变化中的定距离", "topic": "棱锥距离", "page": 4},
-      {"id": 19, "title": "摩天轮：位置怎样变成函数？", "topic": "摩天轮", "page": 6},
-      {"id": 20, "title": "双曲线：最短切线与垂足轨迹", "topic": "双曲线", "page": 7},
-      {"id": 21, "title": "函数比较：从交点到切线", "topic": "函数与切线", "page": 8}
+      {
+        "id": 11,
+        "title": "圆柱中的异面直线夹角",
+        "topic": "异面夹角",
+        "page": 2
+      },
+      {
+        "id": 12,
+        "title": "向量条件：平面与球的距离",
+        "topic": "平面与球",
+        "page": 2
+      },
+      {
+        "id": 15,
+        "title": "冷却塔：截面半径与双曲线",
+        "topic": "冷却塔",
+        "page": 2
+      },
+      {
+        "id": 16,
+        "title": "增长数列：每一步都超过 1",
+        "topic": "增长数列",
+        "page": 3
+      },
+      {
+        "id": 17,
+        "title": "四棱锥：变化中的定距离",
+        "topic": "棱锥距离",
+        "page": 4
+      },
+      {
+        "id": 19,
+        "title": "摩天轮：位置怎样变成函数？",
+        "topic": "摩天轮",
+        "page": 6
+      },
+      {
+        "id": 20,
+        "title": "双曲线：最短切线与垂足轨迹",
+        "topic": "双曲线",
+        "page": 7
+      },
+      {
+        "id": 21,
+        "title": "函数比较：从交点到切线",
+        "topic": "函数与切线",
+        "page": 8
+      }
     ],
     "build": {
       "moduleDir": "papers/baoshan-2026/src",
-      "legacyOutputs": ["宝山一模_互动讲题.html"]
+      "legacyOutputs": [
+        "宝山一模_互动讲题.html"
+      ]
+    }
+  },
+  {
+    "id": "huangpu-2024",
+    "defaultLayout": "side",
+    "title": "上海黄浦 · 2024届高三一模",
+    "shortTitle": "黄浦一模 · 2024届",
+    "subtitle": "2024届高三一模",
+    "year": 2024,
+    "source": "2024届黄浦区高考数学一模",
+    "href": "papers/huangpu-2024/index.html",
+    "questions": [
+      {
+        "id": 10,
+        "title": "相位区间与单调性",
+        "topic": "三角函数单调性",
+        "page": 1
+      },
+      {
+        "id": 12,
+        "title": "反射法与约束平面",
+        "topic": "空间最短路",
+        "page": 2
+      },
+      {
+        "id": 16,
+        "title": "移动正方形的最近点",
+        "topic": "距离与轨迹",
+        "page": 2
+      },
+      {
+        "id": 18,
+        "title": "垂直平面与二面角",
+        "topic": "空间二面角",
+        "page": 3
+      },
+      {
+        "id": 19,
+        "title": "固定围栏的面积优化",
+        "topic": "实际优化",
+        "page": 3
+      },
+      {
+        "id": 20,
+        "title": "圆弧切线的等长弦",
+        "topic": "抛物线与切线",
+        "page": 4
+      },
+      {
+        "id": 21,
+        "title": "局部趋同的双重条件",
+        "topic": "函数与导数",
+        "page": 4
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/huangpu-2024/src",
+      "model": "papers/huangpu-2024/src/model.js",
+      "legacyOutputs": [
+        "黄浦2024一模_互动讲题.html"
+      ]
+    }
+  },
+  {
+    "id": "xuhui-2024",
+    "defaultLayout": "side",
+    "title": "上海徐汇 · 2024届高三一模",
+    "shortTitle": "徐汇一模 · 2024届",
+    "subtitle": "2023学年第一学期 · 2023年12月",
+    "year": 2024,
+    "source": "2023学年第一学期徐汇区学习能力诊断卷 · 高三数学",
+    "href": "papers/xuhui-2024/index.html",
+    "questions": [
+      {
+        "id": 10,
+        "title": "矩形设备怎样转过直角通道？",
+        "topic": "转弯通道",
+        "page": 2
+      },
+      {
+        "id": 12,
+        "title": "开值域与可相加的项数",
+        "topic": "值域与项数",
+        "page": 2
+      },
+      {
+        "id": 18,
+        "title": "体积与二面角的平面角",
+        "topic": "空间二面角",
+        "page": 3
+      },
+      {
+        "id": 19,
+        "title": "三条轨道怎样铺最短？",
+        "topic": "最短轨道",
+        "page": 4
+      },
+      {
+        "id": 21,
+        "title": "导数周期与函数漂移",
+        "topic": "导数周期",
+        "page": 5
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/xuhui-2024/src",
+      "legacyOutputs": [
+        "徐汇2024一模_互动讲题.html"
+      ]
+    }
+  },
+  {
+    "id": "jingan-2024",
+    "defaultLayout": "side",
+    "title": "上海静安 · 2024届高三一模",
+    "shortTitle": "静安一模 · 2024届",
+    "subtitle": "2023学年第一学期期末",
+    "year": 2024,
+    "source": "静安区2023学年第一学期期末教学质量调研 · 高三数学",
+    "href": "papers/jingan-2024/index.html",
+    "questions": [
+      {
+        "id": 9,
+        "title": "动点怎样改变线面角？",
+        "topic": "线面角",
+        "page": 1
+      },
+      {
+        "id": 12,
+        "title": "哪里存在递增子区间？",
+        "topic": "存在性与导数",
+        "page": 2
+      },
+      {
+        "id": 16,
+        "title": "到圆与到点等距的轨迹",
+        "topic": "等距轨迹",
+        "page": 3
+      },
+      {
+        "id": 19,
+        "title": "双曲线的弦与点积",
+        "topic": "双曲线",
+        "page": 3
+      },
+      {
+        "id": 21,
+        "title": "L型函数：严格次可加",
+        "topic": "L型函数",
+        "page": 4
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/jingan-2024/src",
+      "legacyOutputs": [
+        "静安2024一模_互动讲题.html"
+      ]
+    }
+  },
+  {
+    "id": "putuo-2024",
+    "defaultLayout": "side",
+    "title": "上海普陀 · 2024届高三一模",
+    "shortTitle": "普陀一模 · 2024届",
+    "subtitle": "2024届",
+    "year": 2024,
+    "source": "2024届普陀区高三一模数学试卷",
+    "href": "papers/putuo-2024/index.html",
+    "questions": [
+      {
+        "id": 7,
+        "title": "开区间里的一个元素",
+        "topic": "区间计数",
+        "page": 1
+      },
+      {
+        "id": 10,
+        "title": "正弦交点的长短间距",
+        "topic": "正弦间距",
+        "page": 1
+      },
+      {
+        "id": 12,
+        "title": "内切球与表面动点的点积",
+        "topic": "球与点积",
+        "page": 1
+      },
+      {
+        "id": 16,
+        "title": "分段函数零点与原题核对",
+        "topic": "分段零点",
+        "page": 2
+      },
+      {
+        "id": 19,
+        "title": "偶对称与距离比较",
+        "topic": "偶函数",
+        "page": 3
+      },
+      {
+        "id": 21,
+        "title": "H(t)数列与严格不等式",
+        "topic": "新定义递推",
+        "page": 4
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/putuo-2024/src",
+      "legacyOutputs": [
+        "普陀2024一模_互动讲题.html"
+      ]
+    }
+  },
+  {
+    "id": "yangpu-2024",
+    "defaultLayout": "side",
+    "title": "上海杨浦 · 2024届高三一模",
+    "shortTitle": "杨浦一模 · 2024届",
+    "subtitle": "2024届",
+    "year": 2024,
+    "source": "2024届杨浦区高三一模数学试卷",
+    "href": "papers/yangpu-2024/index.html",
+    "questions": [
+      {
+        "id": 11,
+        "title": "焦距差与抛物线弦",
+        "topic": "抛物线",
+        "page": 2
+      },
+      {
+        "id": 15,
+        "title": "离散前缀和的唯一最大值",
+        "topic": "数列最值",
+        "page": 2
+      },
+      {
+        "id": 17,
+        "title": "两平面垂直与点面距离",
+        "topic": "空间垂直",
+        "page": 3
+      },
+      {
+        "id": 18,
+        "title": "指数方程与最高支撑直线",
+        "topic": "指数切线",
+        "page": 3
+      },
+      {
+        "id": 19,
+        "title": "雨棚形状、板材面积与遮挡高度",
+        "topic": "雨棚优化",
+        "page": 4
+      },
+      {
+        "id": 21,
+        "title": "正弦递推：等差限制与负公比",
+        "topic": "正弦递推",
+        "page": 6
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/yangpu-2024/src",
+      "legacyOutputs": [
+        "杨浦2024一模_互动讲题.html"
+      ]
+    }
+  },
+  {
+    "id": "jiading-2024",
+    "defaultLayout": "side",
+    "title": "上海嘉定 · 2024届高三一模",
+    "shortTitle": "嘉定一模 · 2024届",
+    "subtitle": "2023学年第一次质量调研",
+    "year": 2024,
+    "source": "2023学年嘉定区高三年级第一次质量调研数学试卷",
+    "href": "papers/jiading-2024/index.html",
+    "questions": [
+      {
+        "id": 9,
+        "title": "绝对值曲线的三交点",
+        "topic": "参数与交点",
+        "page": 1
+      },
+      {
+        "id": 11,
+        "title": "复数圆盘与向量扫域",
+        "topic": "复平面扫域",
+        "page": 1
+      },
+      {
+        "id": 12,
+        "title": "棱台之外的共线点",
+        "topic": "空间延长线",
+        "page": 1
+      },
+      {
+        "id": 16,
+        "title": "四面体中的等价条件",
+        "topic": "空间垂直",
+        "page": 2
+      },
+      {
+        "id": 19,
+        "title": "梁截面与抗弯优化",
+        "topic": "实际优化",
+        "page": 3
+      },
+      {
+        "id": 20,
+        "title": "抛物线的法线弦",
+        "topic": "抛物线与最值",
+        "page": 3
+      },
+      {
+        "id": 21,
+        "title": "公共交点与等比数列",
+        "topic": "函数交点",
+        "page": 4
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/jiading-2024/src",
+      "legacyOutputs": [
+        "嘉定2024一模_互动讲题.html"
+      ]
+    }
+  },
+  {
+    "id": "jinshan-2024",
+    "defaultLayout": "side",
+    "title": "上海金山 · 2024届高三一模",
+    "shortTitle": "金山一模 · 2024届",
+    "subtitle": "2023学年第一学期质量监控",
+    "year": 2024,
+    "source": "2023学年金山区第一学期质量监控高三数学试卷",
+    "href": "papers/jinshan-2024/index.html",
+    "questions": [
+      {
+        "id": 9,
+        "title": "单调性与对称锁定频率",
+        "topic": "正弦参数",
+        "page": 1
+      },
+      {
+        "id": 11,
+        "title": "对称四次函数的七个零点",
+        "topic": "参数与零点",
+        "page": 1
+      },
+      {
+        "id": 17,
+        "title": "中位线与四棱锥体积",
+        "topic": "空间平行与体积",
+        "page": 2
+      },
+      {
+        "id": 18,
+        "title": "相邻差与严格递增",
+        "topic": "数列全称条件",
+        "page": 2
+      },
+      {
+        "id": 19,
+        "title": "冰箱过门与直角转弯",
+        "topic": "实际几何优化",
+        "page": 2
+      },
+      {
+        "id": 20,
+        "title": "抛物线弦与等比数列",
+        "topic": "解析几何",
+        "page": 3
+      },
+      {
+        "id": 21,
+        "title": "均值点与对称求和",
+        "topic": "新定义函数",
+        "page": 4
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/jinshan-2024/src",
+      "legacyOutputs": [
+        "金山2024一模_互动讲题.html"
+      ]
+    }
+  },
+  {
+    "id": "huangpu-2025",
+    "title": "上海黄浦 · 2025届高三一模",
+    "shortTitle": "黄浦一模 · 2025届",
+    "subtitle": "2024—2025学年",
+    "year": 2025,
+    "source": "2024—2025 上海黄浦高三一模",
+    "href": "papers/huangpu-2025/index.html",
+    "questions": [
+      {
+        "id": 10,
+        "title": "复数条件怎样变成区域与距离？",
+        "topic": "复平面距离",
+        "page": 1
+      },
+      {
+        "id": 14,
+        "title": "空间直线的角如何看清？",
+        "topic": "空间线角",
+        "page": 2
+      },
+      {
+        "id": 16,
+        "title": "递减函数迭代为何奇偶反向？",
+        "topic": "递推数列",
+        "page": 2
+      },
+      {
+        "id": 17,
+        "title": "正方体中的垂直与投影",
+        "topic": "线面关系",
+        "page": 2
+      },
+      {
+        "id": 20,
+        "title": "双曲线：等长条件何时可达？",
+        "topic": "双曲线",
+        "page": 4
+      },
+      {
+        "id": 21,
+        "title": "极值点为什么偏向一边？",
+        "topic": "极值偏移",
+        "page": 4
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/huangpu-2025/src",
+      "model": "papers/huangpu-2025/src/model.js",
+      "legacyOutputs": [
+        "黄浦2025一模_互动讲题.html"
+      ]
+    },
+    "defaultLayout": "side"
+  },
+  {
+    "id": "xuhui-2025",
+    "title": "上海徐汇 · 2025届高三一模",
+    "shortTitle": "徐汇一模 · 2025届",
+    "subtitle": "2024—2025学年",
+    "year": 2025,
+    "source": "2024—2025 上海徐汇高三一模",
+    "href": "papers/xuhui-2025/index.html",
+    "questions": [
+      {
+        "id": 9,
+        "title": "导数重根一定是极值点吗？",
+        "topic": "函数极值",
+        "page": 1
+      },
+      {
+        "id": 11,
+        "title": "两个圆台怎样展开成同角扇环？",
+        "topic": "圆台展开",
+        "page": 2
+      },
+      {
+        "id": 12,
+        "title": "函数复合怎样覆盖补集？",
+        "topic": "置换复合",
+        "page": 2
+      },
+      {
+        "id": 16,
+        "title": "轮换均值怎样变成三点共线？",
+        "topic": "轮换均值",
+        "page": 3
+      },
+      {
+        "id": 18,
+        "title": "四棱锥中的平行与投影",
+        "topic": "线面关系",
+        "page": 4
+      },
+      {
+        "id": 20,
+        "title": "焦点弦中的等角与定角",
+        "topic": "双曲线",
+        "page": 5
+      },
+      {
+        "id": 21,
+        "title": "T 类数与两次代入",
+        "topic": "T 类数",
+        "page": 5
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/xuhui-2025/src",
+      "model": "papers/xuhui-2025/src/model.js",
+      "legacyOutputs": [
+        "徐汇2025一模_互动讲题.html"
+      ]
+    },
+    "defaultLayout": "side"
+  },
+  {
+    "id": "jingan-2025",
+    "defaultLayout": "side",
+    "title": "上海静安 · 2025届高三一模",
+    "shortTitle": "静安一模 · 2025届",
+    "subtitle": "2024学年第一学期期末",
+    "year": 2025,
+    "source": "静安区2024学年度第一学期期末教学质量调研 · 高三数学 · 2024年12月",
+    "href": "papers/jingan-2025/index.html",
+    "questions": [
+      {
+        "id": 9,
+        "title": "焦点圆何时与渐近线相切？",
+        "topic": "双曲线与距离",
+        "page": 1
+      },
+      {
+        "id": 11,
+        "title": "偶函数约束下的截距最大值",
+        "topic": "单位圆与最值",
+        "page": 1
+      },
+      {
+        "id": 15,
+        "title": "折叠出四个直角三角形",
+        "topic": "空间折叠",
+        "page": 2
+      },
+      {
+        "id": 18,
+        "title": "向量夹角与模长的联动",
+        "topic": "三角函数与向量",
+        "page": 3
+      },
+      {
+        "id": 19,
+        "title": "正四面体中的正方形截面",
+        "topic": "空间截面",
+        "page": 3
+      },
+      {
+        "id": 20,
+        "title": "抛物线、圆柱与垂直切线",
+        "topic": "最值与切线",
+        "page": 4
+      },
+      {
+        "id": 21,
+        "title": "U型函数：条件究竟有多强？",
+        "topic": "新定义函数",
+        "page": 4
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/jingan-2025/src",
+      "legacyOutputs": [
+        "静安2025一模_互动讲题.html"
+      ]
+    }
+  },
+  {
+    "id": "putuo-2025",
+    "defaultLayout": "side",
+    "title": "上海普陀 · 2025届高三一模",
+    "shortTitle": "普陀一模 · 2025届",
+    "subtitle": "2025届",
+    "year": 2025,
+    "source": "普陀区2024学年第一学期高三数学质量调研",
+    "href": "papers/putuo-2025/index.html",
+    "questions": [
+      {
+        "id": 10,
+        "title": "圆内直角弦的最小长度",
+        "topic": "最短弦",
+        "page": 1
+      },
+      {
+        "id": 11,
+        "title": "对称曲线之间的最长弦",
+        "topic": "反函数动弦",
+        "page": 2
+      },
+      {
+        "id": 16,
+        "title": "旋转后的图像还是函数吗",
+        "topic": "旋转与单射",
+        "page": 2
+      },
+      {
+        "id": 17,
+        "title": "折叠、线面平行与二面角",
+        "topic": "折叠空间",
+        "page": 3
+      },
+      {
+        "id": 18,
+        "title": "开区间极小值与离散频率",
+        "topic": "正弦与周期",
+        "page": 3
+      },
+      {
+        "id": 20,
+        "title": "焦点弦、平行四边形与面积",
+        "topic": "双曲线",
+        "page": 4
+      },
+      {
+        "id": 21,
+        "title": "P(t)数列的逐项约束",
+        "topic": "新定义递推",
+        "page": 4
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/putuo-2025/src",
+      "legacyOutputs": [
+        "普陀2025一模_互动讲题.html"
+      ]
+    }
+  },
+  {
+    "id": "yangpu-2025",
+    "defaultLayout": "side",
+    "title": "上海杨浦 · 2025届高三一模",
+    "shortTitle": "杨浦一模 · 2025届",
+    "subtitle": "2024学年第一学期 · 2024年12月",
+    "year": 2025,
+    "source": "杨浦区2024学年度第一学期高三年级模拟质量调研数学试卷",
+    "href": "papers/yangpu-2025/index.html",
+    "questions": [
+      {
+        "id": 9,
+        "title": "球内圆柱：截面约束与侧面积",
+        "topic": "圆柱侧面积",
+        "page": 1
+      },
+      {
+        "id": 10,
+        "title": "分段定义域怎样筛掉候选根",
+        "topic": "分段零点",
+        "page": 1
+      },
+      {
+        "id": 11,
+        "title": "变轨中的近月点、远月点与离心率",
+        "topic": "椭圆变轨",
+        "page": 1
+      },
+      {
+        "id": 12,
+        "title": "复映射删掉的线段与圆周避让",
+        "topic": "复数映射",
+        "page": 1
+      },
+      {
+        "id": 17,
+        "title": "正方体的线面截取与二面角",
+        "topic": "空间二面角",
+        "page": 3
+      },
+      {
+        "id": 20,
+        "title": "平行弦、中点共线与定面积",
+        "topic": "抛物线面积",
+        "page": 4
+      },
+      {
+        "id": 21,
+        "title": "p生成函数：弦差与割线斜率",
+        "topic": "新定义函数",
+        "page": 4
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/yangpu-2025/src",
+      "model": "papers/yangpu-2025/src/model.js",
+      "legacyOutputs": [
+        "杨浦2025一模_互动讲题.html"
+      ]
+    }
+  },
+  {
+    "id": "jinshan-2025",
+    "title": "上海金山 · 2025届高三一模",
+    "shortTitle": "金山一模 · 2025届",
+    "subtitle": "2024—2025学年",
+    "year": 2025,
+    "defaultLayout": "side",
+    "source": "2024学年金山区第一学期质量监控 · 高三数学试卷",
+    "href": "papers/jinshan-2025/index.html",
+    "questions": [
+      {
+        "id": 10,
+        "title": "瞭望角最大时的浮桥",
+        "topic": "圆弧最优视角",
+        "page": 1
+      },
+      {
+        "id": 12,
+        "title": "旋转向量中的椭圆",
+        "topic": "旋转与轨迹",
+        "page": 2
+      },
+      {
+        "id": 15,
+        "title": "双圆锥的竖直截面",
+        "topic": "双曲线截面",
+        "page": 2
+      },
+      {
+        "id": 16,
+        "title": "只有两种距离的点",
+        "topic": "空间等距点",
+        "page": 2
+      },
+      {
+        "id": 18,
+        "title": "梯形底四棱锥",
+        "topic": "平行与点面距",
+        "page": 3
+      },
+      {
+        "id": 20,
+        "title": "两条垂直焦点弦",
+        "topic": "圆锥曲线面积",
+        "page": 3
+      },
+      {
+        "id": 21,
+        "title": "T 点与和谐 T 点",
+        "topic": "切线与弦",
+        "page": 4
+      }
+    ],
+    "build": {
+      "moduleDir": "papers/jinshan-2025/src",
+      "model": "papers/jinshan-2025/src/model.js",
+      "legacyOutputs": [
+        "金山2025一模_互动讲题.html"
+      ]
     }
   }
 ]

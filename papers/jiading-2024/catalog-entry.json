@@ -1,0 +1,14 @@
+{
+  "id":"jiading-2024","defaultLayout":"side","title":"上海嘉定 · 2024届高三一模","shortTitle":"嘉定一模 · 2024届","subtitle":"2023学年第一次质量调研","year":2024,
+  "source":"2023学年嘉定区高三年级第一次质量调研数学试卷","href":"papers/jiading-2024/index.html",
+  "questions":[
+    {"id":9,"title":"绝对值曲线的三交点","topic":"参数与交点","page":1},
+    {"id":11,"title":"复数圆盘与向量扫域","topic":"复平面扫域","page":1},
+    {"id":12,"title":"棱台之外的共线点","topic":"空间延长线","page":1},
+    {"id":16,"title":"四面体中的等价条件","topic":"空间垂直","page":2},
+    {"id":19,"title":"梁截面与抗弯优化","topic":"实际优化","page":3},
+    {"id":20,"title":"抛物线的法线弦","topic":"抛物线与最值","page":3},
+    {"id":21,"title":"公共交点与等比数列","topic":"函数交点","page":4}
+  ],
+  "build":{"moduleDir":"papers/jiading-2024/src","legacyOutputs":["嘉定2024一模_互动讲题.html"]}
+}
