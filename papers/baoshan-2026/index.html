@@ -5431,7 +5431,7 @@ Problems[20] = {
       textPanel=document.createElement('section');textPanel.className='lesson-text';
       textPanel.setAttribute('aria-label','题目、答案与解析');textPanel.tabIndex=0;host.prepend(textPanel);
       const nodes=[document.querySelector('.question-context'),constructionBar,
-        ...host.querySelectorAll(':scope > .readout, :scope > .question-claims, :scope > .explain, :scope > .caption, :scope > .hint')];
+        ...['.readout','.question-claims','.explain','.caption','.hint'].flatMap(selector=>[...host.querySelectorAll(':scope > '+selector)])];
       for(const node of nodes){const marker=document.createComment('layout-position');node.replaceWith(marker);layoutMoves.push([node,marker]);textPanel.append(node);}
       readingHint=document.createElement('div');readingHint.className='reading-scroll-hint';readingHint.textContent='↓ 向下滚动查看内容';readingHint.hidden=true;readingHint.setAttribute('aria-hidden','true');host.append(readingHint);
       textPanel.addEventListener('scroll',updateReadingHint,{passive:true});

@@ -55,14 +55,14 @@ const papers = require('../papers/catalog.json').filter(p => ['jiading-2025','hu
         await page.locator('[data-question="' + id + '"]').click();await settle();
         const label = paper.id + ' q' + id;
         await checkSideBySide(label);await switchTwice(label);
-        const figureBefore = await bounds('.figures');
+        const figureBefore = await bounds('.figures'), answerBefore = await bounds('.lesson-text .answer');
         await page.locator('#keyButton').click();await settle();
         const figureAfter = await bounds('.figures');
         for(const key of ['x','y','width','height'])near(figureAfter[key],figureBefore[key],label + ': revealing proof moves diagram ' + key);
-        // A newly revealed readout relationship may add a line before the answer.
-        // Its answer must remain in the reading pane, never resize the diagram.
         const answer = await bounds('.lesson-text .answer');
-        if(answer)assert.ok(answer.x + answer.width < figureAfter.x, label + ': answer left the reading pane');
+        assert.ok(answerBefore && answer, label + ': answer disappeared');
+        near(answer.y, answerBefore.y, label + ': revealing proof moves answer');
+        assert.ok(answer.x + answer.width < figureAfter.x, label + ': answer left the reading pane');
         await page.locator('.lesson-text').evaluate(e => {e.scrollTop=e.scrollHeight;});
         near((await bounds('.figures')).y,figureAfter.y,label + ': scrolling text moves the graph');
         await page.locator('.lesson-text').evaluate(e => {e.scrollTop=0;});
