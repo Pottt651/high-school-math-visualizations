@@ -10,6 +10,9 @@ const {launchBrowser,reportFailure} = require('./browser-runtime.cjs');
   await page.context().setOffline(true);
   await page.goto(pathToFileURL(path.resolve(__dirname,'../papers/jiading-2025/index.html')).href);
   const settle=()=>page.evaluate(async()=>{await document.fonts.ready;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));});
+  // The merged default is side-by-side; this first section specifically tests
+  // how focus frees vertical room from the explicitly selected stacked layout.
+  await settle();if(await page.locator('#layoutButton').getAttribute('aria-pressed')==='true'){await page.locator('#layoutButton').click();await settle();}
   const results=[];
   for(const viewport of [{width:1280,height:720},{width:1920,height:1080}]){
     await page.setViewportSize(viewport);

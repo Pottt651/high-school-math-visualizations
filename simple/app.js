@@ -14,13 +14,19 @@
   const navigationButton=document.getElementById('navigationButton');
   const layoutMedia=matchMedia('(min-width: 1000px)');
   const preferenceKey='math-visualizations-display';
-  let saved={};try{saved=JSON.parse(localStorage.getItem(preferenceKey)||'{}')||{};}catch{}
-  let sideLayout=typeof saved.side==='boolean'?saved.side:paper.defaultLayout==='side',layoutMoves=[],textPanel=null;
+  let saved={},legacyLayout=null;try{saved=JSON.parse(localStorage.getItem(preferenceKey)||'{}')||{};legacyLayout=localStorage.getItem('math-visualizations-layout');}catch{}
+  let sideLayout=typeof saved.side==='boolean'?saved.side:legacyLayout==='side-by-side'?true:legacyLayout==='stacked'?false:paper.defaultLayout==='side',layoutMoves=[],textPanel=null,readingHint=null;
+  function updateReadingHint(){
+    if(!textPanel||!readingHint)return;
+    readingHint.hidden=!(document.body.classList.contains('side-layout')&&textPanel.scrollHeight-textPanel.clientHeight-textPanel.scrollTop>8);
+  }
+  const readingResize=new ResizeObserver(updateReadingHint),readingChanges=new MutationObserver(updateReadingHint);
   document.body.classList.toggle('navigation-hidden',saved.navigationHidden===true);
-  const saveDisplay=()=>{try{localStorage.setItem(preferenceKey,JSON.stringify({side:sideLayout,navigationHidden:document.body.classList.contains('navigation-hidden')}));}catch{}};
+  const saveDisplay=()=>{try{localStorage.setItem(preferenceKey,JSON.stringify({side:sideLayout,navigationHidden:document.body.classList.contains('navigation-hidden')}));localStorage.setItem('math-visualizations-layout',sideLayout?'side-by-side':'stacked');}catch{}};
   navigationButton.setAttribute('aria-pressed',String(saved.navigationHidden===true));
   navigationButton.textContent=saved.navigationHidden===true?'显示顶部':'隐藏顶部';
   function restoreLayout(){
+    readingResize.disconnect();readingChanges.disconnect();readingHint?.remove();readingHint=null;
     for(const [node,marker] of layoutMoves)marker.replaceWith(node);
     layoutMoves=[];textPanel?.remove();textPanel=null;
   }
@@ -30,14 +36,17 @@
     document.body.classList.toggle('side-layout',active);
     if(active){
       textPanel=document.createElement('section');textPanel.className='lesson-text';
-      textPanel.setAttribute('aria-label','题目、答案与解析');host.prepend(textPanel);
+      textPanel.setAttribute('aria-label','题目、答案与解析');textPanel.tabIndex=0;host.prepend(textPanel);
       const nodes=[document.querySelector('.question-context'),constructionBar,
         ...host.querySelectorAll(':scope > .readout, :scope > .question-claims, :scope > .explain, :scope > .caption, :scope > .hint')];
       for(const node of nodes){const marker=document.createComment('layout-position');node.replaceWith(marker);layoutMoves.push([node,marker]);textPanel.append(node);}
+      readingHint=document.createElement('div');readingHint.className='reading-scroll-hint';readingHint.textContent='↓ 向下滚动查看内容';readingHint.hidden=true;readingHint.setAttribute('aria-hidden','true');host.append(readingHint);
+      textPanel.addEventListener('scroll',updateReadingHint,{passive:true});
+      readingResize.observe(textPanel);readingChanges.observe(textPanel,{childList:true,subtree:true,attributes:true,characterData:true});
     }
     layoutButton.setAttribute('aria-pressed',String(sideLayout));
     layoutButton.textContent=sideLayout?'上下布局':'左右布局';
-    requestAnimationFrame(()=>mounted?.render());
+    requestAnimationFrame(()=>{mounted?.render();updateReadingHint();});
   }
   layoutButton.onclick=()=>{sideLayout=!sideLayout;arrangeLayout();saveDisplay();};
   layoutMedia.addEventListener('change',arrangeLayout);
@@ -54,7 +63,7 @@
     focusButton.textContent=focused?'还原布局':'放大图形';
     arrangeLayout();
   };
-  function setKey(shown){document.body.classList.toggle('show-key',shown);const button=document.getElementById('keyButton');button.setAttribute('aria-pressed',String(shown));button.textContent=shown?'隐藏关键关系':'显示关键关系';}
+  function setKey(shown){document.body.classList.toggle('show-key',shown);const button=document.getElementById('keyButton');button.setAttribute('aria-pressed',String(shown));button.textContent=shown?'隐藏关键关系':'显示关键关系';requestAnimationFrame(updateReadingHint);}
   function prepareReading(){
     const context=document.querySelector('.question-context');
     const reading=document.createElement('div');reading.className='reading-controls';
@@ -142,7 +151,7 @@
   window.Lesson={select,getState:()=>({question:current,revealed:document.body.classList.contains('show-key'),...mounted?.getState?.()}),getConstruction:()=>({step:constructionStep(),steps:mounted?.getConstructionSteps?.()||[]}),questions:ids};
   const requested=Number(location.hash.replace('#q',''));
   select(ids.includes(requested)?requested:decodeURIComponent(location.pathname).includes('第20题')?20:ids[0]);
-  function fontsReady(){M.clearMeasurements();cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>mounted?.render());}
+  function fontsReady(){M.clearMeasurements();cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{mounted?.render();updateReadingHint();});}
   document.fonts.ready.then(fontsReady);
   document.fonts.addEventListener('loadingdone',fontsReady);
 })();

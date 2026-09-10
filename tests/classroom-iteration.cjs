@@ -9,7 +9,7 @@ const {pathToFileURL}=require('node:url');const {launchBrowser,reportFailure}=re
  const select=async id=>{await page.locator(`[data-question="${id}"]`).click();await settle();};
  const snapshot=async name=>page.screenshot({path:path.join(shots,name+'.png')});
  const number=async value=>{await page.locator('#q18-number').fill(String(value));await page.locator('#q18-number').press('Tab');await settle();};
- await page.locator('#layoutButton').click();
+ if(await page.locator('#layoutButton').getAttribute('aria-pressed')!=='true')await page.locator('#layoutButton').click();
  for(const [width,height] of [[1280,720],[1920,1080]]){
   await page.setViewportSize({width,height});await select(18);
   for(const k of [1,2,4,12,100]){
